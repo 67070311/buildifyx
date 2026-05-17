@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function Hero() {
@@ -7,6 +8,14 @@ export default function Hero() {
     <section className="relative overflow-hidden px-6 py-20">
       <div className="mx-auto max-w-6xl">
         {/* Top Text */}
+        <motion.section
+          className="mt-10 px-4"
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        ></motion.section>
+
         <div className="text-center">
           <h1 className="text-[#] mx-auto max-w-4xl text-5xl font-bold leading-tight md:text-7xl">
             LEVEL UP YOUR

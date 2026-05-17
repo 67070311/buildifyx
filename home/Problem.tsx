@@ -1,109 +1,137 @@
 "use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function Problem() {
   return (
     <>
-      {/* Vision */}
-      <section className="px-4">
-        <div className="text-center">
-          <p className="text-gray-400 text-sm md:text-md font-bold">Vision</p>
-
-          <h2 className="text-[#5552D9] mt-2 text-xl md:text-3xl font-semibold leading-snug">
-            Every problem people face is our next product
-          </h2>
-        </div>
-      </section>
-
       {/* Mission */}
-      <section className="mt-6 px-4">
+      <motion.section
+        className="mt-10 px-4"
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        {/* Icon */}
         <div className="flex justify-center">
-          <div className="text-[#5552D9] text-3xl md:text-4xl p-2 md:p-4">
+          <div className="text-[#5552D9] text-4xl md:text-5xl font-light">
             +
           </div>
         </div>
 
-        <div className="flex justify-center">
-          <div className="rounded-full bg-purple-200 px-5 py-2 text-sm md:text-md font-bold text-[#7C3AED]">
-            Mission
+        {/* Badge */}
+        <div className="mt-3 flex justify-center">
+          <div className="rounded-full bg-purple-100 px-6 py-2 text-sm md:text-base font-semibold text-[#7C3AED] shadow-sm">
+            Our Mission
           </div>
         </div>
 
-        <h3 className="mt-4 text-center text-xl md:text-3xl text-[#5552D9] font-semibold leading-relaxed">
+        {/* Heading */}
+        <h3 className="mt-6 text-center text-2xl md:text-4xl text-[#5552D9] font-bold leading-relaxed">
           When the world’s problems finally have a solution,
           <br className="hidden md:block" />
           that solution will be called Buildifyx.
         </h3>
-      </section>
+
+        {/* Sub text */}
+        <p className="mt-6 max-w-3xl mx-auto text-center text-gray-500 text-sm md:text-lg leading-relaxed">
+          We believe technology should solve meaningful real-world challenges.
+          At Buildifyx, every product is crafted with purpose, innovation, and
+          long-term impact in mind.
+        </p>
+      </motion.section>
 
       {/* Cards */}
-      <section className="mt-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 px-4 md:px-10 xl:px-20">
+      <section className="mt-14 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 px-4 md:px-10 xl:px-20">
         {/* Card 1 */}
-        <div className="bg-white rounded-3xl p-4 md:p-5 shadow-md">
-          <div className="bg-[#E9DDFB] rounded-3xl p-4 md:p-6 flex justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 80 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          viewport={{ once: true }}
+          className="group bg-white rounded-3xl p-5 shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+        >
+          <div className="bg-[#F3EDFF] rounded-3xl p-6 flex justify-center overflow-hidden">
             <Image
               src={"/home/Seeking development.gif"}
               alt="Problem Driven Thinking"
-              width={300}
-              height={300}
-              className="w-full max-w-[260px] h-auto"
+              width={320}
+              height={320}
+              className="w-full max-w-[260px] h-auto group-hover:scale-105 transition-transform duration-500"
             />
           </div>
 
-          <h4 className="mt-6 text-xl md:text-2xl font-bold">
+          <h4 className="mt-7 text-2xl font-bold text-gray-800">
             Problem-Driven Thinking
           </h4>
 
-          <p className="mt-3 text-sm md:text-base text-gray-500 leading-relaxed">
-            We start with real problems faced by users and businesses, to build
-            solutions that truly matter not just ideas that look good
+          <p className="mt-4 text-gray-500 leading-relaxed text-sm md:text-base">
+            We begin with real challenges faced by people and businesses.
+            Instead of creating products that only look impressive, we focus on
+            building solutions that genuinely improve experiences and solve
+            meaningful problems.
           </p>
-        </div>
+        </motion.div>
 
         {/* Card 2 */}
-        <div className="bg-white rounded-3xl p-4 md:p-5 shadow-md">
-          <div className="bg-[#E9DDFB] rounded-3xl p-4 md:p-6 flex justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 80 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="group bg-white rounded-3xl p-5 shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+        >
+          <div className="bg-[#F3EDFF] rounded-3xl p-6 flex justify-center overflow-hidden">
             <Image
               src={"/home/Marketing online.gif"}
               alt="Build with Purpose"
-              width={300}
-              height={300}
-              className="w-full max-w-[260px] h-auto"
+              width={320}
+              height={320}
+              className="w-full max-w-[260px] h-auto group-hover:scale-105 transition-transform duration-500"
             />
           </div>
 
-          <h4 className="mt-6 text-xl md:text-2xl font-bold">
+          <h4 className="mt-7 text-2xl font-bold text-gray-800">
             Build with Purpose
           </h4>
 
-          <p className="mt-3 text-sm md:text-base text-gray-500 leading-relaxed">
-            Every product is intentionally designed and developed with a clear
-            purpose focused on real-world usability and creating meaningful
-            value for users.
+          <p className="mt-4 text-gray-500 leading-relaxed text-sm md:text-base">
+            Every product we create is intentionally designed with a clear
+            mission. From user experience to system architecture, we ensure that
+            every detail contributes meaningful value and practical usability.
           </p>
-        </div>
+        </motion.div>
 
         {/* Card 3 */}
-        <div className="bg-white rounded-3xl p-4 md:p-5 shadow-md">
-          <div className="bg-[#E9DDFB] rounded-3xl p-4 md:p-6 flex justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 80 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.5 }}
+          viewport={{ once: true }}
+          className="group bg-white rounded-3xl p-5 shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+        >
+          <div className="bg-[#F3EDFF] rounded-3xl p-6 flex justify-center overflow-hidden">
             <Image
               src={"/home/Business Goal.gif"}
               alt="Scalable Impact"
-              width={300}
-              height={300}
-              className="w-full max-w-[260px] h-auto"
+              width={320}
+              height={320}
+              className="w-full max-w-[260px] h-auto group-hover:scale-105 transition-transform duration-500"
             />
           </div>
 
-          <h4 className="mt-6 text-xl md:text-2xl font-bold">
+          <h4 className="mt-7 text-2xl font-bold text-gray-800">
             Scalable Impact
           </h4>
 
-          <p className="mt-3 text-sm md:text-base text-gray-500 leading-relaxed">
-            We build systems that are scalable and adaptable designed to support
-            long-term use and future business growth
+          <p className="mt-4 text-gray-500 leading-relaxed text-sm md:text-base">
+            We design systems that are scalable, flexible, and future-ready.
+            Buildifyx products are created to support long-term growth, evolving
+            business needs, and sustainable digital transformation.
           </p>
-        </div>
+        </motion.div>
       </section>
     </>
   );
