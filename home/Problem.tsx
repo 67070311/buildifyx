@@ -1,4 +1,4 @@
-"user client";
+"use client";
 import Image from "next/image";
 
 export default function Problem() {
@@ -30,7 +30,7 @@ export default function Problem() {
       </section>
 
       {/*Card*/}
-      <section className="mt-6 flex grid-cols-3 gap-8 px-20">
+      <section className="mt-6 grid grid-cols-3 gap-10 px-20">
         {/* Card 1 */}
         <div className="bg-white rounded-3xl p-5 shadow-md">
           <div className="bg-[#E9DDFB] rounded-3xl p-6">
@@ -54,7 +54,7 @@ export default function Problem() {
         <div className="bg-white rounded-3xl p-5 shadow-md">
           <div className="bg-[#E9DDFB] rounded-3xl p-6">
             <Image
-              src={"/home/Seeking development (1).gif"}
+              src={"/home/Marketing online.gif"}
               alt=""
               width={300}
               height={300}
