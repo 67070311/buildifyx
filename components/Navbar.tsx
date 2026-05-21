@@ -5,11 +5,11 @@ import Link from "next/link";
 import NavbarMobile from "./NavbarMobile";
 
 const navItems = [
-  { name: "Home", href: "#" },
-  { name: "About Us", href: "#about" },
-  { name: "Why Us", href: "#why" },
-  { name: "Our Work", href: "#work" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home", href: "/" },
+  { name: "Why Us", href: "/whyus" },
+  { name: "About Us", href: "/aboutus" },
+  { name: "Our Work", href: "/ourwork" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
