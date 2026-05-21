@@ -13,6 +13,7 @@ const prompt = Prompt({
 export const metadata: Metadata = {
   title: "Buildifyx",
   description: "Company Website",
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({
@@ -21,15 +22,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light">
-      <head>
-        <meta name="color-scheme" content="light" />
-      </head>
-
+    <html lang="en">
       <body className={`${prompt.className} bg-white text-black`}>
         <Navbar />
 
-        <main>{children}</main>
+        <main className="bg-white text-black min-h-screen">{children}</main>
 
         <Footer />
       </body>
