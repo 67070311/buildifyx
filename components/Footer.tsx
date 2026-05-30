@@ -17,27 +17,27 @@ export default function Footer() {
 
             <ul className="space-y-3 font-medium">
               <li>
-                <a href="#" className="transition hover:text-[#5552D9]">
+                <a href="/" className="transition hover:text-[#5552D9]">
                   Home
                 </a>
               </li>
               <li>
-                <a href="#" className="transition hover:text-[#5552D9]">
+                <a href="/aboutus" className="transition hover:text-[#5552D9]">
                   About Us
                 </a>
               </li>
               <li>
-                <a href="#" className="transition hover:text-[#5552D9]">
+                <a href="/whyus" className="transition hover:text-[#5552D9]">
                   Why Us
                 </a>
               </li>
               <li>
-                <a href="#" className="transition hover:text-[#5552D9]">
+                <a href="/mywork" className="transition hover:text-[#5552D9]">
                   Our Work
                 </a>
               </li>
               <li>
-                <a href="#" className="transition hover:text-[#5552D9]">
+                <a href="/Contact" className="transition hover:text-[#5552D9]">
                   Contact
                 </a>
               </li>

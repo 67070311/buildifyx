@@ -60,7 +60,7 @@ const apps = [
 
   {
     id: 7,
-    src: "/home/logoicon/PowerBI.png",
+    src: "/home/logoicon/PowerBi.png",
     className: "bottom-[6%] right-[10%] md:right-[14%]",
     rotate: -10,
     duration: 4.9,
