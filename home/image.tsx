@@ -1,16 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/dist/client/link";
 import { useEffect, useState } from "react";
 
 const images = [
-  "/home/imagepage/dive.png",
-  "/home/imagepage/2.png",
-  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200",
-  "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=1200",
-  "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=1200",
-  "https://images.unsplash.com/photo-1503602642458-232111445657?q=80&w=1200",
-  "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1200",
+  "/home/imagepage/phone-design.png",
+  "/home/imagepage/dark-security.png",
+  "/home/imagepage/web.png",
+  "/home/imagepage/js.png",
+  "/home/imagepage/graphic.png",
+  "/home/imagepage/tensor.png",
+  "/home/imagepage/garph.png",
 ];
 
 export default function CurvedCarousel() {
@@ -48,12 +49,15 @@ export default function CurvedCarousel() {
             businesses.
           </p>
 
-          <button className="inline-flex items-center gap-2.5 rounded-full border border-[#eee] bg-white px-[22px] py-[14px] font-semibold shadow-[0_6px_16px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1">
+          <Link
+            href="/mywork"
+            className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-[#eee] bg-white px-5 py-3 text-sm font-semibold shadow-[0_6px_16px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1 sm:px-[22px] sm:py-[14px] sm:text-base"
+          >
             See more Projects
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#5552D9] text-white">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#5552D9] text-xs text-white sm:h-6 sm:w-6 sm:text-sm">
               →
             </span>
-          </button>
+          </Link>
         </div>
       </motion.div>
 

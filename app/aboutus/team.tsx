@@ -7,7 +7,7 @@ export default function Team() {
     <>
       <section className="mt-1 bg-white px-4 py-16 md:px-6 md:py-24">
         {/* Top */}
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-7xl text-center">
           <p className="text-base text-[#afafaf] md:text-xl">Team</p>
 
           <h1 className="mt-4 text-3xl font-medium text-[#5552D9] md:text-5xl">

@@ -8,8 +8,8 @@ const navItems = [
   { name: "Home", href: "/" },
   { name: "Why Us", href: "/whyus" },
   { name: "About Us", href: "/aboutus" },
-  { name: "Our Work", href: "/ourwork" },
-  { name: "Contact", href: "/contact" },
+  { name: "Our Work", href: "/mywork" },
+  { name: "Contact", href: "/Contact" },
 ];
 
 export default function Navbar() {
@@ -43,9 +43,11 @@ export default function Navbar() {
 
         {/* Desktop Button */}
         <div className="hidden md:block">
-          <button className="rounded-full bg-black px-5 py-2 text-sm font-medium text-white transition hover:bg-gray-800">
-            Get Started
-          </button>
+          <Link href="/mywork">
+            <button className="rounded-full bg-black px-5 py-2 text-sm font-medium text-white transition hover:bg-gray-800">
+              Get Started
+            </button>
+          </Link>
         </div>
 
         {/* Mobile Menu */}

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Link from "next/dist/client/link";
 
 export default function Problem() {
   return (
@@ -163,14 +164,20 @@ export default function Problem() {
       {/* Buttons */}
       <div className="mb-20 mt-20 flex items-center justify-center gap-4">
         {/* Fill Button */}
-        <button className="rounded-full bg-[#5552D9] px-8 py-4 font-medium text-white shadow-md transition-all duration-300 hover:scale-105 hover:bg-[#4338CA]">
+        <Link
+          href="/whyus"
+          className="rounded-full bg-[#5552D9] px-8 py-4 font-medium text-white shadow-md transition-all duration-300 hover:scale-105 hover:bg-[#4338CA]"
+        >
           See More
-        </button>
+        </Link>
 
         {/* Outline Button */}
-        <button className="rounded-full border-2 border-[#5552D9] px-8 py-4 font-medium text-[#5552D9] transition-all duration-200 hover:scale-105 hover:bg-[#ffffff] hover:text-[#552D9]">
+        <Link
+          href="/Contact"
+          className="rounded-full border-2 border-[#5552D9] px-8 py-4 font-medium text-[#5552D9] transition-all duration-200 hover:scale-105 hover:bg-white hover:text-[#5552D9]"
+        >
           Contact Us
-        </button>
+        </Link>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/dist/client/link";
 import Image from "next/image";
 
 export default function Hero() {
@@ -156,7 +157,6 @@ export default function Hero() {
         >
           BUILDIFYX
         </motion.h1>
-
         {/* ---------------- Subtitle ---------------- */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -175,7 +175,6 @@ export default function Hero() {
         >
           Your eyes, your rules
         </motion.p>
-
         {/* ---------------- Description ---------------- */}
         <motion.p
           initial={{ opacity: 0 }}
@@ -197,53 +196,17 @@ export default function Hero() {
         >
           Smart creative platform for next generation designers
         </motion.p>
-
         {/* ---------------- Button ---------------- */}
-        <button
-          className="
-            mt-8
-            inline-flex
-            items-center
-            gap-2.5
-            rounded-full
-            border
-            border-[#eee]
-            bg-white
-            px-5
-            py-3
-            text-sm
-            font-semibold
-            shadow-[0_6px_16px_rgba(0,0,0,0.06)]
-            transition
-            duration-300
-            hover:-translate-y-1
-
-            sm:px-[22px]
-            sm:py-[14px]
-            sm:text-base
-          "
+        import Link from "next/link";
+        <Link
+          href="/mywork"
+          className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-[#eee] bg-white px-5 py-3 text-sm font-semibold shadow-[0_6px_16px_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1 sm:px-[22px] sm:py-[14px] sm:text-base"
         >
           See more Projects
-          <span
-            className="
-              flex
-              h-5
-              w-5
-              items-center
-              justify-center
-              rounded-full
-              bg-[#5552D9]
-              text-xs
-              text-white
-
-              sm:h-6
-              sm:w-6
-              sm:text-sm
-            "
-          >
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#5552D9] text-xs text-white sm:h-6 sm:w-6 sm:text-sm">
             →
           </span>
-        </button>
+        </Link>
       </div>
     </section>
   );
