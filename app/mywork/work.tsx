@@ -62,7 +62,7 @@ const works = [
 
 export default function Work() {
   return (
-    <section className="bg-[#f5f5f5] py-16 md:py-20">
+    <section className="bg-white py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         {/* Title */}
         <motion.div
@@ -72,13 +72,19 @@ export default function Work() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="text-center"
         >
-          <h1 className="text-4xl font-black uppercase md:text-6xl">MY WORK</h1>
+          <p className="text-sm font-black uppercase tracking-[0.45em] text-[#A58BFF] md:text-lg">
+            Selected Client Commissions
+          </p>
 
-          <div className="mx-auto mt-4 h-1 w-24 rounded-full bg-blue-500" />
+          <h1 className="mt-8 text-6xl font-black uppercase leading-none tracking-[-0.06em] text-black md:text-8xl lg:text-[150px]">
+            My Work
+          </h1>
+
+          <div className="mx-auto mt-10 h-2 w-36 rounded-full bg-[#B9A7FF]" />
         </motion.div>
 
         {/* Work Grid */}
-        <div className="mt-14 grid grid-cols-1 gap-10 md:mt-20 md:grid-cols-2">
+        <div className="mt-20 grid grid-cols-1 gap-10 md:mt-28 md:grid-cols-2">
           {works.map((work, index) => (
             <motion.div
               key={work.title}
@@ -90,7 +96,7 @@ export default function Work() {
                 ease: "easeOut",
                 delay: index % 2 === 0 ? 0 : 0.1,
               }}
-              className="group overflow-hidden rounded-[2rem] bg-white shadow-lg md:bg-transparent md:shadow-none"
+              className="group overflow-hidden rounded-[2rem] bg-[#ffffff] shadow-lg md:bg-transparent md:shadow-none"
             >
               <div className="overflow-hidden rounded-[2rem] shadow-lg">
                 <Image

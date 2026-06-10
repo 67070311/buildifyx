@@ -6,249 +6,201 @@ import Image from "next/image";
 const apps = [
   {
     id: 1,
+    name: "Figma",
     src: "/home/logoicon/Figma1.png",
-    className: "top-[8%] left-[0%] md:left-[4%]",
-    rotate: -12,
-    duration: 4.5,
-    size: "w-[38px] h-[38px] sm:w-[52px] sm:h-[52px] md:w-[74px] md:h-[74px] lg:w-[92px] lg:h-[92px]",
   },
-
   {
     id: 2,
-    src: "/home/logoicon/Discord.png",
-    className: "top-[8%] left-[22%] md:left-[28%]",
-    rotate: 14,
-    duration: 5.2,
-    size: "w-[44px] h-[44px] sm:w-[56px] sm:h-[56px] md:w-[76px] md:h-[76px] lg:w-[95px] lg:h-[95px]",
+    name: "Python",
+    type: "python",
   },
-
   {
     id: 3,
+    name: "Meet",
     src: "/home/logoicon/Meet.png",
-    className: "top-[12%] right-[24%] md:right-[34%]",
-    rotate: -8,
-    duration: 4.8,
-    size: "w-[34px] h-[34px] sm:w-[48px] sm:h-[48px] md:w-[66px] md:h-[66px] lg:w-[82px] lg:h-[82px]",
   },
-
   {
     id: 4,
+    name: "Next.js",
     src: "/home/logoicon/Next.png",
-    className: "top-[10%] right-[-2%] md:right-[4%]",
-    rotate: 18,
-    duration: 5,
-    size: "w-[46px] h-[46px] sm:w-[60px] sm:h-[60px] md:w-[82px] md:h-[82px] lg:w-[100px] lg:h-[100px]",
   },
-
   {
     id: 5,
+    name: "Pandas",
     src: "/home/logoicon/Pandas.png",
-    className: "bottom-[10%] left-[4%] md:left-[14%]",
-    rotate: -15,
-    duration: 4.7,
-    size: "w-[42px] h-[42px] sm:w-[56px] sm:h-[56px] md:w-[74px] md:h-[74px] lg:w-[90px] lg:h-[90px]",
   },
-
   {
     id: 6,
+    name: "PyTorch",
     src: "/home/logoicon/Pytorch.png",
-    className: "bottom-[8%] left-[42%] md:left-[50%]",
-    rotate: 10,
-    duration: 5.5,
-    size: "w-[48px] h-[48px] sm:w-[62px] sm:h-[62px] md:w-[86px] md:h-[86px] lg:w-[105px] lg:h-[105px]",
   },
-
   {
     id: 7,
+    name: "Power BI",
     src: "/home/logoicon/PowerBi.png",
-    className: "bottom-[6%] right-[10%] md:right-[14%]",
-    rotate: -10,
-    duration: 4.9,
-    size: "w-[36px] h-[36px] sm:w-[50px] sm:h-[50px] md:w-[68px] md:h-[68px] lg:w-[86px] lg:h-[86px]",
   },
-
   {
     id: 8,
+    name: "Claude",
     src: "/home/logoicon/Claude.png",
-    className: "top-[42%] right-[-4%] md:right-[0%]",
-    rotate: 20,
-    duration: 5.3,
-    size: "w-[40px] h-[40px] sm:w-[54px] sm:h-[54px] md:w-[74px] md:h-[74px] lg:w-[92px] lg:h-[92px]",
   },
 ];
 
+const workflowPoints = [
+  "Using tools modern teams rely on.",
+  "Flexible across multiple platforms.",
+  "Building seamless digital workflows.",
+];
+
+function PythonLogo() {
+  return (
+    <svg
+      viewBox="0 0 256 255"
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-10 w-10 object-contain sm:h-12 sm:w-12"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient
+          id="python-blue"
+          x1="12.959"
+          x2="79.639"
+          y1="12.039"
+          y2="78.201"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#387EB8" />
+          <stop offset="1" stopColor="#366994" />
+        </linearGradient>
+
+        <linearGradient
+          id="python-yellow"
+          x1="76.176"
+          x2="143.301"
+          y1="77.313"
+          y2="143.183"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#FFE052" />
+          <stop offset="1" stopColor="#FFC331" />
+        </linearGradient>
+      </defs>
+
+      <path
+        fill="url(#python-blue)"
+        d="M126.916.072c-64.832 0-60.779 28.115-60.779 28.115l.072 29.128h61.864v8.744H41.631S0 61.34 0 127.005c0 65.667 36.347 63.33 36.347 63.33h21.691v-30.484s-1.17-36.347 35.764-36.347h61.36s34.406.557 34.406-33.285V34.169S194.789.072 126.916.072ZM92.802 19.66a11.12 11.12 0 1 1 0 22.24 11.12 11.12 0 0 1 0-22.24Z"
+      />
+
+      <path
+        fill="url(#python-yellow)"
+        d="M128.757 254.126c64.832 0 60.778-28.115 60.778-28.115l-.071-29.127H127.6v-8.745h86.441s41.632 4.72 41.632-60.946c0-65.667-36.347-63.33-36.347-63.33h-21.692v30.484s1.17 36.347-35.763 36.347h-61.36s-34.407-.557-34.407 33.285v56.05s-5.221 34.097 62.653 34.097Zm34.113-19.588a11.12 11.12 0 1 1 0-22.24 11.12 11.12 0 0 1 0 22.24Z"
+      />
+    </svg>
+  );
+}
+
 export default function WorkflowProblem() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 80 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1, ease: "easeOut" }}
-      viewport={{ once: true }}
-      className="
-        relative
-        z-10
-        flex
-        flex-col
-        items-center
-        overflow-hidden
-        px-5
-        text-center
+    <section className="relative z-10 w-full overflow-hidden bg-white px-5 py-24 text-center text-black sm:px-6 md:py-32">
+      {/* Soft Glow */}
+      <div className="pointer-events-none absolute left-1/2 top-20 h-72 w-72 -translate-x-1/2 rounded-full bg-[#5552D9]/10 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-10 right-0 h-72 w-72 rounded-full bg-[#FF7A59]/10 blur-3xl" />
 
-        sm:px-6
-      "
-    >
-      <section
-        className="
-          relative
-          mt-10
-          w-full
-          overflow-hidden
-          py-24
-
-          md:mt-20
-          md:py-40
-        "
-      >
-        {/* ---------------- Side Glow ---------------- */}
-        <div className="absolute left-0 top-0 h-full w-6 bg-white/70 blur-2xl md:w-10" />
-        <div className="absolute right-0 top-0 h-full w-6 bg-white/70 blur-2xl md:w-10" />
-
-        {/* ---------------- Floating Apps ---------------- */}
-        {apps.map((app, index) => (
-          <motion.div
-            key={app.id}
-            initial={{ opacity: 1 }}
-            animate={{
-              y: [0, -14, 0],
-              x: [0, 4, 0],
-              rotate: [app.rotate, app.rotate + 3, app.rotate],
-            }}
-            transition={{
-              duration: app.duration,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: index * 0.15,
-            }}
-            className={`absolute z-20 ${app.className}`}
-          >
-            <Image
-              src={app.src}
-              alt="app"
-              width={120}
-              height={120}
-              className={`
-                ${app.size}
-                object-contain
-                drop-shadow-[0_10px_20px_rgba(0,0,0,0.12)]
-              `}
-            />
-          </motion.div>
-        ))}
-
-        {/* ---------------- Content ---------------- */}
-        <div
-          className="
-            relative
-            z-30
-            mx-auto
-            max-w-6xl
-            px-5
-            text-center
-
-            md:px-6
-          "
+      <div className="relative z-10 mx-auto max-w-6xl">
+        {/* Heading */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mx-auto max-w-3xl"
         >
-          {/* ---------------- Heading ---------------- */}
-          <motion.h2
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="
-              mx-auto
-              max-w-[320px]
-              text-3xl
-              font-medium
-              leading-tight
-              text-black
+          <p className="text-sm font-black uppercase tracking-[0.35em] text-[#5552D9]">
+            Workflow Tools
+          </p>
 
-              sm:max-w-[500px]
-              sm:text-4xl
-
-              md:max-w-[720px]
-              md:text-5xl
-
-              lg:max-w-[900px]
-              lg:text-6xl
-            "
-          >
+          <h2 className="mt-5 text-4xl font-black leading-tight tracking-[-0.04em] text-black sm:text-5xl md:text-6xl">
             The modern workplace runs on countless tools.
-          </motion.h2>
+          </h2>
 
-          {/* ---------------- Stats ---------------- */}
-          <div
-            className="
-              mt-14
-              grid
-              grid-cols-1
-              gap-10
-              text-center
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-gray-600 sm:text-lg">
+            We connect the platforms your team already uses into cleaner,
+            faster, and more reliable digital workflows.
+          </p>
+        </motion.div>
 
-              md:mt-20
-              md:grid-cols-3
-              md:gap-12
-            "
-          >
-            <div>
-              <p
-                className="
-                  text-base
-                  leading-relaxed
-                  text-black
-
-                  sm:text-lg
-                  md:text-xl
-                "
+        {/* Apps Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 45 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+          className="mx-auto mt-14 max-w-4xl rounded-[2rem] border border-gray-100 bg-white/80 p-4 shadow-xl shadow-black/5 backdrop-blur sm:p-6 md:mt-16"
+        >
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {apps.map((app, index) => (
+              <motion.div
+                key={app.id}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.06,
+                  ease: "easeOut",
+                }}
+                whileHover={{
+                  y: -6,
+                  scale: 1.02,
+                }}
+                className="flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-[#fafafa] px-4 py-5 transition hover:bg-white hover:shadow-lg"
               >
-                Using tools modern <br />
-                teams rely on.
-              </p>
-            </div>
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm sm:h-16 sm:w-16">
+                  {app.type === "python" ? (
+                    <PythonLogo />
+                  ) : (
+                    <Image
+                      src={app.src!}
+                      alt={app.name}
+                      width={64}
+                      height={64}
+                      className="h-9 w-9 object-contain sm:h-11 sm:w-11"
+                    />
+                  )}
+                </div>
 
-            <div>
-              <p
-                className="
-                  text-base
-                  leading-relaxed
-                  text-black
-
-                  sm:text-lg
-                  md:text-xl
-                "
-              >
-                Flexible across <br />
-                multiple platforms
-              </p>
-            </div>
-
-            <div>
-              <p
-                className="
-                  text-base
-                  leading-relaxed
-                  text-black
-
-                  sm:text-lg
-                  md:text-xl
-                "
-              >
-                Building seamless <br />
-                digital workflows
-              </p>
-            </div>
+                <p className="mt-3 text-sm font-bold text-gray-700">
+                  {app.name}
+                </p>
+              </motion.div>
+            ))}
           </div>
-        </div>
-      </section>
-    </motion.div>
+        </motion.div>
+
+        {/* Bottom Points */}
+        <motion.div
+          initial={{ opacity: 0, y: 45 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.25, ease: "easeOut" }}
+          className="mx-auto mt-12 grid max-w-5xl gap-4 md:grid-cols-3"
+        >
+          {workflowPoints.map((point, index) => (
+            <div
+              key={point}
+              className="rounded-[1.5rem] border border-gray-100 bg-white p-6 shadow-lg shadow-black/5"
+            >
+              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-[#5552D9]/10 text-sm font-black text-[#5552D9]">
+                {String(index + 1).padStart(2, "0")}
+              </div>
+
+              <p className="mt-4 text-base font-semibold leading-7 text-gray-700">
+                {point}
+              </p>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
   );
 }

@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <footer className="w-full px-4 pb-4 mt-16 sm:px-6 md:px-10 md:pb-6 md:mt-20">
-      <div className="overflow-hidden rounded-[28px] bg-[#f3f3f3] px-6 py-10 sm:rounded-[36px] sm:px-8 md:rounded-[40px] md:px-16 md:pt-16 md:pb-8">
+    <footer className="mt-16 w-full px-4 pb-4 sm:px-6 md:mt-20 md:px-10 md:pb-6">
+      <div className="overflow-hidden rounded-[28px] bg-[#f3f3f3] px-6 py-10 sm:rounded-[36px] sm:px-8 md:rounded-[40px] md:px-16 md:pb-8 md:pt-16">
         {/* TOP */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* LEFT */}
@@ -21,21 +21,25 @@ export default function Footer() {
                   Home
                 </a>
               </li>
+
               <li>
                 <a href="/aboutus" className="transition hover:text-[#5552D9]">
                   About Us
                 </a>
               </li>
+
               <li>
                 <a href="/whyus" className="transition hover:text-[#5552D9]">
                   Why Us
                 </a>
               </li>
+
               <li>
                 <a href="/mywork" className="transition hover:text-[#5552D9]">
                   Our Work
                 </a>
               </li>
+
               <li>
                 <a href="/Contact" className="transition hover:text-[#5552D9]">
                   Contact
@@ -50,24 +54,30 @@ export default function Footer() {
 
             <div className="space-y-3">
               <a
-                href="#"
+                href="https://www.instagram.com/buildifyx_studio?igsh=N3k3Ym1tcjRqYmRn"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="block font-medium transition hover:text-[#5552D9]"
               >
                 Instagram
               </a>
 
               <a
-                href="#"
+                href="https://www.facebook.com/share/1BnqzyphJ2/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="block font-medium transition hover:text-[#5552D9]"
               >
                 Facebook
               </a>
 
               <a
-                href="#"
+                href="https://www.tiktok.com/@buildifyx?_r=1&_t=ZS-975HyBNi92t"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="block font-medium transition hover:text-[#5552D9]"
               >
-                Tiktok
+                TikTok
               </a>
             </div>
           </div>
@@ -75,7 +85,7 @@ export default function Footer() {
           {/* CTA */}
           <div className="sm:col-span-2 lg:col-span-1 lg:text-right">
             <a
-              href="#"
+              href="mailto:buildifyX.th@gmail.com"
               className="inline-flex items-center gap-3 text-xl font-semibold transition hover:text-[#5552D9] sm:text-2xl"
             >
               Let&apos;s Talk
@@ -100,15 +110,11 @@ export default function Footer() {
         {/* BOTTOM */}
         <div className="mt-8 flex flex-col gap-4 border-t border-black/10 pt-6 text-sm text-gray-500 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
-            <span>© 2025 Buildifyx</span>
-            <a href="#" className="transition hover:text-black">
-              Privacy Policy
-            </a>
+            <span>© 2026 Buildifyx</span>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
             <span>Thailand</span>
-            <span>12:24 PM</span>
           </div>
         </div>
       </div>

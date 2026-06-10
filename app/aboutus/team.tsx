@@ -139,67 +139,6 @@ export default function Team() {
             viewport={{ once: true }}
             className="relative z-10 w-full px-0 py-10"
           >
-            {/* Card 3 */}
-            <div className="mt-10 bg-gray-100 px-6 pt-10 md:mt-16 md:px-20">
-              <div className="grid items-center gap-10 md:grid-cols-2">
-                {/* LEFT CONTENT */}
-                <div>
-                  <h2 className="text-2xl font-bold text-black md:text-2xl">
-                    PATTARAPOL PETCHARAT  (Poohpol)
-                  </h2>
-
-                  <div className="mt-6 text-sm uppercase tracking-wide text-gray-400 md:mt-10 md:text-lg">
-                    <p>Product Manager</p>
-                    <p className="mt-2">Data Engineer</p>
-                    <p className="mt-2">Frontend Developer</p>
-                  </div>
-
-                  <h3 className="mt-8 text-lg font-semibold text-[#6C4CF1] md:mt-10 md:text-xl">
-                    Professional Summary
-                  </h3>
-
-                  <p className="mt-3 text-base leading-[1.8] text-black md:text-lg">
-                    A data-driven problem solver with experience in data
-                    analysis, business intelligence, and system development.
-                    Skilled in using Python and SQL to extract actionable
-                    insights, build dashboards, and support business decisions,
-                    with hands-on experience in enterprise and cross-functional
-                    teams.
-                  </p>
-
-                  <h3 className="mt-8 text-lg font-bold text-[#6C4CF1] md:mt-10 md:text-xl">
-                    Education
-                  </h3>
-
-                  <p className="mt-3 text-base leading-[1.8] text-black md:text-lg pb-10">
-                    King Mongkut’s Institute of Technology Ladkrabang
-                    <br />
-                    Faculty of Information Technology Data Science and Business
-                    Analytics
-                  </p>
-                </div>
-
-                {/* RIGHT IMAGE */}
-                <div className="flex items-end justify-center h-full">
-                  <Image
-                    src="/aboutus_pic/Pol.png"
-                    alt="Team"
-                    width={400}
-                    height={400}
-                    className="w-[220px] md:w-[400px] self-end"
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 80 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            viewport={{ once: true }}
-            className="relative z-10 w-full px-0 py-10"
-          >
             {/* Card 4 */}
             <div className="mt-6 bg-gray-100 px-6 pt-10 md:mt-10 md:px-20">
               <div className="grid items-center gap-10 md:grid-cols-2">

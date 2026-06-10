@@ -23,19 +23,26 @@ export default function Head() {
               experiences for brands and businesses.
             </p>
 
-            {/* Social Buttons */}
+            {/* Contact Buttons */}
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4 md:mt-20 md:justify-start">
               <a
-                href="https://www.instagram.com/buildifyx"
+                href="mailto:buildifyX.th@gmail.com"
+                className="w-full rounded-full border border-[#8b5cf6] bg-[#f5efff] px-5 py-3 text-center text-sm font-bold text-[#6d28d9] transition hover:bg-[#8b5cf6] hover:text-white sm:w-auto sm:px-6"
+              >
+                Email: buildifyX.th@gmail.com
+              </a>
+
+              <a
+                href="https://www.instagram.com/buildifyx_studio?igsh=N3k3Ym1tcjRqYmRn"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full rounded-full border border-[#8b5cf6] bg-[#f5efff] px-5 py-3 text-center text-sm font-bold text-[#6d28d9] transition hover:bg-[#8b5cf6] hover:text-white sm:w-auto sm:px-6"
               >
-                Instagram: @buildifyx
+                Instagram: @buildifyx_studio
               </a>
 
               <a
-                href="https://www.facebook.com/buildifyx"
+                href="https://www.facebook.com/share/1BnqzyphJ2/?mibextid=wwXIfr"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full rounded-full border border-[#8b5cf6] bg-[#f5efff] px-5 py-3 text-center text-sm font-bold text-[#6d28d9] transition hover:bg-[#8b5cf6] hover:text-white sm:w-auto sm:px-6"
@@ -44,7 +51,7 @@ export default function Head() {
               </a>
 
               <a
-                href="https://www.tiktok.com/@buildifyx"
+                href="https://www.tiktok.com/@buildifyx?_r=1&_t=ZS-975HyBNi92t"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full rounded-full border border-[#8b5cf6] bg-[#f5efff] px-5 py-3 text-center text-sm font-bold text-[#6d28d9] transition hover:bg-[#8b5cf6] hover:text-white sm:w-auto sm:px-6"
@@ -93,24 +100,6 @@ export default function Head() {
             </div>
 
             {/* Person 3 */}
-            <div className="border-b border-[#eadcff] py-6 sm:py-8">
-              <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#a78bfa] sm:text-sm sm:tracking-[0.35em]">
-                Data Engineer
-              </p>
-
-              <h3 className="mt-3 break-words text-xl font-black text-black sm:mt-4 sm:text-2xl lg:text-3xl">
-                Pattarapol Petcharat
-              </h3>
-
-              <a
-                href="mailto:pattarapol.petcharat@gmail.com"
-                className="mt-3 block break-all text-sm font-medium text-gray-500 transition hover:text-[#8b5cf6] sm:text-base"
-              >
-                pattarapol.petcharat@gmail.com
-              </a>
-            </div>
-
-            {/* Person 4 */}
             <div className="pt-6 sm:pt-8">
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#a78bfa] sm:text-sm sm:tracking-[0.35em]">
                 Designer
