@@ -77,7 +77,7 @@ export default function Work() {
           </p>
 
           <h1 className="mt-8 text-6xl font-black uppercase leading-none tracking-[-0.06em] text-black md:text-8xl lg:text-[150px]">
-            My Work
+            Our Work
           </h1>
 
           <div className="mx-auto mt-10 h-2 w-36 rounded-full bg-[#B9A7FF]" />
