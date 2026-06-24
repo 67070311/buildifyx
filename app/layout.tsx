@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Prompt } from "next/font/google";
 import "./globals.css";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { siteConfig } from "./seo";
 
 const prompt = Prompt({
   subsets: ["latin", "thai"],
@@ -11,9 +12,77 @@ const prompt = Prompt({
 });
 
 export const metadata: Metadata = {
-  title: "Buildifyx",
-  description: "Company Website",
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: "Buildifyx | Software Development, Web, AI & Data Studio",
+    template: "%s | Buildifyx",
+  },
+  description: siteConfig.description,
+  applicationName: siteConfig.name,
+  keywords: [
+    "Buildifyx",
+    "software development company Thailand",
+    "web development Bangkok",
+    "web application development",
+    "AI development company",
+    "data engineering",
+    "dashboard development",
+    "UI UX design",
+    "SaaS development",
+    "บริษัทพัฒนาซอฟต์แวร์",
+    "รับทำเว็บไซต์",
+    "พัฒนาระบบ AI",
+  ],
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  category: "technology",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    url: "/",
+    siteName: siteConfig.name,
+    title: "Buildifyx | Software Development, Web, AI & Data Studio",
+    description: siteConfig.description,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Buildifyx software development company",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Buildifyx | Software Development, Web, AI & Data Studio",
+    description: siteConfig.description,
+    images: ["/opengraph-image"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/logo/logo.png",
+  },
+};
+
+export const viewport: Viewport = {
   themeColor: "#ffffff",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -21,9 +90,65 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${siteConfig.url}/#organization`,
+        name: siteConfig.name,
+        legalName: siteConfig.legalName,
+        url: siteConfig.url,
+        logo: `${siteConfig.url}/logo/logo.png`,
+        description: siteConfig.description,
+        foundingDate: "2025",
+        email: siteConfig.email,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Bangkok",
+          addressCountry: "TH",
+        },
+        areaServed: ["Thailand", "Worldwide"],
+        knowsAbout: [
+          "Software Development",
+          "Web Development",
+          "Web Applications",
+          "Artificial Intelligence",
+          "Data Engineering",
+          "UI/UX Design",
+          "SaaS Development",
+        ],
+        sameAs: siteConfig.socialLinks,
+        contactPoint: {
+          "@type": "ContactPoint",
+          email: siteConfig.email,
+          contactType: "sales",
+          availableLanguage: ["English", "Thai"],
+        },
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteConfig.url}/#website`,
+        url: siteConfig.url,
+        name: siteConfig.name,
+        description: siteConfig.description,
+        publisher: {
+          "@id": `${siteConfig.url}/#organization`,
+        },
+        inLanguage: "en",
+      },
+    ],
+  };
+
   return (
     <html lang="en">
       <body className={`${prompt.className} bg-white text-black`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
+        />
         <Navbar />
 
         <main className="bg-white text-black min-h-screen">{children}</main>

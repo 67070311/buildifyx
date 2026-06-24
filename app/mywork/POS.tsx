@@ -58,7 +58,7 @@ export default function POS() {
             className="mt-8 flex justify-center"
           >
             <a
-              href="https://example.com"
+              href="https://scansung.app"
               target="_blank"
               rel="noreferrer"
               className="rounded-full bg-[#5552D9] px-8 py-4 text-sm font-black text-white shadow-xl shadow-[#5552D9]/25 transition hover:-translate-y-1 hover:bg-[#4643c7] sm:text-base"
@@ -213,7 +213,7 @@ export default function POS() {
             </div>
 
             <a
-              href="https://example.com"
+              href="https://scansung.app"
               target="_blank"
               rel="noreferrer"
               className="mt-8 inline-block rounded-full bg-[#5552D9] px-8 py-4 font-bold text-white shadow-lg shadow-[#5552D9]/25 transition hover:-translate-y-1 hover:bg-[#4643c7]"
@@ -291,7 +291,7 @@ export default function POS() {
           </p>
 
           <a
-            href="https://example.com"
+            href="https://scansung.app"
             target="_blank"
             rel="noreferrer"
             className="mt-8 inline-block rounded-full bg-white px-8 py-4 font-black text-[#5552D9] shadow-lg transition hover:-translate-y-1"
