@@ -3,14 +3,18 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 
 interface NavItem {
   name: string;
   href: string;
 }
 
-export default function NavbarMobile({ navItems }: { navItems: NavItem[] }) {
+export default function NavbarMobile({
+  navItems = [],
+}: {
+  navItems?: NavItem[];
+}) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -23,8 +27,6 @@ export default function NavbarMobile({ navItems }: { navItems: NavItem[] }) {
 
     if (open) {
       document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = originalOverflow;
     }
 
     const handleEsc = (e: KeyboardEvent) => {
@@ -41,64 +43,66 @@ export default function NavbarMobile({ navItems }: { navItems: NavItem[] }) {
 
   const mobileMenu = (
     <div
-      className={`fixed inset-0 z-[99999] transition-opacity duration-300 ${
+      className={`fixed inset-0 z-[99999] transition-all duration-300 ${
         open
           ? "pointer-events-auto opacity-100"
           : "pointer-events-none opacity-0"
       }`}
     >
-      {/* Overlay */}
+      {/* Background overlay */}
       <button
         type="button"
         aria-label="Close Menu"
         onClick={() => setOpen(false)}
-        className="absolute inset-0 h-full w-full bg-black/60"
+        className="absolute inset-0 h-full w-full bg-black/35"
       />
 
-      {/* Drawer */}
+      {/* Glass Drawer */}
       <aside
-        className={`absolute right-0 top-0 z-10 flex h-dvh w-[78vw] max-w-[340px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out ${
+        className={`absolute right-0 top-0 z-10 flex h-dvh w-[76vw] max-w-[420px] flex-col bg-black/55 px-6 py-6 text-white shadow-2xl backdrop-blur-2xl transition-transform duration-500 ease-out ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-5">
-          <h2 className="text-xl font-semibold text-gray-900">Menu</h2>
-
+        {/* Top */}
+        <div className="mb-12 flex items-center justify-start">
           <button
             type="button"
             onClick={() => setOpen(false)}
             aria-label="Close Menu"
-            className="flex items-center justify-center text-gray-900"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-white/85 transition hover:bg-white/10"
           >
-            <X size={28} />
+            <X size={21} strokeWidth={1.5} />
           </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex flex-col px-6 py-4">
+        {/* Main Navigation */}
+        <nav className="flex flex-col items-start gap-7 text-left">
           {navItems.map((item) => (
             <Link
               key={item.name}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="border-b border-gray-100 py-5 text-lg font-medium text-gray-800 transition-colors hover:text-black"
+              className="text-[18px] font-light uppercase tracking-[0.055em] text-white/90 transition hover:text-white"
             >
               {item.name}
             </Link>
           ))}
         </nav>
 
-        {/* Footer */}
-        {/* Footer */}
-        <div className="mt-auto p-6">
-          <Link
-            href="/mywork"
+        {/* Bottom */}
+        <div className="mt-auto pb-4">
+          <a
+            href="mailto:buildifyX.th@gmail.com"
             onClick={() => setOpen(false)}
-            className="block w-full rounded-full bg-black py-4 text-center font-medium text-white transition-opacity hover:opacity-90"
+            className="group flex items-center justify-between border-b border-white/70 pb-3 text-[16px] font-light tracking-[0.04em] text-white/90"
           >
-            Get Started
-          </Link>
+            <span>Email</span>
+            <ArrowRight
+              size={21}
+              strokeWidth={1.4}
+              className="transition group-hover:translate-x-1"
+            />
+          </a>
         </div>
       </aside>
     </div>
@@ -112,9 +116,9 @@ export default function NavbarMobile({ navItems }: { navItems: NavItem[] }) {
         onClick={() => setOpen(true)}
         aria-label="Open Menu"
         aria-expanded={open}
-        className="flex items-center justify-center"
+        className="flex h-8 w-8 items-center justify-center rounded-full text-white"
       >
-        <Menu size={30} />
+        <Menu size={21} strokeWidth={1.5} />
       </button>
 
       {mounted ? createPortal(mobileMenu, document.body) : null}

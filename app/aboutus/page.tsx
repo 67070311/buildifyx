@@ -15,9 +15,8 @@ export const metadata: Metadata = createPageMetadata({
 export default function AboutUsPage() {
   return (
     <>
-      <Hero />;
+      <Hero />
       <Body />
-      <Team />
       <Seeourwork />
     </>
   );
