@@ -52,37 +52,37 @@ export default function Comment() {
     setActiveIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
   };
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
+    setTouchStart(event.targetTouches[0].clientX);
   };
 
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+  const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    setTouchEnd(event.targetTouches[0].clientX);
   };
 
   const handleTouchEnd = () => {
     if (touchStart === null || touchEnd === null) return;
 
     const distance = touchStart - touchEnd;
-    const minSwipeDistance = 50;
+    const minimumSwipeDistance = 50;
 
-    if (distance > minSwipeDistance) {
+    if (distance > minimumSwipeDistance) {
       nextSlide();
     }
 
-    if (distance < -minSwipeDistance) {
+    if (distance < -minimumSwipeDistance) {
       prevSlide();
     }
   };
 
   const getPosition = (index: number) => {
     const total = testimonials.length;
-    const diff = (index - activeIndex + total) % total;
+    const difference = (index - activeIndex + total) % total;
 
-    if (diff === 0) return "active";
-    if (diff === 1) return "next";
-    if (diff === total - 1) return "prev";
+    if (difference === 0) return "active";
+    if (difference === 1) return "next";
+    if (difference === total - 1) return "prev";
 
     return "hidden";
   };
@@ -96,7 +96,7 @@ export default function Comment() {
 
   const getCardOpacity = (position: string) => {
     if (position === "active") return 1;
-    if (position === "prev" || position === "next") return 0.18;
+    if (position === "prev" || position === "next") return 0.25;
     return 0;
   };
 
@@ -107,71 +107,92 @@ export default function Comment() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-[linear-gradient(180deg,#160933_0%,#07020F_48%,#000000_100%)] px-4 py-20 text-white md:py-32">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(142,167,255,0.16),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(255,122,89,0.13),transparent_36%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:72px_72px]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.12)_0%,transparent_45%,rgba(0,0,0,0.72)_100%)]" />
+    <section className="relative w-full overflow-hidden bg-[#faf9ff] px-4 py-16 text-slate-950 sm:px-6 md:py-24 lg:px-8">
+      {/* Background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/2 top-[-220px] h-[560px] w-[760px] -translate-x-1/2 rounded-full bg-violet-200/60 blur-[145px]" />
+
+        <div className="absolute -left-36 top-[30%] h-[360px] w-[360px] rounded-full bg-indigo-100/70 blur-[120px]" />
+
+        <div className="absolute -right-36 bottom-[8%] h-[380px] w-[380px] rounded-full bg-purple-100/70 blur-[125px]" />
+
+        <div
+          className="absolute inset-0 opacity-35"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(109,40,217,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(109,40,217,0.045) 1px, transparent 1px)",
+            backgroundSize: "68px 68px",
+          }}
+        />
+
+        <div className="absolute inset-x-0 top-0 h-px bg-violet-950/10" />
+      </div>
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        {/* TITLE */}
-        <div className="mx-auto mb-10 max-w-3xl text-center md:mb-16">
-          <p className="text-[10px] font-light uppercase tracking-[0.38em] text-white/38 md:text-xs">
+        {/* Heading */}
+        <motion.div
+          initial={{ opacity: 0, y: 34 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+          viewport={{ once: true }}
+          className="mx-auto mb-10 max-w-3xl text-center md:mb-14"
+        >
+          <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-violet-600 md:text-xs">
             Testimonials
           </p>
 
-          <h1 className="mt-5 text-4xl font-normal leading-[0.98] tracking-[-0.06em] text-white md:text-6xl">
-            What Our Clients
-            <br />
-            <span className="bg-gradient-to-r from-[#8EA7FF] via-[#FF7A59] to-[#38BDF8] bg-clip-text text-transparent">
-              Say About Us
+          <h1 className="mt-4 text-3xl font-semibold leading-tight tracking-[-0.04em] text-slate-950 sm:text-4xl md:text-5xl">
+            What our clients
+            <span className="block bg-gradient-to-r from-violet-600 via-indigo-500 to-purple-500 bg-clip-text text-transparent">
+              say about us
             </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-sm font-light leading-7 text-white/50 md:text-base">
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
             Real feedback from people who trusted us to design, build, and
             launch meaningful digital products.
           </p>
-        </div>
+        </motion.div>
 
-        {/* TESTIMONIAL */}
+        {/* Testimonial carousel */}
         <div
-          className="relative mx-auto h-[390px] max-w-6xl overflow-visible md:h-[420px]"
+          className="relative mx-auto h-[350px] max-w-6xl overflow-visible sm:h-[370px] md:h-[390px]"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {/* LEFT BUTTON */}
+          {/* Previous button */}
           <button
             type="button"
             onClick={prevSlide}
             aria-label="Previous testimonial"
-            className="absolute left-2 top-1/2 z-30 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white/70 backdrop-blur-xl transition hover:-translate-y-[calc(50%+4px)] hover:border-white/25 hover:bg-white/12 hover:text-white md:flex"
+            className="absolute left-2 top-1/2 z-30 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-violet-950/10 bg-white/85 text-violet-600 shadow-[0_12px_35px_rgba(76,29,149,0.1)] backdrop-blur-xl transition hover:-translate-y-[calc(50%+4px)] hover:border-violet-200 hover:bg-white md:flex"
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={18} />
           </button>
 
-          {/* CARDS */}
+          {/* Cards */}
           {testimonials.map((item, index) => {
             const position = getPosition(index);
 
             return (
               <motion.div
-                key={index}
+                key={item.avatar}
                 animate={{
                   left: getCardLeft(position),
                   x: "-50%",
                   y: "-50%",
                   opacity: getCardOpacity(position),
-                  scale: 1,
+                  scale: position === "active" ? 1 : 0.94,
                 }}
                 transition={{
-                  duration: 0.95,
+                  duration: 0.75,
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 style={{
                   zIndex: getCardZIndex(position),
                 }}
-                className={`absolute top-1/2 h-full w-full will-change-transform md:w-[56%] ${
+                className={`absolute top-1/2 h-full w-full will-change-transform md:w-[58%] ${
                   position === "active"
                     ? "pointer-events-auto block"
                     : position === "prev" || position === "next"
@@ -179,47 +200,52 @@ export default function Comment() {
                       : "pointer-events-none hidden"
                 }`}
               >
-                <div className="relative flex h-full min-h-[300px] flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.065] px-6 py-8 text-center shadow-[0_35px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl md:rounded-[2.6rem] md:px-12 md:py-12">
-                  <div className="pointer-events-none absolute -left-24 -top-24 h-56 w-56 rounded-full bg-[#8EA7FF]/14 blur-3xl" />
-                  <div className="pointer-events-none absolute -bottom-28 -right-24 h-64 w-64 rounded-full bg-[#FF7A59]/12 blur-3xl" />
+                <div className="relative flex h-full min-h-[290px] flex-col items-center justify-center overflow-hidden rounded-[28px] border border-violet-950/10 bg-white/82 px-6 py-8 text-center shadow-[0_28px_80px_rgba(76,29,149,0.12)] backdrop-blur-2xl sm:px-9 md:rounded-[34px] md:px-12 md:py-10">
+                  <div className="pointer-events-none absolute -left-24 -top-24 h-56 w-56 rounded-full bg-violet-200/65 blur-3xl" />
 
-                  {/* COMMENT */}
-                  <p className="relative mx-auto max-w-3xl text-base font-light leading-8 text-white/72 md:text-xl md:leading-10">
-                    {item.comment}
+                  <div className="pointer-events-none absolute -bottom-28 -right-24 h-64 w-64 rounded-full bg-indigo-100/75 blur-3xl" />
+
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-200 to-transparent" />
+
+                  {/* Comment */}
+                  <p className="relative mx-auto max-w-3xl text-base leading-8 text-slate-600 md:text-lg md:leading-9">
+                    “{item.comment}”
                   </p>
 
-                  {/* STARS */}
-                  <div className="relative mt-7 flex justify-center gap-2">
+                  {/* Stars */}
+                  <div className="relative mt-6 flex justify-center gap-1.5">
                     {Array.from({ length: 5 }).map((_, starIndex) => (
                       <Star
                         key={starIndex}
-                        size={18}
+                        size={17}
                         strokeWidth={1.7}
                         className={
                           starIndex < item.rating
-                            ? "fill-[#FACC15] text-[#FACC15]"
-                            : "text-white/18"
+                            ? "fill-amber-400 text-amber-400"
+                            : "text-slate-200"
                         }
                       />
                     ))}
                   </div>
 
+                  {/* Client */}
                   <div className="relative mt-6 flex items-center justify-center gap-3">
-                    <div className="relative h-12 w-12 overflow-hidden rounded-full border border-white/15 bg-white/10">
+                    <div className="relative h-11 w-11 overflow-hidden rounded-full border-2 border-white bg-violet-50 shadow-[0_10px_25px_rgba(76,29,149,0.12)]">
                       <Image
                         src={item.avatar}
-                        alt={`avatar ${index + 1}`}
+                        alt={`Client ${index + 1}`}
                         fill
-                        sizes="48px"
+                        sizes="44px"
                         className="object-cover"
                       />
                     </div>
 
                     <div className="text-left">
-                      <p className="text-sm font-normal text-white">
+                      <p className="text-sm font-semibold text-slate-950">
                         Client {index + 1}
                       </p>
-                      <p className="text-xs font-light text-white/42">
+
+                      <p className="text-xs text-slate-400">
                         Buildifyx Partner
                       </p>
                     </div>
@@ -229,66 +255,66 @@ export default function Comment() {
             );
           })}
 
-          {/* RIGHT BUTTON */}
+          {/* Next button */}
           <button
             type="button"
             onClick={nextSlide}
             aria-label="Next testimonial"
-            className="absolute right-2 top-1/2 z-30 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white/70 backdrop-blur-xl transition hover:-translate-y-[calc(50%+4px)] hover:border-white/25 hover:bg-white/12 hover:text-white md:flex"
-          >
-            <ArrowRight size={20} />
-          </button>
-        </div>
-
-        {/* MOBILE BUTTONS */}
-        <div className="mt-8 flex justify-center gap-3 md:hidden">
-          <button
-            type="button"
-            onClick={prevSlide}
-            aria-label="Previous testimonial"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white/70 backdrop-blur-xl transition active:scale-95"
-          >
-            <ArrowLeft size={18} />
-          </button>
-
-          <button
-            type="button"
-            onClick={nextSlide}
-            aria-label="Next testimonial"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white/70 backdrop-blur-xl transition active:scale-95"
+            className="absolute right-2 top-1/2 z-30 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-violet-950/10 bg-white/85 text-violet-600 shadow-[0_12px_35px_rgba(76,29,149,0.1)] backdrop-blur-xl transition hover:-translate-y-[calc(50%+4px)] hover:border-violet-200 hover:bg-white md:flex"
           >
             <ArrowRight size={18} />
           </button>
         </div>
 
-        {/* AVATARS */}
-        <div className="mt-10 flex items-center justify-center gap-3 md:mt-14">
+        {/* Mobile controls */}
+        <div className="mt-7 flex justify-center gap-3 md:hidden">
+          <button
+            type="button"
+            onClick={prevSlide}
+            aria-label="Previous testimonial"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-violet-950/10 bg-white/85 text-violet-600 shadow-sm backdrop-blur-xl transition active:scale-95"
+          >
+            <ArrowLeft size={17} />
+          </button>
+
+          <button
+            type="button"
+            onClick={nextSlide}
+            aria-label="Next testimonial"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-violet-950/10 bg-white/85 text-violet-600 shadow-sm backdrop-blur-xl transition active:scale-95"
+          >
+            <ArrowRight size={17} />
+          </button>
+        </div>
+
+        {/* Avatars */}
+        <div className="mt-9 flex items-center justify-center gap-3 md:mt-12">
           {testimonials.map((item, index) => (
             <button
-              key={index}
+              key={item.avatar}
               type="button"
               onClick={() => setActiveIndex(index)}
               aria-label={`Go to testimonial ${index + 1}`}
               className={`relative rounded-full transition-all duration-500 ease-out ${
                 activeIndex === index
                   ? "scale-110 opacity-100"
-                  : "scale-95 opacity-45 hover:opacity-80"
+                  : "scale-95 opacity-50 hover:opacity-85"
               }`}
             >
               <span
-                className={`absolute inset-0 rounded-full transition duration-500 ease-out ${
+                className={`absolute inset-0 rounded-full p-[2px] transition duration-500 ${
                   activeIndex === index
-                    ? "bg-gradient-to-r from-[#8EA7FF] via-[#FF7A59] to-[#38BDF8] p-[2px]"
-                    : "bg-white/10 p-[1px]"
+                    ? "bg-gradient-to-r from-violet-500 via-indigo-400 to-purple-400"
+                    : "bg-violet-950/10"
                 }`}
               />
 
-              <span className="relative block rounded-full bg-black p-[3px]">
+              <span className="relative block rounded-full bg-white p-[3px]">
                 <Image
                   src={item.avatar}
-                  alt={`avatar ${index + 1}`}
-                  width={activeIndex === index ? 62 : 48}
-                  height={activeIndex === index ? 62 : 48}
+                  alt={`Client ${index + 1}`}
+                  width={activeIndex === index ? 58 : 46}
+                  height={activeIndex === index ? 58 : 46}
                   className="rounded-full object-cover"
                 />
               </span>
@@ -296,27 +322,28 @@ export default function Comment() {
           ))}
         </div>
 
-        {/* DOTS */}
-        <div className="mt-7 flex justify-center gap-2">
-          {testimonials.map((_, index) => (
+        {/* Dots */}
+        <div className="mt-6 flex justify-center gap-2">
+          {testimonials.map((item, index) => (
             <button
-              key={index}
+              key={item.avatar}
               type="button"
               onClick={() => setActiveIndex(index)}
               aria-label={`Go to slide ${index + 1}`}
-              className={`h-1.5 rounded-full transition-all duration-500 ease-out ${
+              className={`h-1.5 rounded-full transition-all duration-500 ${
                 activeIndex === index
-                  ? "w-8 bg-white"
-                  : "w-1.5 bg-white/22 hover:bg-white/45"
+                  ? "w-8 bg-violet-600"
+                  : "w-1.5 bg-violet-200 hover:bg-violet-300"
               }`}
             />
           ))}
         </div>
 
-        <div className="mt-10 flex justify-center">
+        {/* CTA */}
+        <div className="mt-9 flex justify-center">
           <Link
             href="/Contact"
-            className="rounded-full border border-white/15 bg-white/[0.06] px-7 py-3 text-sm font-light text-white/75 backdrop-blur-xl transition hover:-translate-y-1 hover:border-white/35 hover:bg-white/10 hover:text-white"
+            className="rounded-full bg-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_35px_rgba(109,40,217,0.2)] transition hover:-translate-y-1 hover:bg-violet-700"
           >
             Start a project with us
           </Link>

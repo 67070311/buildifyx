@@ -18,6 +18,13 @@ type PackageIcon = {
   path: string;
 };
 
+type AppItem = {
+  name: string;
+  icon: BrandIconData;
+  background: string;
+  iconColor?: string;
+};
+
 const packageIcons = simpleIcons as unknown as Record<
   string,
   PackageIcon | undefined
@@ -43,13 +50,6 @@ function getIcon(
     monogram,
   };
 }
-
-type AppItem = {
-  name: string;
-  icon: BrandIconData;
-  background: string;
-  iconColor?: string;
-};
 
 const rowOne: AppItem[] = [
   {
@@ -201,7 +201,7 @@ function BrandIcon({
       role="img"
       aria-label={`${title} logo`}
       viewBox="0 0 24 24"
-      className="relative z-10 h-8 w-8 drop-shadow-sm sm:h-10 sm:w-10 md:h-11 md:w-11"
+      className="relative z-10 h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 lg:h-11 lg:w-11"
     >
       <title>{title}</title>
 
@@ -226,20 +226,57 @@ function BrandIcon({
 
 function AppIcon({ app }: { app: AppItem }) {
   return (
-    <div className="flex w-[76px] shrink-0 flex-col items-center gap-2 sm:w-[96px] md:w-[112px]">
+    <motion.div
+      whileHover={{
+        y: -7,
+        scale: 1.04,
+      }}
+      transition={{
+        duration: 0.25,
+        ease: "easeOut",
+      }}
+      className="flex w-[82px] shrink-0 flex-col items-center gap-2 sm:w-[96px] md:w-[108px]"
+    >
       <div
-        className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-[1.35rem] shadow-[0_18px_45px_rgba(0,0,0,0.48)] ring-1 ring-white/15 transition duration-300 hover:-translate-y-1 hover:scale-105 sm:h-20 sm:w-20 md:h-[88px] md:w-[88px] md:rounded-[1.65rem]"
-        style={{ background: app.background }}
+        className="relative flex h-[66px] w-[66px] items-center justify-center overflow-hidden rounded-[20px] border border-[#151433]/10 shadow-[0_16px_35px_rgba(61,50,96,0.14)] ring-1 ring-white/80 sm:h-[76px] sm:w-[76px] sm:rounded-[24px] md:h-[86px] md:w-[86px] md:rounded-[27px]"
+        style={{
+          background: app.background,
+        }}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_18%,rgba(255,255,255,0.78),transparent_34%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/25 to-transparent" />
+        {/* Top highlight */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_28%_16%,rgba(255,255,255,0.9),transparent_34%)]" />
+
+        {/* Bottom depth */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent" />
+
+        {/* Inner border */}
+        <div className="pointer-events-none absolute inset-[1px] rounded-[inherit] border border-white/35" />
 
         <BrandIcon icon={app.icon} color={app.iconColor} title={app.name} />
       </div>
 
-      <span className="max-w-full truncate text-[10px] font-extralight leading-none tracking-wide text-white/40 sm:text-[11px]">
+      <span className="max-w-[80px] truncate text-center text-[9px] font-medium leading-none text-[#625d6f] sm:max-w-[94px] sm:text-[10px] md:text-[11px]">
         {app.name}
       </span>
+    </motion.div>
+  );
+}
+
+function AppGroup({
+  apps,
+  ariaHidden = false,
+}: {
+  apps: AppItem[];
+  ariaHidden?: boolean;
+}) {
+  return (
+    <div
+      aria-hidden={ariaHidden}
+      className="flex shrink-0 items-start gap-3 pr-3 sm:gap-5 sm:pr-5 md:gap-6 md:pr-6"
+    >
+      {apps.map((app, index) => (
+        <AppIcon key={`${app.name}-${index}`} app={app} />
+      ))}
     </div>
   );
 }
@@ -247,33 +284,49 @@ function AppIcon({ app }: { app: AppItem }) {
 function MarqueeRow({
   apps,
   reverse = false,
-  duration = 82,
+  duration = 48,
 }: {
   apps: AppItem[];
   reverse?: boolean;
   duration?: number;
 }) {
   const reduceMotion = useReducedMotion();
-  const repeatedApps = [...apps, ...apps, ...apps];
+
+  if (reduceMotion) {
+    return (
+      <div className="overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <AppGroup apps={apps} />
+      </div>
+    );
+  }
 
   return (
-    <div className="relative flex overflow-hidden py-1">
+    <div
+      className="group/marquee relative overflow-hidden py-2"
+      style={{
+        maskImage:
+          "linear-gradient(to right, transparent, black 7%, black 93%, transparent)",
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent, black 7%, black 93%, transparent)",
+      }}
+    >
       <motion.div
-        className="flex w-max shrink-0 gap-4 px-2 sm:gap-5 md:gap-6"
-        animate={
-          reduceMotion
-            ? { x: 0 }
-            : { x: reverse ? ["-33.333%", "0%"] : ["0%", "-33.333%"] }
-        }
+        className="flex w-max will-change-transform group-hover/marquee:[animation-play-state:paused]"
+        initial={{
+          x: reverse ? "-50%" : "0%",
+        }}
+        animate={{
+          x: reverse ? ["-50%", "0%"] : ["0%", "-50%"],
+        }}
         transition={{
           duration,
           repeat: Infinity,
           ease: "linear",
         }}
       >
-        {repeatedApps.map((app, index) => (
-          <AppIcon key={`${app.name}-${index}`} app={app} />
-        ))}
+        <AppGroup apps={apps} />
+
+        <AppGroup apps={apps} ariaHidden />
       </motion.div>
     </div>
   );
@@ -286,55 +339,141 @@ export default function WorkflowProblem() {
     <section
       id="workflow-tools"
       aria-labelledby="workflow-tools-title"
-      className="relative isolate w-full overflow-hidden bg-black px-4 py-20 text-center text-white sm:px-6 md:py-28"
+      className="relative isolate w-full overflow-hidden bg-[#fffdf8] px-4 py-20 text-center text-[#24212d] sm:px-6 sm:py-24 md:py-28 lg:px-10"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(85,82,217,0.26),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(255,122,89,0.16),transparent_38%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.62),transparent_32%,transparent_66%,rgba(0,0,0,0.85))]" />
+      {/* Background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#fffdf8_48%,#ffffff_100%)]" />
 
-      <div className="relative z-10 mx-auto max-w-7xl">
         <motion.div
-          initial={{ opacity: 0, y: 26 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="mx-auto max-w-3xl"
+          animate={{
+            x: [0, 25, 0],
+            y: [0, 18, 0],
+            scale: [1, 1.06, 1],
+          }}
+          transition={{
+            duration: 13,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute -left-52 top-[-140px] h-[460px] w-[460px] rounded-full bg-[#e4dcff]/45 blur-[150px]"
+        />
+
+        <motion.div
+          animate={{
+            x: [0, -24, 0],
+            y: [0, 20, 0],
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            duration: 14,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute -right-52 top-[5%] h-[480px] w-[480px] rounded-full bg-[#dcf7ec]/45 blur-[150px]"
+        />
+
+        <div
+          className="absolute inset-0 opacity-[0.18]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, rgba(104,88,150,0.18) 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+            maskImage:
+              "linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)",
+          }}
+        />
+
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white to-transparent" />
+
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white to-transparent" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-[1280px]">
+        {/* Header */}
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 28,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            margin: "-80px",
+          }}
+          transition={{
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="mx-auto max-w-4xl"
         >
-          <p className="text-[10px] font-extralight uppercase tracking-[0.42em] text-white/40 sm:text-xs">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-[#7567e8] sm:text-xs">
             Workflow Tools
           </p>
 
           <h2
             id="workflow-tools-title"
-            className="mt-4 text-3xl font-extralight leading-tight tracking-[-0.045em] text-white sm:text-4xl md:text-5xl"
+            className="mx-auto mt-5 max-w-4xl text-[34px] font-light leading-[1.08] tracking-[-0.05em] text-[#24212d] sm:text-4xl md:text-5xl lg:text-[58px]"
           >
             Connect AI, social, and software tools into one smooth workflow.
           </h2>
 
-          <p className="mx-auto mt-5 max-w-2xl text-sm font-extralight leading-7 text-white/50 sm:text-base">
+          <p className="mx-auto mt-6 max-w-2xl text-sm font-normal leading-7 text-[#6d6877] sm:text-base">
             A modern technology stack section with adaptive brand icons, smooth
             motion, responsive layout, and search-friendly structure.
           </p>
         </motion.div>
 
+        {/* SEO list */}
         <ul className="sr-only">
           {allApps.map((app) => (
             <li key={app.name}>{app.name}</li>
           ))}
         </ul>
 
+        {/* Marquee area */}
         <motion.div
-          initial={{ opacity: 0, y: 34 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, delay: 0.12, ease: "easeOut" }}
-          className="relative mt-12 sm:mt-16 md:mt-20"
+          initial={{
+            opacity: 0,
+            y: 38,
+            scale: 0.98,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            scale: 1,
+          }}
+          viewport={{
+            once: true,
+            margin: "-80px",
+          }}
+          transition={{
+            duration: 0.8,
+            delay: 0.12,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="relative mx-auto mt-12 max-w-[1180px] sm:mt-16 md:mt-20"
         >
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-14 bg-gradient-to-r from-black to-transparent sm:w-28 md:w-44" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-14 bg-gradient-to-l from-black to-transparent sm:w-28 md:w-44" />
+          {/* Main panel */}
+          <div className="relative overflow-hidden rounded-[30px] border border-[#151433]/[0.07] bg-white/65 px-0 py-6 shadow-[0_28px_90px_rgba(87,69,137,0.09)] backdrop-blur-xl sm:rounded-[38px] sm:py-8 md:py-10">
+            {/* Panel decoration */}
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(231,221,255,0.2),transparent_40%,rgba(223,248,236,0.2))]" />
 
-          <div className="space-y-5 sm:space-y-6 md:space-y-7">
-            <MarqueeRow apps={rowOne} duration={84} />
-            <MarqueeRow apps={rowTwo} reverse duration={92} />
+            <div className="pointer-events-none absolute left-1/2 top-0 h-32 w-[70%] -translate-x-1/2 rounded-full bg-white/80 blur-3xl" />
+
+            {/* Rows */}
+            <div className="relative space-y-4 sm:space-y-5 md:space-y-6">
+              <MarqueeRow apps={rowOne} duration={50} />
+
+              <div className="mx-auto h-px w-[90%] bg-gradient-to-r from-transparent via-[#151433]/[0.06] to-transparent" />
+
+              <MarqueeRow apps={rowTwo} reverse duration={56} />
+            </div>
           </div>
         </motion.div>
       </div>

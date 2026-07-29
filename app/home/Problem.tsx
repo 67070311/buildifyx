@@ -23,7 +23,7 @@ const problemCards = [
     imageBg: "#E5F8EF",
     accent: "#45BF8B",
     illustration: "window",
-    offset: "xl:translate-y-14",
+    offset: "xl:translate-y-8",
   },
   {
     badge: "AI Flow",
@@ -43,7 +43,7 @@ const problemCards = [
     imageBg: "#ECE9FF",
     accent: "#7B6FE5",
     illustration: "magnet",
-    offset: "xl:-translate-y-4",
+    offset: "xl:-translate-y-2",
   },
   {
     badge: "Launch",
@@ -53,7 +53,7 @@ const problemCards = [
     imageBg: "#FFF0E8",
     accent: "#FF8C61",
     illustration: "paper",
-    offset: "xl:translate-y-10",
+    offset: "xl:translate-y-6",
   },
   {
     badge: "Scale",
@@ -63,7 +63,7 @@ const problemCards = [
     imageBg: "#E5F8EF",
     accent: "#48BF91",
     illustration: "chart",
-    offset: "xl:-translate-y-4",
+    offset: "xl:-translate-y-2",
   },
 ] as const;
 
@@ -86,6 +86,7 @@ function CardIllustration({
           strokeWidth="5"
           strokeLinecap="round"
         />
+
         <path
           d="M73 94V58C73 48 80 41 90 41H130C140 41 147 48 147 58V94"
           fill="none"
@@ -93,6 +94,7 @@ function CardIllustration({
           strokeWidth="4"
           strokeLinecap="round"
         />
+
         <circle
           cx="72"
           cy="96"
@@ -101,6 +103,7 @@ function CardIllustration({
           stroke="#25222B"
           strokeWidth="3"
         />
+
         <circle
           cx="101"
           cy="96"
@@ -109,6 +112,7 @@ function CardIllustration({
           stroke="#25222B"
           strokeWidth="3"
         />
+
         <circle
           cx="129"
           cy="96"
@@ -117,6 +121,7 @@ function CardIllustration({
           stroke="#25222B"
           strokeWidth="3"
         />
+
         <circle
           cx="153"
           cy="96"
@@ -125,6 +130,7 @@ function CardIllustration({
           stroke="#25222B"
           strokeWidth="3"
         />
+
         <path
           d="M42 118H178"
           stroke="#25222B"
@@ -145,6 +151,7 @@ function CardIllustration({
           strokeWidth="4"
           strokeLinejoin="round"
         />
+
         <path
           d="M126 23L147 35V122L126 112V23Z"
           fill="#2E9F78"
@@ -152,6 +159,7 @@ function CardIllustration({
           strokeWidth="4"
           strokeLinejoin="round"
         />
+
         <rect
           x="51"
           y="72"
@@ -162,6 +170,7 @@ function CardIllustration({
           stroke="#25222B"
           strokeWidth="4"
         />
+
         <rect
           x="128"
           y="70"
@@ -172,6 +181,7 @@ function CardIllustration({
           stroke="#25222B"
           strokeWidth="4"
         />
+
         <path
           d="M109 54H126M109 78H126M109 102H126"
           stroke="#25222B"
@@ -191,6 +201,7 @@ function CardIllustration({
           stroke="#25222B"
           strokeWidth="4"
         />
+
         <path
           d="M89 108C98 118 122 118 131 108"
           fill="none"
@@ -198,6 +209,7 @@ function CardIllustration({
           strokeWidth="4"
           strokeLinecap="round"
         />
+
         <path
           d="M83 123C98 136 123 136 137 123"
           fill="none"
@@ -205,6 +217,7 @@ function CardIllustration({
           strokeWidth="4"
           strokeLinecap="round"
         />
+
         <path
           d="M95 69C103 77 117 77 125 69"
           fill="none"
@@ -212,6 +225,7 @@ function CardIllustration({
           strokeWidth="4"
           strokeLinecap="round"
         />
+
         <path
           d="M110 18V8M83 27L75 19M137 27L145 19"
           stroke="#25222B"
@@ -232,6 +246,7 @@ function CardIllustration({
           strokeWidth="4"
           strokeLinejoin="round"
         />
+
         <path
           d="M94 78L70 103C92 126 136 126 158 103L137 78C126 91 105 91 94 78Z"
           fill="#EA7BAF"
@@ -239,6 +254,7 @@ function CardIllustration({
           strokeWidth="4"
           strokeLinejoin="round"
         />
+
         <circle
           cx="156"
           cy="49"
@@ -247,6 +263,7 @@ function CardIllustration({
           stroke="#25222B"
           strokeWidth="3"
         />
+
         <circle
           cx="173"
           cy="63"
@@ -255,6 +272,7 @@ function CardIllustration({
           stroke="#25222B"
           strokeWidth="3"
         />
+
         <circle
           cx="188"
           cy="79"
@@ -277,12 +295,14 @@ function CardIllustration({
           strokeWidth="4"
           strokeLinejoin="round"
         />
+
         <path
           d="M103 92L167 43"
           stroke="#25222B"
           strokeWidth="4"
           strokeLinecap="round"
         />
+
         <path
           d="M100 95L91 123L116 108"
           fill="#F6B18D"
@@ -290,6 +310,7 @@ function CardIllustration({
           strokeWidth="4"
           strokeLinejoin="round"
         />
+
         <path
           d="M83 119C87 137 112 138 118 119"
           fill="none"
@@ -304,6 +325,7 @@ function CardIllustration({
   return (
     <svg viewBox="0 0 220 150" className="h-full w-full" aria-hidden="true">
       <ellipse cx="110" cy="125" rx="58" ry="9" fill="#25222B" opacity="0.18" />
+
       <rect
         x="56"
         y="88"
@@ -314,6 +336,7 @@ function CardIllustration({
         stroke="#25222B"
         strokeWidth="4"
       />
+
       <rect
         x="96"
         y="67"
@@ -324,6 +347,7 @@ function CardIllustration({
         stroke="#25222B"
         strokeWidth="4"
       />
+
       <rect
         x="136"
         y="42"
@@ -334,6 +358,7 @@ function CardIllustration({
         stroke="#25222B"
         strokeWidth="4"
       />
+
       <path
         d="M154 41V22L178 32L154 42Z"
         fill="#EA7BAF"
@@ -341,6 +366,7 @@ function CardIllustration({
         strokeWidth="4"
         strokeLinejoin="round"
       />
+
       <path
         d="M55 124H176"
         stroke="#25222B"
@@ -357,24 +383,24 @@ function UseCaseCard({ card, index }: { card: ProblemCard; index: number }) {
 
   const startFloating = () => {
     cardControls.start({
-      y: [0, -7, 0, 5, 0],
-      rotate: index % 2 === 0 ? [0, -0.8, 0, 0.6, 0] : [0, 0.8, 0, -0.6, 0],
+      y: [0, -5, 0, 3, 0],
+      rotate: index % 2 === 0 ? [0, -0.55, 0, 0.4, 0] : [0, 0.55, 0, -0.4, 0],
       transition: {
-        duration: 7.5 + index * 0.45,
+        duration: 7.5 + index * 0.4,
         repeat: Infinity,
         ease: "easeInOut",
-        delay: index * 0.2,
+        delay: index * 0.16,
       },
     });
 
     imageControls.start({
-      y: [0, -4, 0, 3, 0],
-      rotate: index % 2 === 0 ? [0, 0.7, 0, -0.5, 0] : [0, -0.7, 0, 0.5, 0],
+      y: [0, -3, 0, 2, 0],
+      rotate: index % 2 === 0 ? [0, 0.45, 0, -0.35, 0] : [0, -0.45, 0, 0.35, 0],
       transition: {
-        duration: 6.8 + index * 0.35,
+        duration: 6.8 + index * 0.3,
         repeat: Infinity,
         ease: "easeInOut",
-        delay: index * 0.15,
+        delay: index * 0.12,
       },
     });
   };
@@ -391,43 +417,58 @@ function UseCaseCard({ card, index }: { card: ProblemCard; index: number }) {
 
   return (
     <motion.article
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, delay: index * 0.06, ease: "easeOut" }}
+      initial={{
+        opacity: 0,
+        y: 20,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+        margin: "-60px",
+      }}
+      transition={{
+        duration: 0.55,
+        delay: index * 0.05,
+        ease: "easeOut",
+      }}
       onHoverStart={() => {
         cardControls.stop();
         imageControls.stop();
       }}
-      onHoverEnd={() => {
-        startFloating();
+      onHoverEnd={startFloating}
+      className={`relative overflow-hidden rounded-[1.15rem] border border-black/[0.06] p-2.5 shadow-[0_18px_50px_rgba(56,45,94,0.13)] sm:rounded-[1.45rem] sm:p-3.5 ${card.offset}`}
+      style={{
+        backgroundColor: card.bg,
       }}
-      className={`relative overflow-hidden rounded-[1.35rem] p-3 shadow-[0_22px_70px_rgba(0,0,0,0.24)] transition sm:rounded-[2rem] sm:p-5 ${card.offset}`}
-      style={{ backgroundColor: card.bg }}
     >
       <motion.div animate={cardControls} className="h-full">
         <div
-          className="relative overflow-hidden rounded-[1rem] border border-black/10 p-3 sm:rounded-[1.35rem] sm:p-5"
-          style={{ backgroundColor: card.imageBg }}
+          className="relative overflow-hidden rounded-[0.85rem] border border-black/[0.08] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] sm:rounded-[1rem] sm:p-3"
+          style={{
+            backgroundColor: card.imageBg,
+          }}
         >
           <motion.div
             animate={imageControls}
-            className="mx-auto h-24 max-w-[190px] sm:h-36 sm:max-w-[260px] md:h-40"
+            className="mx-auto h-20 max-w-[150px] sm:h-24 sm:max-w-[180px] md:h-28"
           >
             <CardIllustration type={card.illustration} accent={card.accent} />
           </motion.div>
         </div>
 
-        <div className="mt-4 sm:mt-5">
-          <span className="inline-flex rounded-md bg-black/15 px-2.5 py-1 text-[9px] font-normal uppercase tracking-[0.12em] text-white/90 sm:px-3 sm:py-1.5 sm:text-[10px]">
+        <div className="mt-3 sm:mt-4">
+          <span className="inline-flex rounded-md bg-black/10 px-2 py-1 text-[8px] font-medium uppercase tracking-[0.1em] text-white sm:text-[9px]">
             {card.badge}
           </span>
 
-          <h4 className="mt-3 text-lg font-normal leading-tight tracking-[-0.04em] text-white sm:mt-4 sm:text-2xl md:text-3xl">
+          <h4 className="mt-2.5 text-base font-medium leading-tight tracking-[-0.035em] text-white sm:text-lg md:text-xl">
             {card.title}
           </h4>
 
-          <p className="mt-2 min-h-[78px] text-xs font-light leading-5 text-white/82 sm:mt-3 sm:min-h-[72px] sm:text-sm sm:leading-6">
+          <p className="mt-2 min-h-[64px] text-[10px] font-light leading-[1.55] text-white/85 sm:min-h-[66px] sm:text-xs sm:leading-5">
             {card.text}
           </p>
         </div>
@@ -438,57 +479,97 @@ function UseCaseCard({ card, index }: { card: ProblemCard; index: number }) {
 
 export default function Problem() {
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#160933_0%,#000000_100%)] px-4 py-16 text-white sm:px-5 md:py-28">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(126,112,232,0.12),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(69,191,139,0.08),transparent_34%)]" />
+    <section className="relative overflow-hidden bg-[#fbfaff] px-4 py-12 text-[#24212d] sm:px-5 md:py-18 lg:py-20">
+      {/* Light background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#f8f5ff_52%,#ffffff_100%)]" />
 
-      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="absolute -left-40 top-[-80px] h-[420px] w-[420px] rounded-full bg-[#eadfff]/70 blur-[130px]" />
+
+        <div className="absolute -right-40 top-[20%] h-[430px] w-[430px] rounded-full bg-[#dff8eb]/75 blur-[140px]" />
+
+        <div className="absolute bottom-[-180px] left-1/2 h-[380px] w-[650px] -translate-x-1/2 rounded-full bg-[#ffe2ee]/65 blur-[150px]" />
+
+        <div
+          className="absolute inset-0 opacity-[0.22]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, rgba(104,88,150,0.18) 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-6xl">
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.75, ease: "easeOut" }}
-          viewport={{ once: true }}
-          className="mx-auto max-w-4xl text-center"
+          initial={{
+            opacity: 0,
+            y: 20,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.6,
+            ease: "easeOut",
+          }}
+          viewport={{
+            once: true,
+          }}
+          className="mx-auto max-w-3xl text-center"
         >
-          <p className="text-[10px] font-light uppercase tracking-[0.32em] text-white/38 sm:text-xs">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#7d70e8] sm:text-[10px]">
             Why Buildifyx
           </p>
 
-          <h3 className="mt-5 text-3xl font-normal leading-[1.05] tracking-[-0.055em] text-white md:text-5xl lg:text-6xl">
+          <h3 className="mt-4 text-2xl font-medium leading-[1.08] tracking-[-0.045em] text-[#24212d] sm:text-3xl md:text-4xl lg:text-5xl">
             When problems need
             <br className="hidden md:block" />
             real digital solutions
           </h3>
 
-          <p className="mx-auto mt-6 max-w-2xl text-sm font-light leading-7 text-white/58 md:text-base">
+          <p className="mx-auto mt-4 max-w-xl text-xs font-light leading-6 text-[#686471] sm:text-sm sm:leading-7">
             We believe technology should solve meaningful real-world challenges.
             Every product is crafted with purpose, innovation, and long-term
             impact in mind.
           </p>
         </motion.div>
 
-        <div className="mt-12 grid grid-cols-2 gap-4 sm:mt-14 sm:grid-cols-2 sm:gap-6 lg:gap-8 xl:grid-cols-3">
+        <div className="mt-9 grid grid-cols-2 gap-3 sm:mt-11 sm:gap-4 lg:gap-5 xl:grid-cols-3">
           {problemCards.map((card, index) => (
             <UseCaseCard key={card.title} card={card} index={index} />
           ))}
         </div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          viewport={{ once: true }}
-          className="mt-16 flex flex-col items-center justify-center gap-4 sm:mt-20 sm:flex-row"
+          initial={{
+            opacity: 0,
+            y: 16,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.55,
+            ease: "easeOut",
+          }}
+          viewport={{
+            once: true,
+          }}
+          className="mt-12 flex flex-col items-center justify-center gap-3 sm:mt-14 sm:flex-row"
         >
           <Link
             href="/whyus"
-            className="rounded-full bg-white px-8 py-4 text-sm font-normal text-[#202027] shadow-[0_18px_60px_rgba(255,255,255,0.12)] transition hover:-translate-y-1 hover:bg-white/90"
+            className="rounded-full bg-[#24212d] px-6 py-3 text-xs font-medium text-white shadow-[0_14px_35px_rgba(36,33,45,0.18)] transition hover:-translate-y-1 hover:bg-[#37323f] sm:text-sm"
           >
             See More
           </Link>
 
           <Link
             href="/Contact"
-            className="rounded-full border border-white/15 bg-white/5 px-8 py-4 text-sm font-normal text-white/80 backdrop-blur-xl transition hover:-translate-y-1 hover:border-white/35 hover:bg-white/10"
+            className="rounded-full border border-[#24212d]/15 bg-white/80 px-6 py-3 text-xs font-medium text-[#3f3a48] shadow-[0_12px_35px_rgba(64,50,94,0.08)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-[#7d70e8]/45 hover:bg-white sm:text-sm"
           >
             Contact Us
           </Link>

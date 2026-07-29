@@ -3,6 +3,7 @@ import Head from "./head";
 import Work from "./work";
 import Product from "./product";
 import POS from "./POS";
+import Bigger from "./bigger";
 import { createPageMetadata } from "../seo";
 
 export const metadata: Metadata = createPageMetadata({
@@ -12,13 +13,13 @@ export const metadata: Metadata = createPageMetadata({
   path: "/mywork",
 });
 
-export default function WhyUs() {
+export default function MyWork() {
   return (
     <>
+      <Bigger />
       <POS />
       <Product />
       <Head />
-      <Work />
     </>
   );
 }

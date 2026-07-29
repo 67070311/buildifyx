@@ -1,5 +1,3 @@
-// contact/contact.tsx
-
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
@@ -169,7 +167,7 @@ export default function Contact() {
   }
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-black px-4 py-16 text-white sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+    <section className="relative min-h-screen overflow-hidden bg-[#fbfcfd] px-4 py-16 text-slate-950 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
       <style jsx global>{`
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
@@ -177,18 +175,18 @@ export default function Contact() {
         textarea:-webkit-autofill,
         textarea:-webkit-autofill:hover,
         textarea:-webkit-autofill:focus {
-          -webkit-text-fill-color: #ffffff;
-          box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.045) inset;
+          -webkit-text-fill-color: #0f172a;
+          box-shadow: 0 0 0px 1000px rgba(248, 250, 252, 0.98) inset;
           transition: background-color 9999s ease-in-out 0s;
         }
       `}</style>
 
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(124,92,255,0.26),transparent_34%),linear-gradient(to_bottom,#090812_0%,#030305_52%,#000_100%)]" />
-        <div className="absolute left-1/2 top-0 h-[420px] w-[760px] -translate-x-1/2 rounded-full bg-[#7C5CFF]/18 blur-[140px]" />
-        <div className="absolute right-[-180px] top-[30%] h-[430px] w-[430px] rounded-full bg-[#A855F7]/13 blur-[160px]" />
-        <div className="absolute bottom-0 left-[-170px] h-[380px] w-[380px] rounded-full bg-[#5552D9]/12 blur-[150px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(56,189,248,0.16),transparent_34%),linear-gradient(to_bottom,#ffffff_0%,#f8fafc_52%,#ffffff_100%)]" />
+        <div className="absolute left-1/2 top-0 h-[420px] w-[760px] -translate-x-1/2 rounded-full bg-sky-100/70 blur-[140px]" />
+        <div className="absolute right-[-180px] top-[30%] h-[430px] w-[430px] rounded-full bg-emerald-100/60 blur-[160px]" />
+        <div className="absolute bottom-0 left-[-170px] h-[380px] w-[380px] rounded-full bg-blue-100/55 blur-[150px]" />
         <CircuitLines />
       </div>
 
@@ -199,7 +197,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="pointer-events-none absolute left-1/2 top-4 hidden -translate-x-1/2 select-none text-[120px] font-black uppercase leading-none tracking-[-0.08em] text-white/[0.04] md:block lg:text-[180px]"
+          className="pointer-events-none absolute left-1/2 top-4 hidden -translate-x-1/2 select-none text-[120px] font-black uppercase leading-none tracking-[-0.08em] text-slate-900/[0.035] md:block lg:text-[180px]"
         >
           Contact
         </motion.div>
@@ -212,18 +210,18 @@ export default function Contact() {
             viewport={{ once: true, amount: 0.35 }}
             transition={{ duration: 0.75, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-normal text-white shadow-[0_16px_60px_rgba(0,0,0,0.3)] backdrop-blur-xl">
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-white/10 text-white">
+            <div className="inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-normal text-slate-800 shadow-[0_16px_45px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-sky-50 text-sky-700">
                 <CircleHelp className="h-4 w-4" />
               </span>
               Contact
             </div>
 
-            <h1 className="mt-7 text-4xl font-normal leading-tight tracking-[-0.045em] text-white sm:text-5xl lg:text-6xl">
+            <h1 className="mt-7 text-4xl font-normal leading-tight tracking-[-0.045em] text-slate-950 sm:text-5xl lg:text-6xl">
               Get in touch
             </h1>
 
-            <p className="mt-5 max-w-md text-sm font-normal leading-7 text-white/48 sm:text-base">
+            <p className="mt-5 max-w-md text-sm font-normal leading-7 text-slate-500 sm:text-base">
               Have questions or ready to build your next website? Send us a
               message and we’ll get back to you as soon as possible.
             </p>
@@ -247,22 +245,22 @@ export default function Contact() {
                     ease: "easeOut",
                     delay: index * 0.08,
                   }}
-                  className="group flex items-center gap-3 rounded-3xl border border-white/10 bg-white/[0.045] p-3.5 shadow-[0_18px_70px_rgba(0,0,0,0.32)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[#8D8BFF]/40 hover:bg-white/[0.07] sm:gap-4 sm:p-4"
+                  className="group flex items-center gap-3 rounded-3xl border border-slate-200 bg-white/80 p-3.5 shadow-[0_18px_55px_rgba(15,23,42,0.08)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-sky-300 hover:bg-white sm:gap-4 sm:p-4"
                 >
-                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-white/10 bg-black/30 text-[#B8B7FF] transition duration-300 group-hover:bg-[#7C5CFF] group-hover:text-white sm:h-14 sm:w-14">
+                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-sky-100 bg-sky-50 text-sky-700 transition duration-300 group-hover:bg-sky-600 group-hover:text-white sm:h-14 sm:w-14">
                     {item.icon}
                   </span>
 
                   <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-medium text-white">
+                    <span className="block text-sm font-medium text-slate-900">
                       {item.title}
                     </span>
-                    <span className="mt-1 block truncate text-xs font-normal text-white/45 sm:text-sm">
+                    <span className="mt-1 block truncate text-xs font-normal text-slate-500 sm:text-sm">
                       {item.value}
                     </span>
                   </span>
 
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/10 text-white transition duration-300 group-hover:bg-white group-hover:text-black sm:h-10 sm:w-10">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-sky-50 text-sky-700 transition duration-300 group-hover:bg-slate-900 group-hover:text-white sm:h-10 sm:w-10">
                     <ArrowUpRight className="h-4 w-4" />
                   </span>
                 </motion.a>
@@ -278,18 +276,18 @@ export default function Contact() {
             transition={{ duration: 0.75, ease: "easeOut" }}
             className="relative"
           >
-            <div className="absolute -inset-3 rounded-[2.35rem] bg-gradient-to-br from-[#7C5CFF]/40 via-[#A855F7]/18 to-transparent blur-xl" />
+            <div className="absolute -inset-3 rounded-[2.35rem] bg-gradient-to-br from-sky-200/65 via-emerald-100/35 to-transparent blur-xl" />
 
             <form
               ref={formRef}
               onSubmit={handleSubmit}
               noValidate
-              className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/40 p-3 shadow-[0_30px_120px_rgba(0,0,0,0.6)] backdrop-blur-2xl sm:rounded-[2.35rem] sm:p-4"
+              className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white/85 p-3 shadow-[0_30px_90px_rgba(15,23,42,0.12)] backdrop-blur-2xl sm:rounded-[2.35rem] sm:p-4"
             >
               <input type="checkbox" name="botcheck" className="hidden" />
 
-              <div className="pointer-events-none absolute left-0 top-0 h-44 w-44 rounded-full bg-[#8D8BFF]/12 blur-3xl" />
-              <div className="pointer-events-none absolute right-0 bottom-0 h-44 w-44 rounded-full bg-[#A855F7]/10 blur-3xl" />
+              <div className="pointer-events-none absolute left-0 top-0 h-44 w-44 rounded-full bg-sky-100/70 blur-3xl" />
+              <div className="pointer-events-none absolute right-0 bottom-0 h-44 w-44 rounded-full bg-emerald-100/60 blur-3xl" />
 
               <div className="relative space-y-3">
                 <FormInput
@@ -323,10 +321,10 @@ export default function Contact() {
                     rows={10}
                     placeholder="Message"
                     onChange={() => clearFieldError("message")}
-                    className={`min-h-[240px] w-full resize-none rounded-[1.4rem] border px-5 py-5 text-sm font-normal text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_35px_rgba(0,0,0,0.28)] outline-none transition placeholder:text-white/62 focus:bg-white/[0.07] focus:ring-4 sm:min-h-[300px] sm:rounded-[1.55rem] ${
+                    className={`min-h-[240px] w-full resize-none rounded-[1.4rem] border px-5 py-5 text-sm font-normal text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_30px_rgba(15,23,42,0.06)] outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 sm:min-h-[300px] sm:rounded-[1.55rem] ${
                       errors.message
                         ? "border-[#FB7185]/55 bg-[#FB7185]/10 focus:border-[#FB7185] focus:ring-[#FB7185]/10"
-                        : "border-white/10 bg-white/[0.045] focus:border-[#8D8BFF]/55 focus:ring-[#8D8BFF]/10"
+                        : "border-slate-200 bg-white/80 focus:border-[#8D8BFF]/55 focus:ring-[#8D8BFF]/10"
                     }`}
                   />
 
@@ -359,12 +357,12 @@ export default function Contact() {
                         }
                       : undefined
                   }
-                  className="relative inline-flex h-16 w-full items-center justify-center overflow-hidden rounded-[1.25rem] bg-white px-6 text-sm font-medium text-black shadow-[0_14px_45px_rgba(255,255,255,0.08)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#F3F0FF] disabled:cursor-not-allowed disabled:opacity-90 sm:rounded-[1.45rem]"
+                  className="relative inline-flex h-16 w-full items-center justify-center overflow-hidden rounded-[1.25rem] bg-slate-900 px-6 text-sm font-medium text-white shadow-[0_14px_40px_rgba(15,23,42,0.16)] transition duration-300 hover:-translate-y-0.5 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-90 sm:rounded-[1.45rem]"
                 >
                   {status === "loading" && (
                     <>
                       <motion.span
-                        className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(124,92,255,0.22),transparent)]"
+                        className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(56,189,248,0.28),transparent)]"
                         animate={{ x: ["-100%", "100%"] }}
                         transition={{
                           duration: 1,
@@ -374,7 +372,7 @@ export default function Contact() {
                       />
 
                       <motion.span
-                        className="absolute h-20 w-20 rounded-full bg-[#8D8BFF]/25 blur-xl"
+                        className="absolute h-20 w-20 rounded-full bg-sky-300/30 blur-xl"
                         animate={{
                           scale: [0.8, 1.35, 0.8],
                           opacity: [0.35, 0.75, 0.35],
@@ -401,7 +399,7 @@ export default function Contact() {
                 </motion.button>
 
                 {status === "error" && (
-                  <p className="rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-center text-xs leading-5 text-red-200">
+                  <p className="rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-center text-xs leading-5 text-red-700">
                     Something went wrong. Please try again or email us directly.
                   </p>
                 )}
@@ -464,10 +462,10 @@ function FormInput({
         placeholder={placeholder}
         autoComplete={autoComplete}
         onChange={onChange}
-        className={`h-16 w-full rounded-[1.25rem] border px-5 text-sm font-normal text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_35px_rgba(0,0,0,0.28)] outline-none transition placeholder:text-white/62 focus:bg-white/[0.07] focus:ring-4 sm:rounded-[1.45rem] ${
+        className={`h-16 w-full rounded-[1.25rem] border px-5 text-sm font-normal text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_30px_rgba(15,23,42,0.06)] outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 sm:rounded-[1.45rem] ${
           error
             ? "border-[#FB7185]/55 bg-[#FB7185]/10 focus:border-[#FB7185] focus:ring-[#FB7185]/10"
-            : "border-white/10 bg-white/[0.045] focus:border-[#8D8BFF]/55 focus:ring-[#8D8BFF]/10"
+            : "border-slate-200 bg-white/80 focus:border-[#8D8BFF]/55 focus:ring-[#8D8BFF]/10"
         }`}
       />
 
@@ -485,7 +483,7 @@ function FieldError({ message }: { message: string }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -4 }}
       transition={{ duration: 0.2 }}
-      className="mt-2 flex items-center gap-2 px-2 text-xs font-normal text-[#FDA4AF]"
+      className="mt-2 flex items-center gap-2 px-2 text-xs font-normal text-red-500"
     >
       <AlertCircle className="h-3.5 w-3.5" />
       {message}
@@ -502,7 +500,7 @@ function SuccessPopup({
 }) {
   return (
     <motion.div
-      className="fixed inset-0 z-[99999] grid place-items-center bg-black/55 px-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[99999] grid place-items-center bg-slate-900/35 px-4 backdrop-blur-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{
@@ -534,17 +532,17 @@ function SuccessPopup({
             ease: "easeInOut",
           },
         }}
-        className="relative w-full max-w-[390px] overflow-hidden rounded-[2rem] border border-white/12 bg-[#29245F] px-6 pb-6 pt-7 text-center shadow-[0_30px_120px_rgba(0,0,0,0.55)]"
+        className="relative w-full max-w-[390px] overflow-hidden rounded-[2rem] border border-slate-200 bg-white px-6 pb-6 pt-7 text-center shadow-[0_30px_90px_rgba(15,23,42,0.2)]"
       >
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(124,92,255,0.35),transparent_52%),linear-gradient(to_bottom,#29245F,#373071)]" />
-        <div className="pointer-events-none absolute -left-14 top-20 h-32 w-32 rounded-full bg-[#8D8BFF]/25 blur-3xl" />
-        <div className="pointer-events-none absolute -right-14 bottom-20 h-32 w-32 rounded-full bg-[#A855F7]/20 blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(56,189,248,0.18),transparent_52%),linear-gradient(to_bottom,#ffffff,#f8fafc)]" />
+        <div className="pointer-events-none absolute -left-14 top-20 h-32 w-32 rounded-full bg-sky-300/30 blur-3xl" />
+        <div className="pointer-events-none absolute -right-14 bottom-20 h-32 w-32 rounded-full bg-emerald-200/35 blur-3xl" />
 
         <button
           type="button"
           onClick={onClose}
           aria-label="Close popup"
-          className="absolute right-4 top-4 z-20 grid h-9 w-9 place-items-center rounded-full bg-white/10 text-white/80 transition hover:bg-white hover:text-black"
+          className="absolute right-4 top-4 z-20 grid h-9 w-9 place-items-center rounded-full bg-sky-50 text-sky-700/80 transition hover:bg-slate-900 hover:text-white"
         >
           <X className="h-4 w-4" />
         </button>
@@ -565,26 +563,26 @@ function SuccessPopup({
             <CelebrationIllustration />
           </motion.div>
 
-          <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white/80 ring-1 ring-white/10">
-            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-300" />
+          <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 ring-1 ring-emerald-100">
+            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
             Message delivered
           </div>
 
-          <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-white">
+          <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-slate-950">
             Congratulations
           </h2>
 
-          <p className="mx-auto mt-3 max-w-[290px] text-sm leading-6 text-white/72">
+          <p className="mx-auto mt-3 max-w-[290px] text-sm leading-6 text-slate-600">
             Your message has been sent to BuildifyX successfully.
           </p>
 
-          <p className="mx-auto mt-2 max-w-[290px] text-xs leading-5 text-white/48">
+          <p className="mx-auto mt-2 max-w-[290px] text-xs leading-5 text-slate-500">
             We’ll get back to you soon
             {submittedEmail ? (
               <>
                 {" "}
                 at{" "}
-                <span className="font-medium text-[#FACC15]">
+                <span className="font-medium text-sky-700">
                   {submittedEmail}
                 </span>
                 .
@@ -597,7 +595,7 @@ function SuccessPopup({
           <button
             type="button"
             onClick={onClose}
-            className="mt-6 h-14 w-full rounded-full bg-white px-6 text-sm font-semibold text-[#15152E] shadow-[0_18px_55px_rgba(255,255,255,0.14)] transition hover:-translate-y-0.5 hover:bg-[#F3F0FF]"
+            className="mt-6 h-14 w-full rounded-full bg-slate-900 px-6 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(15,23,42,0.16)] transition hover:-translate-y-0.5 hover:bg-slate-800"
           >
             Continue
           </button>
@@ -709,7 +707,7 @@ function BouncyDots() {
             ease: "easeInOut",
             delay: dot * 0.12,
           }}
-          className="h-1.5 w-1.5 rounded-full bg-black"
+          className="h-1.5 w-1.5 rounded-full bg-white"
         />
       ))}
     </span>
@@ -719,44 +717,44 @@ function BouncyDots() {
 function CircuitLines() {
   return (
     <svg
-      className="absolute inset-0 hidden h-full w-full opacity-45 sm:block"
+      className="absolute inset-0 hidden h-full w-full opacity-35 sm:block"
       viewBox="0 0 1440 900"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
         d="M0 120 C80 170 72 270 155 302 L292 302"
-        stroke="url(#purpleLine)"
+        stroke="url(#lightLine)"
         strokeWidth="1.2"
       />
-      <circle cx="292" cy="302" r="6" stroke="white" opacity="0.18" />
+      <circle cx="292" cy="302" r="6" stroke="#0F172A" opacity="0.12" />
 
       <path
         d="M1440 255 C1355 255 1368 315 1295 315 L1178 315"
-        stroke="url(#purpleLine)"
+        stroke="url(#lightLine)"
         strokeWidth="1.2"
       />
-      <circle cx="1178" cy="315" r="6" stroke="white" opacity="0.18" />
+      <circle cx="1178" cy="315" r="6" stroke="#0F172A" opacity="0.12" />
 
       <path
         d="M1440 370 C1378 310 1355 275 1292 275 L1140 275"
-        stroke="url(#purpleLine)"
+        stroke="url(#lightLine)"
         strokeWidth="1.2"
       />
-      <circle cx="1140" cy="275" r="6" stroke="white" opacity="0.18" />
+      <circle cx="1140" cy="275" r="6" stroke="#0F172A" opacity="0.12" />
 
       <defs>
         <linearGradient
-          id="purpleLine"
+          id="lightLine"
           x1="0"
           y1="0"
           x2="1440"
           y2="0"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="white" stopOpacity="0.04" />
-          <stop offset="0.5" stopColor="#8D8BFF" stopOpacity="0.55" />
-          <stop offset="1" stopColor="white" stopOpacity="0.04" />
+          <stop stopColor="#0F172A" stopOpacity="0.03" />
+          <stop offset="0.5" stopColor="#38BDF8" stopOpacity="0.38" />
+          <stop offset="1" stopColor="#0F172A" stopOpacity="0.03" />
         </linearGradient>
       </defs>
     </svg>
