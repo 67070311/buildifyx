@@ -464,6 +464,8 @@ export default function TinyBuildifyJump() {
   const [checkpointLabel, setCheckpointLabel] = useState("START");
   const [isTouch, setIsTouch] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+  const [isCompactLandscape, setIsCompactLandscape] = useState(false);
   const bedroomPlayerXRef = useRef(9);
   const [bedroomPlayerX, setBedroomPlayerX] = useState(9);
   const bedroomFacingRef = useRef<1 | -1>(1);
@@ -569,21 +571,33 @@ export default function TinyBuildifyJump() {
   }, [clearInput, setGameStatus]);
 
   const requestMobileLandscape = useCallback(async () => {
+    const gameElement = wrapperRef.current as
+      | (HTMLDivElement & {
+          webkitRequestFullscreen?: () => Promise<void> | void;
+        })
+      | null;
+
     try {
-      if (wrapperRef.current && !document.fullscreenElement) {
-        await wrapperRef.current.requestFullscreen();
+      if (gameElement && !document.fullscreenElement) {
+        if (gameElement.requestFullscreen) {
+          await gameElement.requestFullscreen();
+        } else {
+          await gameElement.webkitRequestFullscreen?.();
+        }
       }
     } catch {
-      // Fullscreen is not available on every browser.
+      // iPhone/iPad Safari may reject fullscreen for normal page elements.
     }
 
     try {
       const orientation = screen.orientation as ScreenOrientation & {
         lock?: (mode: OrientationLockType) => Promise<void>;
       };
+
       await orientation.lock?.("landscape");
     } catch {
-      // Orientation lock is not available on every browser.
+      // Safari does not expose orientation locking. The rotate overlay remains
+      // visible until the user physically rotates the device.
     }
 
     startGame();
@@ -592,13 +606,28 @@ export default function TinyBuildifyJump() {
   useEffect(() => {
     const updateDevice = () => {
       const touch = isTouchDevice();
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const shortSide = Math.min(width, height);
+      const iPadOSDesktopMode =
+        navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+      const tablet =
+        touch &&
+        (iPadOSDesktopMode ||
+          shortSide >= 600 ||
+          /ipad|tablet|playbook|silk/i.test(navigator.userAgent));
+
       setIsTouch(touch);
-      setIsPortrait(touch && window.innerHeight > window.innerWidth);
+      setIsTablet(tablet);
+      setIsPortrait(touch && height > width);
+      setIsCompactLandscape(touch && width > height && height <= 540);
     };
 
     updateDevice();
-    window.addEventListener("resize", updateDevice);
-    window.addEventListener("orientationchange", updateDevice);
+    window.addEventListener("resize", updateDevice, { passive: true });
+    window.addEventListener("orientationchange", updateDevice, {
+      passive: true,
+    });
 
     return () => {
       window.removeEventListener("resize", updateDevice);
@@ -607,12 +636,57 @@ export default function TinyBuildifyJump() {
   }, []);
 
   useEffect(() => {
+    const gameElement = wrapperRef.current;
+    if (!gameElement) return;
+
+    const preventGameGesture = (event: Event) => {
+      if (
+        isTouch &&
+        (statusRef.current === "playing" || statusRef.current === "bedroom")
+      ) {
+        event.preventDefault();
+      }
+    };
+
+    const releaseAllControls = () => {
+      clearInput();
+      setBedroomWalking(false);
+    };
+
+    gameElement.addEventListener("touchmove", preventGameGesture, {
+      passive: false,
+    });
+    gameElement.addEventListener("contextmenu", preventGameGesture);
+    window.addEventListener("blur", releaseAllControls);
+    window.addEventListener("pointerup", releaseAllControls);
+    window.addEventListener("pointercancel", releaseAllControls);
+    document.addEventListener("visibilitychange", releaseAllControls);
+
+    return () => {
+      gameElement.removeEventListener("touchmove", preventGameGesture);
+      gameElement.removeEventListener("contextmenu", preventGameGesture);
+      window.removeEventListener("blur", releaseAllControls);
+      window.removeEventListener("pointerup", releaseAllControls);
+      window.removeEventListener("pointercancel", releaseAllControls);
+      document.removeEventListener("visibilitychange", releaseAllControls);
+    };
+  }, [clearInput, isTouch]);
+
+  useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const key = event.key.toLowerCase();
+      const code = event.code;
 
-      if (
-        ["arrowleft", "arrowright", "arrowup", "a", "d", "w", " "].includes(key)
-      ) {
+      const isLeft = key === "arrowleft" || key === "a" || code === "KeyA";
+      const isRight = key === "arrowright" || key === "d" || code === "KeyD";
+      const isJump =
+        key === "arrowup" ||
+        key === "w" ||
+        key === " " ||
+        code === "KeyW" ||
+        code === "Space";
+
+      if (isLeft || isRight || isJump) {
         event.preventDefault();
       }
 
@@ -629,22 +703,30 @@ export default function TinyBuildifyJump() {
       }
 
       if (statusRef.current === "bedroom") {
-        if (key === "arrowleft" || key === "a") inputRef.current.left = true;
-        if (key === "arrowright" || key === "d") inputRef.current.right = true;
+        if (isLeft) {
+          inputRef.current.left = true;
+          inputRef.current.right = false;
+        }
+
+        if (isRight) {
+          inputRef.current.right = true;
+          inputRef.current.left = false;
+        }
+
         return;
       }
 
       if (statusRef.current !== "playing") return;
 
-      if (key === "arrowleft" || key === "a") {
+      if (isLeft) {
         inputRef.current.left = true;
       }
 
-      if (key === "arrowright" || key === "d") {
+      if (isRight) {
         inputRef.current.right = true;
       }
 
-      if (key === "arrowup" || key === "w" || key === " ") {
+      if (isJump) {
         if (!inputRef.current.jump) {
           inputRef.current.jumpPressed = true;
         }
@@ -654,16 +736,26 @@ export default function TinyBuildifyJump() {
 
     const onKeyUp = (event: KeyboardEvent) => {
       const key = event.key.toLowerCase();
+      const code = event.code;
 
-      if (key === "arrowleft" || key === "a") {
+      const isLeft = key === "arrowleft" || key === "a" || code === "KeyA";
+      const isRight = key === "arrowright" || key === "d" || code === "KeyD";
+      const isJump =
+        key === "arrowup" ||
+        key === "w" ||
+        key === " " ||
+        code === "KeyW" ||
+        code === "Space";
+
+      if (isLeft) {
         inputRef.current.left = false;
       }
 
-      if (key === "arrowright" || key === "d") {
+      if (isRight) {
         inputRef.current.right = false;
       }
 
-      if (key === "arrowup" || key === "w" || key === " ") {
+      if (isJump) {
         inputRef.current.jump = false;
       }
     };
@@ -2599,7 +2691,10 @@ export default function TinyBuildifyJump() {
             ? -1
             : 0;
 
-      setBedroomWalking(direction !== 0);
+      const walkingNow = direction !== 0;
+      setBedroomWalking((previous) =>
+        previous === walkingNow ? previous : walkingNow,
+      );
 
       if (direction !== 0) {
         const nextFacing = direction as 1 | -1;
@@ -2710,11 +2805,23 @@ export default function TinyBuildifyJump() {
   }, [renderGame, updateBedroom, updateGame]);
 
   const setControl = (control: "left" | "right" | "jump", active: boolean) => {
-    if (statusRef.current !== "playing") return;
+    const currentStatus = statusRef.current;
+    const canMove = currentStatus === "playing" || currentStatus === "bedroom";
+
+    if (!canMove) return;
+    if (currentStatus === "bedroom" && control === "jump") return;
+
+    if (control === "left" && active) {
+      inputRef.current.right = false;
+    }
+
+    if (control === "right" && active) {
+      inputRef.current.left = false;
+    }
 
     if (
       control === "jump" &&
-      statusRef.current === "playing" &&
+      currentStatus === "playing" &&
       active &&
       !inputRef.current.jump
     ) {
@@ -2748,9 +2855,16 @@ export default function TinyBuildifyJump() {
 
   return (
     <main
-      className={`${pixelFont.variable} ${pixelFont.className} tiny-game-page`}
+      className={`${pixelFont.variable} ${pixelFont.className} tiny-game-page ${
+        isTouch ? "touch-device" : "pointer-device"
+      } ${isTablet ? "tablet-device" : "phone-device"} ${
+        isCompactLandscape ? "compact-landscape" : ""
+      }`}
     >
-      <section ref={wrapperRef} className="game-shell">
+      <section
+        ref={wrapperRef}
+        className={`game-shell ${isTouch ? "touch-game-shell" : ""}`}
+      >
         <canvas
           ref={canvasRef}
           width={GAME_WIDTH}
@@ -2875,9 +2989,19 @@ export default function TinyBuildifyJump() {
             </button>
 
             <div className="menu-controls">
-              <span>A / D or ← / → &nbsp; MOVE</span>
-              <span>W / ↑ / SPACE &nbsp; JUMP</span>
-              <span>P or ESC &nbsp; PAUSE</span>
+              {isTouch ? (
+                <>
+                  <span>LEFT CONTROLS &nbsp; MOVE</span>
+                  <span>RIGHT BUTTON &nbsp; JUMP</span>
+                  <span>TOP RIGHT &nbsp; PAUSE</span>
+                </>
+              ) : (
+                <>
+                  <span>A / D or ← / → &nbsp; MOVE</span>
+                  <span>W / ↑ / SPACE &nbsp; JUMP</span>
+                  <span>P or ESC &nbsp; PAUSE</span>
+                </>
+              )}
             </div>
           </div>
         )}
@@ -3248,8 +3372,10 @@ export default function TinyBuildifyJump() {
                 onPointerDown={(event) => pressControl(event, "left")}
                 onPointerUp={(event) => releaseControl(event, "left")}
                 onPointerCancel={(event) => releaseControl(event, "left")}
+                onLostPointerCapture={(event) => releaseControl(event, "left")}
+                onContextMenu={(event) => event.preventDefault()}
               >
-                ◀
+                <span aria-hidden="true">◀</span>
               </button>
 
               <button
@@ -3259,8 +3385,10 @@ export default function TinyBuildifyJump() {
                 onPointerDown={(event) => pressControl(event, "right")}
                 onPointerUp={(event) => releaseControl(event, "right")}
                 onPointerCancel={(event) => releaseControl(event, "right")}
+                onLostPointerCapture={(event) => releaseControl(event, "right")}
+                onContextMenu={(event) => event.preventDefault()}
               >
-                ▶
+                <span aria-hidden="true">▶</span>
               </button>
             </div>
 
@@ -3272,8 +3400,10 @@ export default function TinyBuildifyJump() {
                 onPointerDown={(event) => pressControl(event, "jump")}
                 onPointerUp={(event) => releaseControl(event, "jump")}
                 onPointerCancel={(event) => releaseControl(event, "jump")}
+                onLostPointerCapture={(event) => releaseControl(event, "jump")}
+                onContextMenu={(event) => event.preventDefault()}
               >
-                <span>↑</span>
+                <span aria-hidden="true">↑</span>
                 <small>JUMP</small>
               </button>
             )}
@@ -3281,10 +3411,22 @@ export default function TinyBuildifyJump() {
         )}
 
         {isTouch && isPortrait && (
-          <div className="rotate-overlay">
-            <div className="phone-icon">↻</div>
-            <h2>ROTATE YOUR PHONE</h2>
-            <p>Landscape mode gives you the full controls.</p>
+          <div className="rotate-overlay" role="dialog" aria-modal="true">
+            <div className="phone-icon" aria-hidden="true">
+              <span>↻</span>
+            </div>
+            <h2>ROTATE TO LANDSCAPE</h2>
+            <p>
+              Turn your {isTablet ? "tablet" : "phone"} sideways to play with
+              the full controls.
+            </p>
+            <button
+              type="button"
+              className="landscape-retry-button"
+              onClick={requestMobileLandscape}
+            >
+              TRY LANDSCAPE
+            </button>
           </div>
         )}
       </section>
@@ -7144,6 +7286,307 @@ export default function TinyBuildifyJump() {
           }
           to {
             transform: scaleY(0.72);
+          }
+        }
+
+        /* Mobile and iPad responsive system. */
+        :global(html),
+        :global(body) {
+          width: 100%;
+          min-width: 100%;
+          min-height: 100%;
+        }
+
+        :global(body) {
+          overflow: hidden;
+        }
+
+        .touch-device {
+          width: 100dvw;
+          min-height: 100dvh;
+          padding: env(safe-area-inset-top) env(safe-area-inset-right)
+            env(safe-area-inset-bottom) env(safe-area-inset-left);
+          overscroll-behavior: none;
+        }
+
+        .touch-device .touch-game-shell {
+          width: min(
+            calc(
+              100dvw - env(safe-area-inset-left) - env(safe-area-inset-right)
+            ),
+            calc(
+              (
+                  100dvh - env(safe-area-inset-top) - env(
+                      safe-area-inset-bottom
+                    )
+                ) *
+                1.7777778
+            )
+          );
+          height: min(
+            calc(
+              100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+            ),
+            calc(
+              (
+                  100dvw - env(safe-area-inset-left) - env(
+                      safe-area-inset-right
+                    )
+                ) /
+                1.7777778
+            )
+          );
+          max-width: none;
+          max-height: none;
+          border-radius: clamp(0px, 1.6vw, 22px);
+        }
+
+        .touch-device .game-canvas {
+          width: 100%;
+          height: 100%;
+          object-fit: fill;
+        }
+
+        .touch-device .back-button,
+        .touch-device .pause-button,
+        .touch-device .control-button,
+        .touch-device .main-play-button,
+        .touch-device .dialog-actions button,
+        .touch-device .dialog-actions a,
+        .touch-device .landscape-retry-button {
+          min-width: 48px;
+          min-height: 48px;
+        }
+
+        .touch-device .mobile-controls {
+          z-index: 45;
+          padding: 14px max(18px, env(safe-area-inset-right))
+            max(14px, env(safe-area-inset-bottom))
+            max(18px, env(safe-area-inset-left));
+        }
+
+        .touch-device .movement-buttons {
+          gap: clamp(10px, 1.6vw, 18px);
+        }
+
+        .touch-device .direction-button {
+          width: clamp(64px, 9.5vw, 94px);
+          height: clamp(64px, 9.5vw, 94px);
+          border-radius: clamp(12px, 1.6vw, 18px);
+          font-size: clamp(25px, 4vw, 40px);
+        }
+
+        .touch-device .jump-button {
+          width: clamp(82px, 11vw, 116px);
+          height: clamp(82px, 11vw, 116px);
+        }
+
+        .touch-device .control-button {
+          -webkit-touch-callout: none;
+          touch-action: none;
+          user-select: none;
+        }
+
+        .touch-device .control-button span {
+          pointer-events: none;
+        }
+
+        .tablet-device .mobile-controls {
+          padding-right: max(34px, env(safe-area-inset-right));
+          padding-bottom: max(24px, env(safe-area-inset-bottom));
+          padding-left: max(34px, env(safe-area-inset-left));
+        }
+
+        .tablet-device .direction-button {
+          width: clamp(82px, 9vw, 112px);
+          height: clamp(82px, 9vw, 112px);
+        }
+
+        .tablet-device .jump-button {
+          width: clamp(104px, 11vw, 134px);
+          height: clamp(104px, 11vw, 134px);
+        }
+
+        .touch-device .pause-overlay,
+        .touch-device .dialog-overlay,
+        .touch-device .finished-overlay {
+          padding: max(14px, env(safe-area-inset-top))
+            max(14px, env(safe-area-inset-right))
+            max(14px, env(safe-area-inset-bottom))
+            max(14px, env(safe-area-inset-left));
+        }
+
+        .touch-device .pause-card,
+        .touch-device .dialog-card,
+        .touch-device .finished-card {
+          width: min(92vw, 690px);
+          max-height: calc(
+            100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) -
+              24px
+          );
+          overflow: auto;
+          overscroll-behavior: contain;
+        }
+
+        .tablet-device .pause-card,
+        .tablet-device .dialog-card,
+        .tablet-device .finished-card {
+          width: min(78vw, 720px);
+        }
+
+        .touch-device .dialog-actions {
+          flex-wrap: wrap;
+        }
+
+        .touch-device .dialog-actions > * {
+          flex: 1 1 145px;
+        }
+
+        .touch-device .back-button {
+          top: max(10px, env(safe-area-inset-top));
+          left: max(10px, env(safe-area-inset-left));
+        }
+
+        .touch-device .pause-button {
+          top: max(10px, env(safe-area-inset-top));
+          right: max(10px, env(safe-area-inset-right));
+        }
+
+        .touch-device .biome-badge {
+          top: max(68px, calc(env(safe-area-inset-top) + 58px));
+          right: max(8px, env(safe-area-inset-right));
+        }
+
+        .rotate-overlay {
+          position: fixed;
+          inset: 0;
+          width: 100dvw;
+          height: 100dvh;
+          min-height: 100dvh;
+          padding: max(28px, env(safe-area-inset-top))
+            max(24px, env(safe-area-inset-right))
+            max(28px, env(safe-area-inset-bottom))
+            max(24px, env(safe-area-inset-left));
+        }
+
+        .rotate-overlay h2 {
+          margin: 0;
+          font-size: clamp(24px, 7vw, 48px);
+        }
+
+        .rotate-overlay p {
+          max-width: 560px;
+          margin: 18px auto 0;
+          font-size: clamp(11px, 2.7vw, 16px);
+          line-height: 1.75;
+        }
+
+        .landscape-retry-button {
+          margin: 24px auto 0;
+          padding: 0 22px;
+          color: #18243b;
+          border: 0;
+          border-radius: 10px;
+          background: #8fe0bc;
+          box-shadow: 0 6px 0 #4c9f7c;
+          font-weight: 700;
+        }
+
+        .landscape-retry-button:active {
+          box-shadow: 0 2px 0 #4c9f7c;
+          transform: translateY(4px);
+        }
+
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+          .tiny-game-page {
+            width: 100dvw;
+            height: 100dvh;
+            min-height: 100dvh;
+            padding: 0;
+          }
+
+          .game-shell {
+            width: min(100dvw, calc(100dvh * 1.7777778));
+            height: min(100dvh, calc(100dvw / 1.7777778));
+            border-width: 0;
+            border-radius: 0;
+          }
+
+          .menu-controls {
+            bottom: max(3%, env(safe-area-inset-bottom));
+          }
+        }
+
+        @media (hover: none) and (pointer: coarse) and (max-height: 540px) and (orientation: landscape) {
+          .compact-landscape .back-button,
+          .compact-landscape .pause-button {
+            top: max(6px, env(safe-area-inset-top));
+            min-width: 44px;
+            min-height: 44px;
+          }
+
+          .compact-landscape .biome-badge {
+            top: max(55px, calc(env(safe-area-inset-top) + 48px));
+          }
+
+          .compact-landscape .mobile-controls {
+            padding: 8px max(14px, env(safe-area-inset-right))
+              max(8px, env(safe-area-inset-bottom))
+              max(14px, env(safe-area-inset-left));
+          }
+
+          .compact-landscape .direction-button {
+            width: clamp(56px, 12vh, 72px);
+            height: clamp(56px, 12vh, 72px);
+          }
+
+          .compact-landscape .jump-button {
+            width: clamp(70px, 15vh, 88px);
+            height: clamp(70px, 15vh, 88px);
+          }
+
+          .compact-landscape .jump-button small {
+            font-size: 8px;
+          }
+
+          .compact-landscape .pause-card,
+          .compact-landscape .dialog-card,
+          .compact-landscape .finished-card {
+            width: min(88vw, 680px);
+            max-height: 94dvh;
+            padding: 18px 22px;
+          }
+
+          .compact-landscape .pause-card {
+            padding-top: 40px;
+          }
+
+          .compact-landscape .pause-card h2,
+          .compact-landscape .dialog-card h2,
+          .compact-landscape .finished-card h2 {
+            font-size: clamp(24px, 7vh, 34px);
+          }
+
+          .compact-landscape .pause-progress,
+          .compact-landscape .finished-stats {
+            margin-top: 10px;
+          }
+
+          .compact-landscape .dialog-actions {
+            margin-top: 12px;
+          }
+
+          .compact-landscape .dialog-actions > * {
+            min-height: 44px;
+          }
+        }
+
+        @media (hover: none) and (pointer: coarse) and (orientation: portrait) {
+          .game-shell {
+            width: 100dvw;
+            height: 100dvh;
+            border: 0;
+            border-radius: 0;
           }
         }
 
