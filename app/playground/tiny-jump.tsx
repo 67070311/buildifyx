@@ -7590,6 +7590,102 @@ export default function TinyBuildifyJump() {
           }
         }
 
+        /* Mobile landscape: keep the whole game inside the visible viewport.
+           This also prevents an external site navbar from covering the controls. */
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+          .tiny-game-page {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            width: 100dvw;
+            height: 100dvh;
+            min-height: 100dvh;
+            padding: 0;
+            overflow: hidden;
+            background: #08091b;
+          }
+
+          .touch-game-shell {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            width: 100dvw;
+            height: 100dvh;
+            max-width: none;
+            max-height: none;
+            aspect-ratio: auto;
+            border: 0;
+            border-radius: 0;
+          }
+
+          .touch-game-shell .game-canvas {
+            width: 100dvw;
+            height: 100dvh;
+            object-fit: fill;
+          }
+
+          .touch-game-shell .mobile-controls {
+            position: absolute;
+            inset: auto 0 0 0;
+            z-index: 100;
+            min-height: 112px;
+            align-items: flex-end;
+            padding: 10px max(18px, calc(env(safe-area-inset-right) + 10px))
+              max(16px, calc(env(safe-area-inset-bottom) + 10px))
+              max(18px, calc(env(safe-area-inset-left) + 10px));
+          }
+
+          .touch-game-shell .movement-buttons {
+            gap: 12px;
+          }
+
+          .touch-game-shell .control-button {
+            opacity: 1;
+            border: 3px solid rgba(255, 255, 255, 0.72);
+            background: rgba(8, 10, 30, 0.9);
+            box-shadow:
+              0 6px 0 rgba(0, 0, 0, 0.58),
+              inset 0 0 18px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(6px);
+          }
+
+          .touch-game-shell .direction-button {
+            width: clamp(62px, 17dvh, 88px);
+            height: clamp(62px, 17dvh, 88px);
+            font-size: clamp(27px, 7dvh, 38px);
+          }
+
+          .touch-game-shell .jump-button {
+            width: clamp(78px, 21dvh, 106px);
+            height: clamp(78px, 21dvh, 106px);
+          }
+
+          .touch-game-shell .jump-button span {
+            font-size: clamp(31px, 8dvh, 44px);
+          }
+
+          .touch-game-shell .back-button {
+            top: max(8px, env(safe-area-inset-top));
+            left: max(8px, env(safe-area-inset-left));
+            z-index: 110;
+          }
+
+          .touch-game-shell .back-button span:last-child {
+            display: none;
+          }
+
+          .touch-game-shell .pause-button {
+            top: max(8px, env(safe-area-inset-top));
+            right: max(8px, env(safe-area-inset-right));
+            z-index: 110;
+          }
+
+          .touch-game-shell .biome-badge {
+            top: max(62px, calc(env(safe-area-inset-top) + 54px));
+            right: max(8px, env(safe-area-inset-right));
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .phone-icon,
           .confetti {

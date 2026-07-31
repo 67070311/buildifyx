@@ -22,38 +22,6 @@ import { useRef } from "react";
 const games = [
   {
     id: 1,
-    title: "Cute Dress Up",
-    description: "Mix outfits and create your favorite look.",
-    href: "/playground?game=dress",
-    category: "Fashion",
-    icon: Shirt,
-    accentIcon: Sparkles,
-    image: "/playgroud/game-dress.png",
-    imageAlt: "Cute character dress-up game",
-    status: "Ready",
-    time: "5 min",
-    gradient: "from-[#dc4d91] via-[#ee67a4] to-[#ff82b8]",
-    glow: "shadow-[0_24px_70px_rgba(238,103,164,0.22)]",
-    available: true,
-  },
-  {
-    id: 2,
-    title: "Travel Spinner",
-    description: "Let the wheel choose your next destination.",
-    href: "/playground?game=spin",
-    category: "Travel",
-    icon: Compass,
-    accentIcon: MapPin,
-    image: "/playgroud/game-spin.png",
-    imageAlt: "Travel destination spinner game",
-    status: "Ready",
-    time: "2 min",
-    gradient: "from-[#3f43dd] via-[#595cef] to-[#6e75ff]",
-    glow: "shadow-[0_24px_70px_rgba(85,88,239,0.24)]",
-    available: true,
-  },
-  {
-    id: 3,
     title: "Tiny Jumper",
     description: "Jump, dodge obstacles, and collect every star.",
     href: "/playground?game=tiny-jump",
@@ -67,6 +35,41 @@ const games = [
     gradient: "from-[#d88725] via-[#f4a73d] to-[#ffc65c]",
     glow: "shadow-[0_24px_70px_rgba(244,167,61,0.22)]",
     available: true,
+    isNew: true,
+  },
+  {
+    id: 2,
+    title: "Cute Dress Up",
+    description: "Mix outfits and create your favorite look.",
+    href: "/playground?game=dress",
+    category: "Fashion",
+    icon: Shirt,
+    accentIcon: Sparkles,
+    image: "/playgroud/game-dress.png",
+    imageAlt: "Cute character dress-up game",
+    status: "Ready",
+    time: "5 min",
+    gradient: "from-[#dc4d91] via-[#ee67a4] to-[#ff82b8]",
+    glow: "shadow-[0_24px_70px_rgba(238,103,164,0.22)]",
+    available: true,
+    isNew: false,
+  },
+  {
+    id: 3,
+    title: "Travel Spinner",
+    description: "Let the wheel choose your next destination.",
+    href: "/playground?game=spin",
+    category: "Travel",
+    icon: Compass,
+    accentIcon: MapPin,
+    image: "/playgroud/game-spin.png",
+    imageAlt: "Travel destination spinner game",
+    status: "Ready",
+    time: "2 min",
+    gradient: "from-[#3f43dd] via-[#595cef] to-[#6e75ff]",
+    glow: "shadow-[0_24px_70px_rgba(85,88,239,0.24)]",
+    available: true,
+    isNew: false,
   },
   {
     id: 4,
@@ -83,6 +86,7 @@ const games = [
     gradient: "from-[#29966f] via-[#43b489] to-[#6dcba4]",
     glow: "shadow-[0_24px_70px_rgba(67,180,137,0.2)]",
     available: false,
+    isNew: false,
   },
 ];
 
@@ -672,6 +676,18 @@ export default function PlaygroundHome() {
                       <GameIcon size={12} />
                       {game.category}
                     </motion.div>
+
+                    {game.isNew && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.8, y: -8 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ duration: 0.45, delay: 0.25 }}
+                        className="absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-[#fde047] px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.16em] text-[#17172b] shadow-[0_10px_25px_rgba(253,224,71,0.28)]"
+                      >
+                        <Sparkles size={11} />
+                        New Game
+                      </motion.div>
+                    )}
 
                     {/* Duration */}
                     <motion.div
