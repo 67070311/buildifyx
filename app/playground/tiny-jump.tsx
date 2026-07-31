@@ -591,7 +591,7 @@ export default function TinyBuildifyJump() {
 
     try {
       const orientation = screen.orientation as ScreenOrientation & {
-        lock?: (mode: OrientationLockType) => Promise<void>;
+        lock?: (mode: "landscape") => Promise<void>;
       };
 
       await orientation.lock?.("landscape");
