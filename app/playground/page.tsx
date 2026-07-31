@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import PlaygroundHome from "./home";
 import TravelSpinnerGame from "./spin";
 import DressUpGame from "./dress";
+import TinyJumpGame from "./tiny-jump";
 
 type PlaygroundPageProps = {
   searchParams: Promise<{
@@ -29,6 +30,10 @@ export default async function PlaygroundPage({
 
   if (selectedGame === "dress") {
     return <DressUpGame />;
+  }
+
+  if (selectedGame === "tiny-jump") {
+    return <TinyJumpGame />;
   }
 
   return <PlaygroundHome />;
