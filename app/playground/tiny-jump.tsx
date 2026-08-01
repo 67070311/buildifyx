@@ -428,6 +428,7 @@ export default function TinyBuildifyJump() {
   const lastTimeRef = useRef(0);
   const gameTimeRef = useRef(0);
   const cameraXRef = useRef(0);
+  const gameViewWidthRef = useRef(GAME_WIDTH);
   const statusRef = useRef<GameStatus>("menu");
   const checkpointXRef = useRef(120);
   const biomeNoticeUntilRef = useRef(0);
@@ -470,6 +471,22 @@ export default function TinyBuildifyJump() {
     width: GAME_WIDTH,
     height: GAME_HEIGHT,
   });
+
+  // Desktop keeps the original 960x540 logical viewport. On touch devices,
+  // widen the logical viewport to match the real screen aspect ratio instead
+  // of stretching the 16:9 canvas to fill a wider phone display.
+  const gameViewWidth = useMemo(() => {
+    if (!isTouch || viewportSize.width <= 0 || viewportSize.height <= 0) {
+      return GAME_WIDTH;
+    }
+
+    const screenAspect = viewportSize.width / viewportSize.height;
+    const logicalWidth = Math.round(GAME_HEIGHT * screenAspect);
+
+    return clamp(logicalWidth, GAME_WIDTH, 1800);
+  }, [isTouch, viewportSize.height, viewportSize.width]);
+
+  gameViewWidthRef.current = gameViewWidth;
   const bedroomPlayerXRef = useRef(9);
   const bedroomPlayerElementRef = useRef<HTMLDivElement | null>(null);
   const [bedroomPlayerX, setBedroomPlayerX] = useState(9);
@@ -506,9 +523,9 @@ export default function TinyBuildifyJump() {
     };
 
     cameraXRef.current = clamp(
-      checkpointXRef.current - GAME_WIDTH * 0.28,
+      checkpointXRef.current - gameViewWidthRef.current * 0.28,
       0,
-      WORLD_WIDTH - GAME_WIDTH,
+      WORLD_WIDTH - gameViewWidthRef.current,
     );
 
     setLives(3);
@@ -563,9 +580,9 @@ export default function TinyBuildifyJump() {
     };
 
     cameraXRef.current = clamp(
-      playerRef.current.x - GAME_WIDTH * 0.34,
+      playerRef.current.x - gameViewWidthRef.current * 0.34,
       0,
-      WORLD_WIDTH - GAME_WIDTH,
+      WORLD_WIDTH - gameViewWidthRef.current,
     );
 
     setLives(3);
@@ -931,9 +948,9 @@ export default function TinyBuildifyJump() {
       }
 
       const targetCamera = clamp(
-        player.x - GAME_WIDTH * 0.34,
+        player.x - gameViewWidthRef.current * 0.34,
         0,
-        WORLD_WIDTH - GAME_WIDTH,
+        WORLD_WIDTH - gameViewWidthRef.current,
       );
 
       cameraXRef.current +=
@@ -1165,7 +1182,7 @@ export default function TinyBuildifyJump() {
 
     ctx.fillStyle = "#ffffff";
     for (let i = 0; i < 78; i += 1) {
-      const x = wrap(i * 131 - cameraX * 0.08, GAME_WIDTH);
+      const x = wrap(i * 131 - cameraX * 0.08, gameViewWidthRef.current);
       const y = (i * 71 + time * 0.04) % GAME_HEIGHT;
       ctx.fillRect(x, y, i % 4 === 0 ? 4 : 2, i % 4 === 0 ? 4 : 2);
     }
@@ -1262,7 +1279,7 @@ export default function TinyBuildifyJump() {
     // Sand particles.
     ctx.fillStyle = "rgba(255,230,170,.5)";
     for (let i = 0; i < 45; i += 1) {
-      const x = wrap(i * 149 + time * 0.09, GAME_WIDTH);
+      const x = wrap(i * 149 + time * 0.09, gameViewWidthRef.current);
       const y = 210 + ((i * 53 + time * 0.02) % 230);
       ctx.fillRect(x, y, 3, 2);
     }
@@ -1321,7 +1338,7 @@ export default function TinyBuildifyJump() {
 
     // Fireflies.
     for (let i = 0; i < 30; i += 1) {
-      const x = wrap(i * 173 - cameraX * 0.13, GAME_WIDTH);
+      const x = wrap(i * 173 - cameraX * 0.13, gameViewWidthRef.current);
       const y = 180 + ((i * 67 + Math.sin(time * 0.004 + i) * 20) % 240);
       rect(ctx, x, y, 3, 3, "rgba(255,238,113,.85)");
     }
@@ -1444,7 +1461,7 @@ export default function TinyBuildifyJump() {
     // Bubbles and distant fish.
     ctx.strokeStyle = "rgba(220,255,255,.52)";
     for (let i = 0; i < 35; i += 1) {
-      const x = wrap(i * 157 - cameraX * 0.12, GAME_WIDTH);
+      const x = wrap(i * 157 - cameraX * 0.12, gameViewWidthRef.current);
       const y = GAME_HEIGHT - ((i * 83 + time * 0.035) % GAME_HEIGHT);
       ctx.beginPath();
       ctx.arc(x, y, 2 + (i % 4), 0, Math.PI * 2);
@@ -1583,7 +1600,8 @@ export default function TinyBuildifyJump() {
 
     // Meteors.
     for (let i = 0; i < 8; i += 1) {
-      const x = ((i * 190 + time * 0.11) % (GAME_WIDTH + 220)) - 110;
+      const x =
+        ((i * 190 + time * 0.11) % (gameViewWidthRef.current + 220)) - 110;
       const y = (i * 73 + time * 0.07) % 260;
       ctx.strokeStyle = "rgba(255,123,45,.62)";
       ctx.lineWidth = 5;
@@ -1596,7 +1614,7 @@ export default function TinyBuildifyJump() {
 
     ctx.fillStyle = "#ffb12f";
     for (let i = 0; i < 34; i += 1) {
-      const x = wrap(i * 173 + time * 0.06, GAME_WIDTH);
+      const x = wrap(i * 173 + time * 0.06, gameViewWidthRef.current);
       const y = GAME_HEIGHT - ((i * 73 + time * 0.04) % GAME_HEIGHT);
       ctx.fillRect(x, y, 3, 6);
     }
@@ -1823,7 +1841,7 @@ export default function TinyBuildifyJump() {
     // Lightning reveals the castle silhouette.
     if (Math.sin(time * 0.0021) > 0.965) {
       ctx.fillStyle = "rgba(235,241,255,.22)";
-      ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+      ctx.fillRect(0, 0, gameViewWidthRef.current, GAME_HEIGHT);
 
       ctx.strokeStyle = "#e8edff";
       ctx.lineWidth = 5;
@@ -1839,7 +1857,7 @@ export default function TinyBuildifyJump() {
     ctx.strokeStyle = "rgba(197,204,226,.25)";
     ctx.lineWidth = 2;
     for (let i = 0; i < 60; i += 1) {
-      const x = wrap(i * 83 + time * 0.08, GAME_WIDTH);
+      const x = wrap(i * 83 + time * 0.08, gameViewWidthRef.current);
       const y = (i * 59 + time * 0.12) % GAME_HEIGHT;
       ctx.beginPath();
       ctx.moveTo(x, y);
@@ -2277,14 +2295,14 @@ export default function TinyBuildifyJump() {
     time: number,
   ) => {
     const biome = getBiomeAt(
-      clamp(cameraX + GAME_WIDTH / 2, 0, WORLD_WIDTH - 1),
+      clamp(cameraX + gameViewWidthRef.current / 2, 0, WORLD_WIDTH - 1),
     );
 
     const gradient = ctx.createLinearGradient(0, 0, 0, GAME_HEIGHT);
     gradient.addColorStop(0, biome.skyTop);
     gradient.addColorStop(1, biome.skyBottom);
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    ctx.fillRect(0, 0, gameViewWidthRef.current, GAME_HEIGHT);
 
     if (biome.id === "darkForest") drawDarkForest(ctx, cameraX, time);
     if (biome.id === "snow") drawSnow(ctx, cameraX, time);
@@ -2300,7 +2318,8 @@ export default function TinyBuildifyJump() {
   const drawPlatforms = (ctx: CanvasRenderingContext2D, cameraX: number) => {
     for (const platform of platforms) {
       const x = platform.x - cameraX;
-      if (x + platform.width < -80 || x > GAME_WIDTH + 80) continue;
+      if (x + platform.width < -80 || x > gameViewWidthRef.current + 80)
+        continue;
 
       const biome =
         BIOMES.find((item) => item.id === platform.biome) ?? BIOMES[0];
@@ -2389,7 +2408,7 @@ export default function TinyBuildifyJump() {
 
     // At the starting point, show only the flag and pole — no checkpoint stone.
     if (checkpoint.label === "START") {
-      if (x < -80 || x > GAME_WIDTH + 80) return;
+      if (x < -80 || x > gameViewWidthRef.current + 80) return;
 
       rect(ctx, x, FLOOR_Y - 72, 7, 72, "#4b3c35");
       rect(ctx, x - 3, FLOOR_Y - 78, 13, 9, "#6d5548");
@@ -2398,7 +2417,7 @@ export default function TinyBuildifyJump() {
       rect(ctx, x + 23, FLOOR_Y - 62, 9, 8, "#5fb58b");
       return;
     }
-    if (x < -80 || x > GAME_WIDTH + 80) return;
+    if (x < -80 || x > gameViewWidthRef.current + 80) return;
 
     const active = checkpoint.x <= checkpointXRef.current;
     rect(ctx, x, FLOOR_Y - 82, 8, 82, "#4b3c35");
@@ -2469,7 +2488,7 @@ export default function TinyBuildifyJump() {
       Math.round(monster.y) +
       Math.round(Math.sin(time * 0.008 + monster.x) * 2);
 
-    if (x < -80 || x > GAME_WIDTH + 80) return;
+    if (x < -80 || x > gameViewWidthRef.current + 80) return;
 
     ctx.save();
 
@@ -2610,41 +2629,96 @@ export default function TinyBuildifyJump() {
   };
 
   const drawHud = (ctx: CanvasRenderingContext2D) => {
-    rect(ctx, 18, 18, 245, 62, "rgba(10,12,29,.78)");
-    rect(ctx, GAME_WIDTH - 330, 18, 242, 62, "rgba(10,12,29,.78)");
+    const viewWidth = gameViewWidthRef.current;
+    const touchHud = isTouch;
+
+    // On phones the logical viewport is wider than desktop. Keep the HUD
+    // comfortably away from the pause button and scale the important text up
+    // instead of stretching the UI with the world.
+    const lifeBoxX = touchHud ? 24 : 18;
+    const lifeBoxY = touchHud ? 20 : 18;
+    const lifeBoxWidth = touchHud ? 286 : 245;
+    const lifeBoxHeight = touchHud ? 72 : 62;
+
+    const progressBoxWidth = touchHud ? 230 : 242;
+    const progressBoxHeight = touchHud ? 68 : 62;
+    const progressBoxX = touchHud
+      ? viewWidth - progressBoxWidth - 142
+      : viewWidth - 330;
+    const progressBoxY = touchHud ? 20 : 18;
+
+    rect(
+      ctx,
+      lifeBoxX,
+      lifeBoxY,
+      lifeBoxWidth,
+      lifeBoxHeight,
+      "rgba(10,12,29,.78)",
+    );
+    rect(
+      ctx,
+      progressBoxX,
+      progressBoxY,
+      progressBoxWidth,
+      progressBoxHeight,
+      "rgba(10,12,29,.78)",
+    );
 
     ctx.strokeStyle = "rgba(255,255,255,.18)";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(18, 18, 245, 62);
-    ctx.strokeRect(GAME_WIDTH - 330, 18, 242, 62);
+    ctx.lineWidth = touchHud ? 2.5 : 2;
+    ctx.strokeRect(lifeBoxX, lifeBoxY, lifeBoxWidth, lifeBoxHeight);
+    ctx.strokeRect(
+      progressBoxX,
+      progressBoxY,
+      progressBoxWidth,
+      progressBoxHeight,
+    );
 
     pixelText(
       ctx,
       `LIFE ${"♥".repeat(Math.max(0, lives))}`,
-      34,
-      50,
-      18,
+      lifeBoxX + 18,
+      lifeBoxY + (touchHud ? 39 : 32),
+      touchHud ? 24 : 18,
       "#ffffff",
     );
+
     pixelText(
       ctx,
       `${progress}%`,
-      GAME_WIDTH - 108,
-      48,
-      20,
+      progressBoxX + progressBoxWidth - 18,
+      progressBoxY + (touchHud ? 40 : 30),
+      touchHud ? 25 : 20,
       "#ffffff",
       "right",
     );
 
-    rect(ctx, 34, 68, 212, 4, "rgba(255,255,255,.14)");
-    rect(ctx, 34, 68, 212 * (progress / 100), 4, "#8ce4b5");
+    const progressTrackX = lifeBoxX + 16;
+    const progressTrackY = lifeBoxY + lifeBoxHeight - (touchHud ? 12 : 12);
+    const progressTrackWidth = lifeBoxWidth - 32;
+    rect(
+      ctx,
+      progressTrackX,
+      progressTrackY,
+      progressTrackWidth,
+      touchHud ? 5 : 4,
+      "rgba(255,255,255,.14)",
+    );
+    rect(
+      ctx,
+      progressTrackX,
+      progressTrackY,
+      progressTrackWidth * (progress / 100),
+      touchHud ? 5 : 4,
+      "#8ce4b5",
+    );
 
     pixelText(
       ctx,
-      `CHECKPOINT ${checkpointLabel}`,
-      GAME_WIDTH / 2,
-      35,
-      11,
+      currentBiome.name,
+      viewWidth / 2,
+      touchHud ? 44 : 35,
+      touchHud ? 18 : 13,
       "#f4f5ff",
       "center",
     );
@@ -2658,13 +2732,20 @@ export default function TinyBuildifyJump() {
 
     ctx.save();
     ctx.globalAlpha = alpha;
-    rect(ctx, GAME_WIDTH / 2 - 195, 112, 390, 92, "rgba(9,10,29,.84)");
+    rect(
+      ctx,
+      gameViewWidthRef.current / 2 - 195,
+      112,
+      390,
+      92,
+      "rgba(9,10,29,.84)",
+    );
     ctx.strokeStyle = "rgba(255,255,255,.2)";
-    ctx.strokeRect(GAME_WIDTH / 2 - 195, 112, 390, 92);
+    ctx.strokeRect(gameViewWidthRef.current / 2 - 195, 112, 390, 92);
     pixelText(
       ctx,
       currentBiome.name,
-      GAME_WIDTH / 2,
+      gameViewWidthRef.current / 2,
       152,
       25,
       "#ffffff",
@@ -2673,7 +2754,7 @@ export default function TinyBuildifyJump() {
     pixelText(
       ctx,
       currentBiome.subtitle,
-      GAME_WIDTH / 2,
+      gameViewWidthRef.current / 2,
       181,
       13,
       "#c4c8df",
@@ -2737,9 +2818,9 @@ export default function TinyBuildifyJump() {
         playerRef.current.facing = -1;
 
         cameraXRef.current = clamp(
-          playerRef.current.x - GAME_WIDTH * 0.34,
+          playerRef.current.x - gameViewWidthRef.current * 0.34,
           0,
-          WORLD_WIDTH - GAME_WIDTH,
+          WORLD_WIDTH - gameViewWidthRef.current,
         );
 
         setCurrentBiome(BIOMES[BIOMES.length - 1]);
@@ -2877,7 +2958,7 @@ export default function TinyBuildifyJump() {
       >
         <canvas
           ref={canvasRef}
-          width={GAME_WIDTH}
+          width={gameViewWidth}
           height={GAME_HEIGHT}
           className="game-canvas"
           aria-label="Tiny Buildify Jump"
@@ -2914,7 +2995,6 @@ export default function TinyBuildifyJump() {
                 <span />
               </span>
             </button>
-            <div className="biome-badge">{currentBiome.name}</div>
           </>
         )}
 
@@ -3132,6 +3212,11 @@ export default function TinyBuildifyJump() {
                   availableHeight / GAME_HEIGHT,
                 );
 
+                // Keep the bedroom artwork at its real 16:9 proportions on
+                // every device. Phones use the same contain scale as desktop:
+                // nothing is stretched and nothing is zoom-cropped. Any extra
+                // width on ultra-wide phones is filled by the bedroom viewport
+                // background instead of enlarging the 960x540 artwork.
                 return {
                   width: `${GAME_WIDTH}px`,
                   height: `${GAME_HEIGHT}px`,
@@ -3222,8 +3307,19 @@ export default function TinyBuildifyJump() {
                   </span>
                 </div>
 
+                <div className="ref-left-gallery">
+                  <span className="ref-art-frame ref-art-frame-a">
+                    <i />
+                  </span>
+                  <span className="ref-art-frame ref-art-frame-b">
+                    <i />
+                  </span>
+                  <span className="ref-art-frame ref-art-frame-c">
+                    <i />
+                  </span>
+                </div>
+
                 <div className="ref-floor-rug" />
-                <div className="ref-wall-trim" />
               </div>
 
               <div
@@ -3249,9 +3345,9 @@ export default function TinyBuildifyJump() {
               </div>
 
               <div className="home-caption finish-sign">
-                <span>พักผ่อนให้พร้อมไหม?</span>
-                <small>เดินไปโซฟาถ้าอยากจบเกม</small>
-                <em>เดินไปทางซ้ายเพื่อกลับไปที่หมู่บ้าน</em>
+                <span>READY TO CALL IT A DAY?</span>
+                <small>Walk to the sofa if you want to finish the game.</small>
+                <em>Walk left to return to the village.</em>
               </div>
             </div>
           </div>
@@ -3289,21 +3385,34 @@ export default function TinyBuildifyJump() {
                 </div>
               </div>
 
-              <div className="dialog-actions">
+              <div className="dialog-actions finished-action-row">
                 <button
                   type="button"
-                  className="primary-action finished-equal-action"
+                  className="finished-action-button finished-action-again"
                   onClick={startGame}
+                  style={{
+                    backgroundColor: "#8de4b6",
+                    boxShadow: "0 6px 0 #3f9879",
+                    color: "#18362f",
+                  }}
                 >
                   PLAY AGAIN
                 </button>
 
-                <Link
-                  href="/playground"
-                  className="primary-action finished-equal-action"
+                <button
+                  type="button"
+                  className="finished-action-button finished-action-playground"
+                  onClick={() => {
+                    window.location.href = "/playground";
+                  }}
+                  style={{
+                    backgroundColor: "#70b7ff",
+                    boxShadow: "0 6px 0 #397fc4",
+                    color: "#102f55",
+                  }}
                 >
                   PLAYGROUND
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -3350,7 +3459,10 @@ export default function TinyBuildifyJump() {
                 onLostPointerCapture={(event) => releaseControl(event, "jump")}
                 onContextMenu={(event) => event.preventDefault()}
               >
-                <span aria-hidden="true">↑</span>
+                <span className="jump-glyph" aria-hidden="true">
+                  <i />
+                  <i />
+                </span>
               </button>
             )}
           </div>
@@ -7309,6 +7421,8 @@ export default function TinyBuildifyJump() {
           display: block;
           width: 100%;
           height: 100%;
+          /* The canvas logical width is matched to the phone aspect ratio, so
+             this fills the viewport without geometrically stretching sprites. */
           object-fit: fill;
         }
 
@@ -8150,6 +8264,9 @@ export default function TinyBuildifyJump() {
 
         .finished-card .finished-equal-action,
         .touch-device .finished-card .finished-equal-action {
+          --finish-action-bg: #8de4b6;
+          --finish-action-shadow: #3f9879;
+          --finish-action-text: #18362f;
           display: inline-flex;
           width: 100% !important;
           min-width: 0 !important;
@@ -8159,17 +8276,105 @@ export default function TinyBuildifyJump() {
           justify-content: center;
           margin: 0;
           padding: 0 18px !important;
-          color: #18362f;
-          border: 0;
-          border-radius: 8px;
-          background: #8de4b6;
-          box-shadow: 0 6px 0 #3f9879;
+          color: var(--finish-action-text) !important;
+          border: 0 !important;
+          border-radius: 8px !important;
+          background: var(--finish-action-bg) !important;
+          box-shadow: 0 6px 0 var(--finish-action-shadow) !important;
           font: inherit;
           font-weight: 900;
           line-height: 1;
           text-align: center;
-          text-decoration: none;
+          text-decoration: none !important;
           cursor: pointer;
+        }
+
+        .finished-card .finished-action-again,
+        .touch-device .finished-card .finished-action-again {
+          --finish-action-bg: #8de4b6;
+          --finish-action-shadow: #3f9879;
+          --finish-action-text: #18362f;
+        }
+
+        .finished-card .finished-action-playground,
+        .touch-device .finished-card .finished-action-playground {
+          --finish-action-bg: #70b7ff;
+          --finish-action-shadow: #397fc4;
+          --finish-action-text: #102f55;
+        }
+
+        .finished-card .finished-equal-action:hover {
+          filter: brightness(1.08);
+          transform: translateY(-2px);
+        }
+
+        .finished-card .finished-equal-action:active {
+          box-shadow: 0 2px 0 var(--finish-action-shadow) !important;
+          transform: translateY(4px);
+        }
+
+        /* Final rebuilt finish buttons: both actions are real BUTTON elements. */
+        .finished-card .finished-action-row {
+          display: grid !important;
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          gap: 14px !important;
+          width: min(430px, 100%) !important;
+          margin: 28px auto 0 !important;
+        }
+
+        .finished-card .finished-action-row > .finished-action-button {
+          appearance: none !important;
+          -webkit-appearance: none !important;
+          display: flex !important;
+          width: 100% !important;
+          min-width: 0 !important;
+          height: 52px !important;
+          min-height: 52px !important;
+          align-items: center !important;
+          justify-content: center !important;
+          margin: 0 !important;
+          padding: 0 16px !important;
+          border: 0 !important;
+          border-radius: 8px !important;
+          font-family: var(--font-pixel), monospace !important;
+          font-size: 15px !important;
+          font-weight: 800 !important;
+          line-height: 1 !important;
+          letter-spacing: 0.02em !important;
+          text-align: center !important;
+          text-decoration: none !important;
+          cursor: pointer !important;
+          transform: translateY(0);
+          transition:
+            transform 120ms ease,
+            filter 120ms ease,
+            box-shadow 120ms ease;
+        }
+
+        .finished-card .finished-action-row > .finished-action-button:hover {
+          filter: brightness(1.07);
+          transform: translateY(-2px);
+        }
+
+        .finished-card .finished-action-row > .finished-action-button:active {
+          transform: translateY(4px);
+          box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35) !important;
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+          .touch-device .finished-card .finished-action-row {
+            gap: 10px !important;
+            width: min(470px, 100%) !important;
+          }
+
+          .touch-device
+            .finished-card
+            .finished-action-row
+            > .finished-action-button {
+            height: 54px !important;
+            min-height: 54px !important;
+            font-size: 16px !important;
+          }
         }
 
         @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
@@ -9139,7 +9344,16 @@ export default function TinyBuildifyJump() {
           align-items: center;
           justify-content: center;
           overflow: hidden;
-          background: #252849;
+          /* Extend the room visually on very-wide screens instead of showing
+             black bars or zooming the 960x540 room. */
+          background:
+            linear-gradient(
+              to bottom,
+              transparent 0 72.5%,
+              rgba(16, 18, 38, 0.34) 72.5% 73.2%,
+              transparent 73.2%
+            ),
+            linear-gradient(to bottom, #343961 0 73%, #6a5142 73% 100%);
           pointer-events: auto;
         }
 
@@ -9297,6 +9511,412 @@ export default function TinyBuildifyJump() {
             margin-top: 8px !important;
             font-size: 13px !important;
             line-height: 1.25 !important;
+          }
+        }
+
+        /* Latest home refinements: remove the wall stripe, add a small left
+           gallery, and make the touch version fill the available viewport. */
+        .bedroom-viewport .ref-wall-trim {
+          display: none !important;
+        }
+
+        .ref-left-gallery {
+          position: absolute;
+          left: 62px;
+          top: 76px;
+          width: 182px;
+          height: 122px;
+          pointer-events: none;
+        }
+
+        .ref-art-frame {
+          position: absolute;
+          display: block;
+          background: #2b2940;
+          border: 6px solid #675746;
+          box-shadow:
+            inset 0 0 0 4px #a4875a,
+            5px 6px 0 rgba(12, 14, 31, 0.26);
+        }
+
+        .ref-art-frame i {
+          position: absolute;
+          inset: 9px;
+          display: block;
+          background:
+            linear-gradient(
+              145deg,
+              transparent 0 42%,
+              #6fa39a 43% 58%,
+              transparent 59%
+            ),
+            linear-gradient(
+              35deg,
+              #3e5571 0 46%,
+              #d4bb75 47% 59%,
+              #765168 60% 100%
+            );
+        }
+
+        .ref-art-frame-a {
+          left: 0;
+          top: 0;
+          width: 76px;
+          height: 58px;
+        }
+
+        .ref-art-frame-b {
+          left: 92px;
+          top: 14px;
+          width: 62px;
+          height: 76px;
+        }
+
+        .ref-art-frame-b i {
+          background: linear-gradient(180deg, #243b5c 0 55%, #4d766d 56% 100%);
+        }
+
+        .ref-art-frame-b i::before {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 13px;
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          transform: translateX(-50%);
+          background: #ead889;
+        }
+
+        .ref-art-frame-c {
+          left: 34px;
+          top: 72px;
+          width: 78px;
+          height: 46px;
+        }
+
+        .ref-art-frame-c i {
+          background: linear-gradient(
+            135deg,
+            #344b67 0 40%,
+            #80634e 41% 57%,
+            #39766e 58% 100%
+          );
+        }
+
+        /* Touch-only: keep the fixed 960x540 stage centered with a uniform
+           contain scale. Extra ultra-wide space is painted by the viewport,
+           so the room never stretches and never zoom-crops. */
+        @media (hover: none) and (pointer: coarse) {
+          .touch-device .bedroom-viewport {
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            min-width: 100% !important;
+            min-height: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+            overflow: hidden !important;
+          }
+
+          .touch-device .bedroom-viewport .bedroom-scene.bedroom-unified-stage {
+            margin: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+          }
+
+          /* Bigger English sign text on phones after the stage itself is fit
+             to the full viewport. */
+          .touch-device .bedroom-viewport .finish-sign {
+            width: 410px !important;
+            min-height: 124px !important;
+            top: 20px !important;
+            right: 22px !important;
+            padding: 18px 22px !important;
+          }
+
+          .touch-device .bedroom-viewport .finish-sign > span {
+            font-size: 22px !important;
+            line-height: 1.12 !important;
+            letter-spacing: 0.65px !important;
+          }
+
+          .touch-device .bedroom-viewport .finish-sign > small {
+            margin-top: 11px !important;
+            font-size: 19px !important;
+            line-height: 1.28 !important;
+          }
+
+          .touch-device .bedroom-viewport .finish-sign > em {
+            margin-top: 9px !important;
+            font-size: 14px !important;
+            line-height: 1.24 !important;
+          }
+        }
+
+        /* Mobile title screen + touch controls refinement.
+           Desktop keeps the original composition. Phones use the same artwork,
+           but scale the title composition by viewport height rather than letting
+           desktop-sized artwork dominate a short landscape screen. */
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+          .touch-device .title-screen {
+            justify-content: center;
+            padding-top: max(6px, env(safe-area-inset-top));
+            padding-right: max(12px, env(safe-area-inset-right));
+            padding-bottom: max(8px, env(safe-area-inset-bottom));
+            padding-left: max(12px, env(safe-area-inset-left));
+          }
+
+          .touch-device .game-logo {
+            margin-top: clamp(-18px, -3vh, -8px) !important;
+            transform: rotate(-2deg) scale(0.78) !important;
+            transform-origin: center center;
+          }
+
+          .touch-device .logo-tiny {
+            font-size: clamp(34px, 9.2vh, 58px) !important;
+          }
+
+          .touch-device .logo-buildify {
+            margin-top: 4px !important;
+            font-size: clamp(38px, 10.2vh, 64px) !important;
+          }
+
+          .touch-device .logo-jump {
+            margin-top: 7px !important;
+            font-size: clamp(24px, 6.2vh, 40px) !important;
+          }
+
+          .touch-device .game-logo span {
+            -webkit-text-stroke-width: 4px !important;
+          }
+
+          .touch-device .title-description {
+            max-width: min(58vw, 510px);
+            margin: clamp(4px, 1.2vh, 9px) auto clamp(5px, 1.3vh, 10px) !important;
+            padding: 0 10px;
+            font-size: clamp(9px, 2.2vh, 12px) !important;
+            line-height: 1.35;
+          }
+
+          .touch-device .main-play-button {
+            width: clamp(50px, 12.5vh, 68px) !important;
+            height: clamp(50px, 12.5vh, 68px) !important;
+            border-width: clamp(4px, 1vh, 6px) !important;
+            border-radius: clamp(13px, 3vh, 18px) !important;
+            font-size: clamp(21px, 5.2vh, 29px) !important;
+          }
+
+          .touch-device .title-world-showcase {
+            right: 3% !important;
+            bottom: 9.5% !important;
+            left: 3% !important;
+            height: clamp(56px, 15vh, 88px) !important;
+            border-width: 3px !important;
+            border-bottom: 0 !important;
+            border-radius: 12px 12px 0 0 !important;
+          }
+
+          .touch-device .title-hero {
+            bottom: 9.5% !important;
+            left: 12% !important;
+            transform: scale(0.88) !important;
+            transform-origin: bottom center;
+          }
+
+          .touch-device .title-sun {
+            top: 9% !important;
+            right: 14% !important;
+            width: clamp(38px, 9vh, 58px) !important;
+            height: clamp(38px, 9vh, 58px) !important;
+          }
+
+          .touch-device .title-cloud {
+            transform: scale(0.72);
+          }
+
+          .touch-device .menu-controls {
+            bottom: max(1.8%, env(safe-area-inset-bottom)) !important;
+            gap: clamp(10px, 2.2vw, 22px) !important;
+            padding: 0 12px !important;
+            font-size: clamp(7px, 1.7vh, 9px) !important;
+            white-space: nowrap;
+          }
+
+          /* Larger thumb targets. Keep them visually light enough that they do
+             not hide the character on short phones. */
+          .touch-device .mobile-controls {
+            min-height: clamp(94px, 25vh, 132px) !important;
+            padding-right: max(
+              16px,
+              calc(env(safe-area-inset-right) + 10px)
+            ) !important;
+            padding-bottom: max(
+              12px,
+              calc(env(safe-area-inset-bottom) + 8px)
+            ) !important;
+            padding-left: max(
+              16px,
+              calc(env(safe-area-inset-left) + 10px)
+            ) !important;
+          }
+
+          .touch-device .movement-buttons {
+            gap: clamp(12px, 2vw, 20px) !important;
+          }
+
+          .touch-device .direction-button {
+            width: clamp(74px, min(13vw, 22vh), 106px) !important;
+            height: clamp(74px, min(13vw, 22vh), 106px) !important;
+            border-radius: clamp(14px, 2vw, 20px) !important;
+            font-size: clamp(30px, min(4.8vw, 9vh), 44px) !important;
+          }
+
+          .touch-device .jump-button {
+            width: clamp(96px, min(16vw, 28vh), 136px) !important;
+            height: clamp(96px, min(16vw, 28vh), 136px) !important;
+            border-radius: 50% !important;
+          }
+
+          .touch-device .jump-glyph {
+            position: relative;
+            display: block;
+            width: clamp(34px, 7vh, 48px);
+            height: clamp(34px, 7vh, 48px);
+          }
+
+          .touch-device .jump-glyph i {
+            position: absolute;
+            left: 50%;
+            display: block;
+            width: 100%;
+            height: 44%;
+            background: #ffffff;
+            clip-path: polygon(
+              0 72%,
+              50% 8%,
+              100% 72%,
+              82% 92%,
+              50% 53%,
+              18% 92%
+            );
+            filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.22));
+            transform: translateX(-50%);
+          }
+
+          .touch-device .jump-glyph i:first-child {
+            top: 1%;
+          }
+
+          .touch-device .jump-glyph i:last-child {
+            top: 39%;
+            opacity: 0.96;
+          }
+        }
+
+        /* Extra-short phones need a deliberately compact cover, but the game
+           buttons stay larger than before. */
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 430px) {
+          .compact-landscape .game-logo {
+            margin-top: -12px !important;
+            transform: rotate(-2deg) scale(0.66) !important;
+          }
+
+          .compact-landscape .title-description {
+            max-width: 52vw;
+            margin: 2px auto 4px !important;
+            font-size: 8px !important;
+          }
+
+          .compact-landscape .main-play-button {
+            width: 48px !important;
+            height: 48px !important;
+            border-width: 4px !important;
+            font-size: 20px !important;
+          }
+
+          .compact-landscape .title-world-showcase {
+            bottom: 8% !important;
+            height: 52px !important;
+          }
+
+          .compact-landscape .title-hero {
+            bottom: 8% !important;
+            transform: scale(0.72) !important;
+          }
+
+          .compact-landscape .menu-controls {
+            font-size: 7px !important;
+          }
+
+          .compact-landscape .direction-button {
+            width: clamp(72px, 21vh, 88px) !important;
+            height: clamp(72px, 21vh, 88px) !important;
+          }
+
+          .compact-landscape .jump-button {
+            width: clamp(94px, 27vh, 112px) !important;
+            height: clamp(94px, 27vh, 112px) !important;
+          }
+        }
+
+        /* Final mobile gameplay HUD/control tuning. */
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+          /* Slightly smaller than the previous revision, but still generous
+             enough for thumbs on a phone. */
+          .touch-device .direction-button {
+            width: clamp(64px, min(11vw, 19vh), 88px) !important;
+            height: clamp(64px, min(11vw, 19vh), 88px) !important;
+            border-radius: clamp(13px, 1.8vw, 18px) !important;
+            font-size: clamp(27px, min(4vw, 7.5vh), 38px) !important;
+          }
+
+          .touch-device .jump-button {
+            width: clamp(82px, min(14vw, 23vh), 112px) !important;
+            height: clamp(82px, min(14vw, 23vh), 112px) !important;
+          }
+
+          .touch-device .jump-glyph {
+            width: clamp(30px, 6.1vh, 42px) !important;
+            height: clamp(30px, 6.1vh, 42px) !important;
+          }
+
+          /* Move the biome name away from the pause control. The percentage
+             panel is drawn on canvas and is also shifted left in drawHud(). */
+          .touch-device .biome-badge {
+            top: max(76px, calc(env(safe-area-inset-top) + 68px)) !important;
+            right: max(
+              86px,
+              calc(env(safe-area-inset-right) + 78px)
+            ) !important;
+            width: 132px !important;
+            padding: 8px 10px !important;
+            font-size: 11px !important;
+            line-height: 1.3 !important;
+          }
+        }
+
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 430px) {
+          .compact-landscape .direction-button {
+            width: clamp(58px, 17vh, 74px) !important;
+            height: clamp(58px, 17vh, 74px) !important;
+          }
+
+          .compact-landscape .jump-button {
+            width: clamp(74px, 21vh, 92px) !important;
+            height: clamp(74px, 21vh, 92px) !important;
+          }
+
+          .compact-landscape .biome-badge {
+            top: max(66px, calc(env(safe-area-inset-top) + 58px)) !important;
+            right: max(
+              78px,
+              calc(env(safe-area-inset-right) + 70px)
+            ) !important;
+            width: 122px !important;
+            font-size: 10px !important;
           }
         }
 
