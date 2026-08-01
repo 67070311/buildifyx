@@ -3105,208 +3105,154 @@ export default function TinyBuildifyJump() {
         )}
 
         {status === "bedroom" && (
-          <div
-            className={`bedroom-scene ${isTouch ? "bedroom-touch-fit" : ""}`}
-            style={
-              isTouch
-                ? (() => {
-                    const bedroomScale = Math.min(
-                      viewportSize.width / GAME_WIDTH,
-                      viewportSize.height / GAME_HEIGHT,
+          <div className="bedroom-viewport">
+            <div
+              className="bedroom-scene bedroom-unified-stage"
+              style={(() => {
+                // One fixed 960x540 room for every device. Desktop mirrors the
+                // game-shell sizing rules; touch uses the real browser viewport.
+                // The room is scaled exactly once inside bedroom-viewport.
+                const desktopGutter = viewportSize.height <= 760 ? 20 : 40;
+                const availableWidth = isTouch
+                  ? viewportSize.width
+                  : Math.min(
+                      Math.max(320, viewportSize.width - desktopGutter),
+                      1280,
                     );
-                    const scaledWidth = GAME_WIDTH * bedroomScale;
-                    const scaledHeight = GAME_HEIGHT * bedroomScale;
+                const desktopAspectHeight =
+                  availableWidth * (GAME_HEIGHT / GAME_WIDTH);
+                const availableHeight = isTouch
+                  ? viewportSize.height
+                  : Math.min(
+                      desktopAspectHeight,
+                      Math.max(180, viewportSize.height - desktopGutter),
+                    );
+                const bedroomScale = Math.min(
+                  availableWidth / GAME_WIDTH,
+                  availableHeight / GAME_HEIGHT,
+                );
 
-                    return {
-                      width: `${GAME_WIDTH}px`,
-                      height: `${GAME_HEIGHT}px`,
-                      left: `${(viewportSize.width - scaledWidth) / 2}px`,
-                      top: `${(viewportSize.height - scaledHeight) / 2}px`,
-                      transform: `scale(${bedroomScale})`,
-                      transformOrigin: "top left",
-                    };
-                  })()
-                : undefined
-            }
-          >
-            <div className="bedroom-wallpaper" />
-
-            <div className="bedroom-fairy-lights" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-
-            <div className="bedroom-poster poster-one">★</div>
-            <div
-              className="bedroom-poster poster-two character-portrait"
-              aria-label="Character portrait"
+                return {
+                  width: `${GAME_WIDTH}px`,
+                  height: `${GAME_HEIGHT}px`,
+                  transform: `scale(${bedroomScale})`,
+                  transformOrigin: "center center",
+                };
+              })()}
             >
-              <span className="portrait-ear portrait-ear-left" />
-              <span className="portrait-ear portrait-ear-right" />
-              <span className="portrait-head" />
-              <span className="portrait-mask" />
-              <span className="portrait-eye" />
-              <span className="portrait-scarf" />
-            </div>
+              <div className="bedroom-wallpaper" />
 
-            <div className="family-gallery" aria-label="Family memories">
-              <div className="family-frame family-frame-one">
-                <span className="family-sky" />
-                <span className="family-ground" />
-                <span className="family-person person-a" />
-                <span className="family-person person-b" />
-                <span className="family-kite" />
+              {/* Reference-inspired home interior: the furniture language comes
+                from the supplied pixel-art room, while the palette stays in
+                the game's original dusk / navy / teal / warm-wood family. */}
+              <div className="home-reference-room" aria-hidden="true">
+                <div className="ref-side-table">
+                  <span className="ref-lamp-shade" />
+                  <span className="ref-lamp-stem" />
+                  <span className="ref-lamp-base" />
+                </div>
+
+                <div className="ref-sofa">
+                  <span className="ref-sofa-back" />
+                  <span className="ref-sofa-seat" />
+                  <span className="ref-sofa-arm ref-sofa-arm-left" />
+                  <span className="ref-sofa-arm ref-sofa-arm-right" />
+                  <span className="ref-sofa-leg ref-sofa-leg-left" />
+                  <span className="ref-sofa-leg ref-sofa-leg-right" />
+                  <span className="ref-sofa-cushion ref-cushion-left" />
+                  <span className="ref-sofa-cushion ref-cushion-right" />
+                </div>
+
+                <div className="ref-window">
+                  <span className="ref-window-sky" />
+                  <span className="ref-window-moon" />
+                  <span className="ref-window-star ref-window-star-a" />
+                  <span className="ref-window-star ref-window-star-b" />
+                  <span className="ref-window-frame-v" />
+                  <span className="ref-window-frame-h" />
+                  <span className="ref-curtain ref-curtain-left" />
+                  <span className="ref-curtain ref-curtain-right" />
+                  <span className="ref-curtain-rod" />
+                </div>
+
+                <div className="ref-dresser">
+                  <span className="ref-dresser-top" />
+                  <span className="ref-drawer ref-drawer-one">
+                    <i />
+                  </span>
+                  <span className="ref-drawer ref-drawer-two">
+                    <i />
+                  </span>
+                </div>
+
+                <div className="ref-floating-shelf ref-floating-shelf-top">
+                  <span className="ref-book ref-book-a" />
+                  <span className="ref-book ref-book-b" />
+                  <span className="ref-book ref-book-c" />
+                  <span className="ref-book ref-book-d" />
+                  <span className="ref-small-plant">
+                    <i />
+                  </span>
+                </div>
+
+                <div className="ref-floating-shelf ref-floating-shelf-small">
+                  <span className="ref-photo-frame">
+                    <i />
+                    <b />
+                  </span>
+                  <span className="ref-flower-pot">
+                    <i />
+                    <b />
+                  </span>
+                </div>
+
+                <div className="ref-tv-console">
+                  <div className="ref-tv">
+                    <span className="ref-tv-screen" />
+                    <span className="ref-tv-stand" />
+                  </div>
+                  <span className="ref-console-top" />
+                  <span className="ref-console-door ref-console-door-left" />
+                  <span className="ref-console-door ref-console-door-right" />
+                  <span className="ref-console-drawer ref-console-drawer-one">
+                    <i />
+                  </span>
+                  <span className="ref-console-drawer ref-console-drawer-two">
+                    <i />
+                  </span>
+                </div>
+
+                <div className="ref-floor-rug" />
+                <div className="ref-wall-trim" />
               </div>
-              <div className="family-frame family-frame-two">
-                <span className="family-table" />
-                <span className="family-person person-c" />
-                <span className="family-person person-d" />
-                <span className="family-cake" />
+
+              <div
+                ref={bedroomPlayerElementRef}
+                className={`walking-home-player outdoor-sprite ${
+                  bedroomWalking ? "is-walking" : "is-idle"
+                } ${bedroomFacing === -1 ? "faces-left" : "faces-right"}`}
+                style={{ left: `${bedroomPlayerX}%` }}
+              >
+                <span className="sprite-tail" />
+                <span className="sprite-body" />
+                <span className="sprite-head" />
+                <span className="sprite-ear sprite-ear-one" />
+                <span className="sprite-ear sprite-ear-two" />
+                <span className="sprite-mask" />
+                <span className="sprite-eye" />
+                <span className="sprite-scarf-main" />
+                <span className="sprite-scarf-tail" />
+                <span className="sprite-leg sprite-leg-one" />
+                <span className="sprite-leg sprite-leg-two" />
+                <span className="sprite-highlight-one" />
+                <span className="sprite-highlight-two" />
               </div>
-              <div className="family-frame family-frame-three">
-                <span className="family-tree" />
-                <span className="family-person person-e" />
-                <span className="family-person person-f" />
-                <span className="family-flower" />
+
+              <div className="home-caption finish-sign">
+                <span>พักผ่อนให้พร้อมไหม?</span>
+                <small>เดินไปโซฟาถ้าอยากจบเกม</small>
+                <em>เดินไปทางซ้ายเพื่อกลับไปที่หมู่บ้าน</em>
               </div>
-              <div className="family-frame family-frame-four">
-                <span className="family-water" />
-                <span className="family-person person-g" />
-                <span className="family-person person-h" />
-                <span className="family-fish-icon" />
-              </div>
-            </div>
-
-            <div className="bedroom-clock" aria-label="Bedroom clock">
-              <span className="clock-hand hour-hand" />
-              <span className="clock-hand minute-hand" />
-            </div>
-
-            <div className="bedroom-window bedroom-window-large">
-              <div className="window-sky-glow" />
-              <div className="bedroom-moon" />
-              <span className="star star-a" />
-              <span className="star star-b" />
-              <span className="star star-c" />
-              <span className="window-curtain curtain-left" />
-              <span className="window-curtain curtain-right" />
-              <span className="window-plant">
-                <i />
-                <i />
-                <i />
-              </span>
-            </div>
-
-            <div className="wall-shelf">
-              <span className="shelf-book book-red" />
-              <span className="shelf-book book-blue" />
-              <span className="shelf-book book-yellow" />
-              <span className="shelf-book book-purple" />
-              <span className="shelf-globe" />
-              <span className="shelf-camera" />
-            </div>
-
-            <div className="computer-desk">
-              <div className="computer-monitor">
-                <span className="monitor-brand">BUILDIFYX</span>
-                <span className="monitor-cursor" />
-              </div>
-              <div className="monitor-stand" />
-              <div className="desk-drawer" />
-              <div className="desk-leg desk-leg-left" />
-              <div className="desk-leg desk-leg-right" />
-            </div>
-
-            <div className="bedroom-cabinet">
-              <span className="cabinet-book cabinet-book-a" />
-              <span className="cabinet-book cabinet-book-b" />
-              <span className="cabinet-book cabinet-book-c" />
-              <span className="cabinet-drawer" />
-            </div>
-
-            <div className="small-round-window" aria-hidden="true">
-              <span className="round-window-moon" />
-              <span className="round-window-star star-one" />
-              <span className="round-window-star star-two" />
-            </div>
-
-            <div className="bedroom-mirror">
-              <span className="mirror-shine shine-a" />
-              <span className="mirror-shine shine-b" />
-            </div>
-
-            <div className="aquarium">
-              <div className="aquarium-water">
-                <span className="aquarium-fish fish-a" />
-                <span className="aquarium-fish fish-b" />
-                <span className="aquarium-fish fish-c" />
-                <span className="aquarium-plant plant-a" />
-                <span className="aquarium-plant plant-b" />
-                <span className="aquarium-bubble bubble-a" />
-                <span className="aquarium-bubble bubble-b" />
-                <span className="aquarium-bubble bubble-c" />
-              </div>
-              <div className="aquarium-stand" />
-            </div>
-
-            <div className="floor-plant" aria-hidden="true">
-              <span className="plant-pot" />
-              <span className="plant-leaf leaf-one" />
-              <span className="plant-leaf leaf-two" />
-              <span className="plant-leaf leaf-three" />
-              <span className="plant-leaf leaf-four" />
-            </div>
-
-            <div className="toy-chest" aria-hidden="true">
-              <span className="toy-star">★</span>
-            </div>
-
-            <div className="bedside-table">
-              <span className="bedside-lamp" />
-              <span className="bedside-lamp-base" />
-              <span className="bedside-drawer" />
-            </div>
-
-            <div className="bedroom-rug" />
-
-            <div className="pixel-bed bedroom-bed-right">
-              <div className="bed-headboard" />
-              <div className="bed-pillow" />
-              <div className="bed-blanket" />
-              <div className="bed-frame" />
-            </div>
-
-            <div
-              ref={bedroomPlayerElementRef}
-              className={`walking-home-player outdoor-sprite ${
-                bedroomWalking ? "is-walking" : "is-idle"
-              } ${bedroomFacing === -1 ? "faces-left" : "faces-right"}`}
-              style={{ left: `${bedroomPlayerX}%` }}
-            >
-              <span className="sprite-tail" />
-              <span className="sprite-body" />
-              <span className="sprite-head" />
-              <span className="sprite-ear sprite-ear-one" />
-              <span className="sprite-ear sprite-ear-two" />
-              <span className="sprite-mask" />
-              <span className="sprite-eye" />
-              <span className="sprite-scarf-main" />
-              <span className="sprite-scarf-tail" />
-              <span className="sprite-leg sprite-leg-one" />
-              <span className="sprite-leg sprite-leg-two" />
-              <span className="sprite-highlight-one" />
-              <span className="sprite-highlight-two" />
-            </div>
-
-            <div className="home-caption finish-sign">
-              <span>READY TO END THE JOURNEY?</span>
-              <small>Walk to the bed and go to sleep to finish the game.</small>
-              <em>Walk left to return to the village.</em>
             </div>
           </div>
         )}
@@ -5579,11 +5525,38 @@ export default function TinyBuildifyJump() {
         }
 
         .bedroom-scene {
-          background: linear-gradient(180deg, #aeb0d4 0 74%, #4c506e 74% 100%);
+          overflow: visible !important;
+          background: linear-gradient(180deg, #30345d 0 72%, #594233 72% 100%);
+          box-shadow:
+            -120vw 0 0 120vw #30345d,
+            120vw 0 0 120vw #30345d;
+        }
+
+        .bedroom-scene.bedroom-unified-stage::before {
+          content: "";
+          position: fixed;
+          z-index: -2;
+          inset: -100vh -100vw;
+          pointer-events: none;
+          background: linear-gradient(180deg, #30345d 0 72%, #594233 72% 100%);
+        }
+
+        .bedroom-scene.bedroom-unified-stage::after {
+          content: "";
+          position: absolute;
+          z-index: 0;
+          left: -140vw;
+          right: -140vw;
+          bottom: 165px;
+          height: 10px;
+          pointer-events: none;
+          background: #14172f;
+          box-shadow: 0 5px 0 #46466f;
         }
 
         .bedroom-wallpaper {
           position: absolute;
+          z-index: 1;
           inset: 0 0 26% 0;
           opacity: 0.7;
           background:
@@ -8390,6 +8363,940 @@ export default function TinyBuildifyJump() {
           .touch-device .pause-card h2 {
             width: 100%;
             text-align: center;
+          }
+        }
+
+        /* Bedroom unified stage: desktop and mobile use the exact same
+           960x540 room composition. Device-specific rules must not resize or
+           reposition individual furniture; only the whole stage is scaled. */
+        .bedroom-scene.bedroom-unified-stage {
+          position: absolute !important;
+          inset: auto !important;
+          z-index: 15;
+          overflow: hidden !important;
+          flex: none !important;
+          min-width: 960px !important;
+          max-width: none !important;
+          min-height: 540px !important;
+          max-height: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: 0 !important;
+          border-radius: 0 !important;
+          box-sizing: border-box !important;
+        }
+
+        /* On touch devices keep the controls above the scaled room instead of
+           allowing any mobile layout rule to alter the room itself. */
+        .touch-device .bedroom-scene.bedroom-unified-stage {
+          width: 960px !important;
+          height: 540px !important;
+          min-width: 960px !important;
+          min-height: 540px !important;
+          overflow: hidden !important;
+        }
+
+        /* Home interior redesign — reference-inspired pixel furniture.
+           Desktop and touch still share the exact same 960x540 stage; the
+           whole room scales as one unit, so furniture never reflows. */
+        .bedroom-scene.bedroom-unified-stage {
+          background: #252849 !important;
+          box-shadow: 0 0 0 200vmax #191b36 !important;
+        }
+
+        .bedroom-scene.bedroom-unified-stage .bedroom-wallpaper {
+          display: block !important;
+          position: absolute !important;
+          inset: 0 !important;
+          width: 100% !important;
+          height: 100% !important;
+          background: linear-gradient(
+            to bottom,
+            #30345d 0 67%,
+            #222746 67% 69%,
+            #5c4639 69% 100%
+          ) !important;
+          opacity: 1 !important;
+        }
+
+        .bedroom-scene.bedroom-unified-stage .bedroom-wallpaper::before {
+          content: "";
+          position: absolute;
+          inset: 0 0 31% 0;
+          background:
+            linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.025) 1px,
+                transparent 1px
+              )
+              0 0 / 48px 48px,
+            linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px) 0
+              0 / 48px 48px;
+          pointer-events: none;
+        }
+
+        .bedroom-scene.bedroom-unified-stage .bedroom-wallpaper::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 31%;
+          background: repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.025) 0 2px,
+            transparent 2px 82px
+          );
+          pointer-events: none;
+        }
+
+        /* Hide the previous furniture set. The player, finish sign and room
+           behaviour remain untouched. */
+        .bedroom-scene.bedroom-unified-stage .bedroom-fairy-lights,
+        .bedroom-scene.bedroom-unified-stage .bedroom-poster,
+        .bedroom-scene.bedroom-unified-stage .family-gallery,
+        .bedroom-scene.bedroom-unified-stage .bedroom-clock,
+        .bedroom-scene.bedroom-unified-stage .bedroom-window-large,
+        .bedroom-scene.bedroom-unified-stage .wall-shelf,
+        .bedroom-scene.bedroom-unified-stage .computer-desk,
+        .bedroom-scene.bedroom-unified-stage .bedroom-cabinet,
+        .bedroom-scene.bedroom-unified-stage .small-round-window,
+        .bedroom-scene.bedroom-unified-stage .bedroom-mirror,
+        .bedroom-scene.bedroom-unified-stage .aquarium,
+        .bedroom-scene.bedroom-unified-stage .floor-plant,
+        .bedroom-scene.bedroom-unified-stage .toy-chest,
+        .bedroom-scene.bedroom-unified-stage .bedside-table,
+        .bedroom-scene.bedroom-unified-stage .bedroom-rug,
+        .bedroom-scene.bedroom-unified-stage .pixel-bed {
+          display: none !important;
+        }
+
+        /* The redesigned room is the only bedroom furniture set. Legacy room
+           decorations are intentionally disabled so mobile and desktop cannot
+           end up with two layouts layered on top of each other. */
+        .bedroom-scene.bedroom-unified-stage
+          > :is(
+            .bedroom-fairy-lights,
+            .bedroom-poster,
+            .family-gallery,
+            .bedroom-clock,
+            .bedroom-window,
+            .wall-shelf,
+            .computer-desk,
+            .bedroom-cabinet,
+            .small-round-window,
+            .bedroom-mirror,
+            .aquarium,
+            .floor-plant,
+            .toy-chest,
+            .bedside-table,
+            .bedroom-rug,
+            .pixel-bed
+          ) {
+          display: none !important;
+        }
+        .home-reference-room {
+          position: absolute;
+          inset: 0;
+          z-index: 3;
+          pointer-events: none;
+          image-rendering: pixelated;
+        }
+
+        .home-reference-room *,
+        .home-reference-room *::before,
+        .home-reference-room *::after {
+          box-sizing: border-box;
+        }
+
+        .ref-wall-trim {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 165px;
+          height: 10px;
+          background: #14172f;
+          box-shadow: 0 5px 0 #46466f;
+        }
+
+        /* Window + curtains: centered like the supplied reference, but with
+           the original night palette. */
+        .ref-window {
+          position: absolute;
+          left: 330px;
+          top: 50px;
+          width: 266px;
+          height: 166px;
+          border: 10px solid #4c3e35;
+          background: #171b38;
+          box-shadow:
+            0 0 0 7px #7b694e,
+            0 8px 0 rgba(10, 12, 28, 0.35);
+        }
+
+        .ref-window-sky {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(#1d3154, #44708a);
+        }
+
+        .ref-window-moon {
+          position: absolute;
+          top: 24px;
+          right: 36px;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: #f4e4ad;
+          box-shadow: 0 0 18px rgba(244, 228, 173, 0.28);
+        }
+
+        .ref-window-star {
+          position: absolute;
+          width: 5px;
+          height: 5px;
+          background: #d9eff5;
+          box-shadow:
+            12px 19px 0 #d9eff5,
+            42px 7px 0 #d9eff5;
+        }
+
+        .ref-window-star-a {
+          left: 36px;
+          top: 30px;
+        }
+        .ref-window-star-b {
+          left: 105px;
+          top: 72px;
+          transform: scale(0.75);
+        }
+
+        .ref-window-frame-v {
+          position: absolute;
+          left: 50%;
+          top: 0;
+          bottom: 0;
+          width: 8px;
+          transform: translateX(-50%);
+          background: #4c3e35;
+        }
+
+        .ref-window-frame-h {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 50%;
+          height: 7px;
+          transform: translateY(-50%);
+          background: #4c3e35;
+        }
+
+        .ref-curtain-rod {
+          position: absolute;
+          left: -34px;
+          right: -34px;
+          top: -28px;
+          height: 8px;
+          background: #29283f;
+          box-shadow: 0 4px 0 #17182d;
+        }
+
+        .ref-curtain {
+          position: absolute;
+          top: -15px;
+          width: 63px;
+          height: 145px;
+          background: #65425a;
+          filter: drop-shadow(5px 6px 0 rgba(12, 14, 31, 0.3));
+        }
+
+        .ref-curtain::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.06) 0 8px,
+            transparent 8px 20px
+          );
+        }
+
+        .ref-curtain-left {
+          left: -82px;
+          clip-path: polygon(
+            0 0,
+            100% 0,
+            74% 18%,
+            78% 35%,
+            52% 48%,
+            66% 65%,
+            45% 79%,
+            76% 100%,
+            18% 100%,
+            0 85%
+          );
+        }
+
+        .ref-curtain-right {
+          right: -82px;
+          clip-path: polygon(
+            0 0,
+            100% 0,
+            100% 85%,
+            82% 100%,
+            24% 100%,
+            55% 79%,
+            34% 65%,
+            48% 48%,
+            22% 35%,
+            26% 18%
+          );
+        }
+
+        /* Reference-style sofa, kept on the right so reaching it still ends
+           the journey exactly where the original bed was. */
+        .ref-sofa {
+          position: absolute;
+          right: 38px;
+          bottom: 76px;
+          width: 330px;
+          height: 154px;
+        }
+
+        .ref-sofa-back {
+          position: absolute;
+          left: 42px;
+          right: 42px;
+          top: 8px;
+          height: 104px;
+          border: 8px solid #38293d;
+          border-bottom: 0;
+          border-radius: 36px 36px 8px 8px;
+          background: #71465f;
+          box-shadow: inset 0 -18px 0 #5b3851;
+        }
+
+        .ref-sofa-seat {
+          position: absolute;
+          left: 37px;
+          right: 37px;
+          bottom: 27px;
+          height: 63px;
+          border: 8px solid #38293d;
+          background: #87536d;
+          box-shadow: inset 0 12px 0 rgba(255, 255, 255, 0.055);
+        }
+
+        .ref-sofa-arm {
+          position: absolute;
+          bottom: 29px;
+          width: 55px;
+          height: 86px;
+          border: 8px solid #38293d;
+          background: #684058;
+        }
+
+        .ref-sofa-arm-left {
+          left: 0;
+        }
+        .ref-sofa-arm-right {
+          right: 0;
+        }
+
+        .ref-sofa-cushion {
+          position: absolute;
+          bottom: 49px;
+          width: 96px;
+          height: 54px;
+          border: 5px solid #543347;
+          background: #9a6178;
+          box-shadow: inset 0 -8px 0 #7f4c67;
+        }
+
+        .ref-cushion-left {
+          left: 66px;
+          transform: rotate(-2deg);
+        }
+        .ref-cushion-right {
+          right: 66px;
+          transform: rotate(2deg);
+        }
+
+        .ref-sofa-leg {
+          position: absolute;
+          bottom: 10px;
+          width: 18px;
+          height: 18px;
+          background: #27243a;
+          box-shadow: 0 7px 0 #111326;
+        }
+
+        .ref-sofa-leg-left {
+          left: 54px;
+        }
+        .ref-sofa-leg-right {
+          right: 54px;
+        }
+
+        /* Side table and warm lamp, matching the reference silhouette. */
+        .ref-side-table {
+          position: absolute;
+          right: 382px;
+          bottom: 78px;
+          width: 76px;
+          height: 128px;
+        }
+
+        .ref-side-table::before {
+          content: "";
+          position: absolute;
+          left: 4px;
+          right: 4px;
+          bottom: 63px;
+          height: 12px;
+          background: #7c664c;
+          box-shadow: 0 5px 0 #493c35;
+        }
+
+        .ref-side-table::after {
+          content: "";
+          position: absolute;
+          left: 12px;
+          bottom: 0;
+          width: 9px;
+          height: 66px;
+          background: #6b543f;
+          box-shadow: 43px 0 0 #6b543f;
+        }
+
+        .ref-lamp-shade {
+          position: absolute;
+          left: 13px;
+          top: 0;
+          width: 51px;
+          height: 41px;
+          background: #e8a970;
+          clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%);
+          box-shadow: inset 0 -9px 0 #d18465;
+        }
+
+        .ref-lamp-shade::before {
+          content: "";
+          position: absolute;
+          left: 14px;
+          top: -11px;
+          width: 22px;
+          height: 18px;
+          background: #f1c188;
+          clip-path: polygon(50% 0, 100% 100%, 0 100%);
+        }
+
+        .ref-lamp-stem {
+          position: absolute;
+          left: 36px;
+          top: 41px;
+          width: 7px;
+          height: 23px;
+          background: #d1aa71;
+        }
+
+        .ref-lamp-base {
+          position: absolute;
+          left: 23px;
+          top: 59px;
+          width: 33px;
+          height: 8px;
+          background: #d1aa71;
+        }
+
+        /* Dresser under the window. */
+        .ref-dresser {
+          position: absolute;
+          left: 356px;
+          top: 244px;
+          width: 214px;
+          height: 114px;
+          border: 7px solid #3f3b42;
+          background: #857452;
+          box-shadow: 0 7px 0 rgba(13, 15, 31, 0.28);
+        }
+
+        .ref-dresser-top {
+          position: absolute;
+          left: -15px;
+          right: -15px;
+          top: -16px;
+          height: 10px;
+          background: #b39c69;
+          box-shadow: 0 5px 0 #4d453d;
+        }
+
+        .ref-drawer {
+          position: absolute;
+          left: 10px;
+          right: 10px;
+          height: 42px;
+          border-bottom: 5px solid #5a503e;
+          background: #9b895d;
+        }
+
+        .ref-drawer-one {
+          top: 7px;
+        }
+        .ref-drawer-two {
+          bottom: 5px;
+          border-bottom: 0;
+        }
+
+        .ref-drawer i {
+          position: absolute;
+          left: 50%;
+          top: 14px;
+          width: 43px;
+          height: 7px;
+          transform: translateX(-50%);
+          background: #433b33;
+        }
+
+        /* Upper shelves, books, tiny framed art and plant — all directly
+           inspired by the reference composition. */
+        .ref-floating-shelf {
+          position: absolute;
+          height: 10px;
+          background: #8d7652;
+          box-shadow: 0 6px 0 #443a35;
+        }
+
+        .ref-floating-shelf-top {
+          right: 84px;
+          top: 94px;
+          width: 190px;
+        }
+
+        .ref-floating-shelf-small {
+          right: 42px;
+          top: 177px;
+          width: 160px;
+        }
+
+        .ref-book {
+          position: absolute;
+          bottom: 10px;
+          width: 18px;
+          box-shadow: inset -5px 0 0 rgba(0, 0, 0, 0.17);
+        }
+
+        .ref-book-a {
+          left: 12px;
+          height: 40px;
+          background: #4cc5a8;
+        }
+        .ref-book-b {
+          left: 33px;
+          height: 59px;
+          background: #5a77d7;
+        }
+        .ref-book-c {
+          left: 56px;
+          height: 45px;
+          background: #d96b5b;
+        }
+        .ref-book-d {
+          left: 84px;
+          height: 25px;
+          width: 52px;
+          background: #459178;
+        }
+
+        .ref-small-plant {
+          position: absolute;
+          right: 11px;
+          bottom: 10px;
+          width: 32px;
+          height: 22px;
+          background: #bd744d;
+        }
+
+        .ref-small-plant i {
+          position: absolute;
+          left: 12px;
+          bottom: 20px;
+          width: 10px;
+          height: 29px;
+          background: #4aa66f;
+          box-shadow:
+            -9px -8px 0 #5abb79,
+            9px -14px 0 #3e8e62;
+        }
+
+        .ref-photo-frame {
+          position: absolute;
+          left: 12px;
+          bottom: 10px;
+          width: 48px;
+          height: 43px;
+          border: 7px solid #4c4039;
+          background: #223858;
+        }
+
+        .ref-photo-frame i,
+        .ref-photo-frame b {
+          position: absolute;
+          width: 9px;
+          height: 9px;
+          background: #f0ca68;
+        }
+
+        .ref-photo-frame i {
+          left: 6px;
+          top: 7px;
+        }
+        .ref-photo-frame b {
+          right: 6px;
+          top: 15px;
+          background: #6dd7b1;
+        }
+
+        .ref-flower-pot {
+          position: absolute;
+          right: 18px;
+          bottom: 10px;
+          width: 32px;
+          height: 26px;
+          background: #c77f43;
+        }
+
+        .ref-flower-pot i {
+          position: absolute;
+          left: 13px;
+          bottom: 25px;
+          width: 7px;
+          height: 38px;
+          background: #53a267;
+        }
+
+        .ref-flower-pot b {
+          position: absolute;
+          left: 2px;
+          bottom: 53px;
+          width: 29px;
+          height: 26px;
+          background: #cf6b76;
+          clip-path: polygon(
+            50% 0,
+            65% 26%,
+            100% 30%,
+            76% 55%,
+            82% 100%,
+            50% 76%,
+            18% 100%,
+            24% 55%,
+            0 30%,
+            35% 26%
+          );
+        }
+
+        /* TV console uses teal panels to preserve the existing game's palette. */
+        .ref-tv-console {
+          position: absolute;
+          left: 38px;
+          bottom: 72px;
+          width: 286px;
+          height: 143px;
+          border: 7px solid #3e3b42;
+          background: #645442;
+          box-shadow: 0 8px 0 rgba(13, 15, 31, 0.28);
+        }
+
+        .ref-console-top {
+          position: absolute;
+          left: -10px;
+          right: -10px;
+          top: -10px;
+          height: 10px;
+          background: #9b825b;
+        }
+
+        .ref-console-door {
+          position: absolute;
+          top: 12px;
+          bottom: 8px;
+          width: 82px;
+          border: 6px solid #4a4544;
+          background: #299b9f;
+          box-shadow: inset 12px -12px 0 #217b85;
+        }
+
+        .ref-console-door-left {
+          left: 9px;
+        }
+        .ref-console-door-right {
+          right: 9px;
+        }
+
+        .ref-console-drawer {
+          position: absolute;
+          left: 101px;
+          width: 72px;
+          height: 42px;
+          background: #76614b;
+          border-bottom: 5px solid #4c4039;
+        }
+
+        .ref-console-drawer-one {
+          top: 12px;
+        }
+        .ref-console-drawer-two {
+          bottom: 9px;
+          border-bottom: 0;
+        }
+
+        .ref-console-drawer i {
+          position: absolute;
+          left: 50%;
+          top: 13px;
+          width: 26px;
+          height: 7px;
+          transform: translateX(-50%);
+          background: #1f1d29;
+        }
+
+        .ref-tv {
+          position: absolute;
+          left: 70px;
+          top: -98px;
+          width: 146px;
+          height: 86px;
+        }
+
+        .ref-tv-screen {
+          position: absolute;
+          inset: 0 0 20px 0;
+          border: 8px solid #34343b;
+          background: #c7d3cc;
+          box-shadow: inset 0 0 0 5px #8aa39d;
+        }
+
+        .ref-tv-stand {
+          position: absolute;
+          left: 50%;
+          bottom: 0;
+          width: 66px;
+          height: 10px;
+          transform: translateX(-50%);
+          background: #34343b;
+          box-shadow: 0 -15px 0 -2px #34343b;
+        }
+
+        .ref-floor-rug {
+          position: absolute;
+          left: 338px;
+          bottom: 31px;
+          width: 265px;
+          height: 72px;
+          border: 7px solid #3d3350;
+          border-radius: 45%;
+          background: #4b6b78;
+          box-shadow: inset 0 0 0 8px #365661;
+          opacity: 0.92;
+        }
+
+        /* Keep the interactive player above the new furniture and visually on
+           the same floor line on every device. */
+        .bedroom-scene.bedroom-unified-stage .walking-home-player {
+          z-index: 8 !important;
+          bottom: 48px !important;
+        }
+
+        .bedroom-scene.bedroom-unified-stage .finish-sign {
+          z-index: 9;
+          top: 24px !important;
+          right: 26px !important;
+          width: 274px !important;
+          padding: 10px 14px !important;
+          border: 4px solid #545785 !important;
+          border-radius: 4px !important;
+          background: rgba(18, 20, 48, 0.94) !important;
+          box-shadow: 6px 6px 0 rgba(9, 11, 26, 0.35);
+        }
+
+        /* No furniture-specific responsive rules on purpose. Both desktop and
+           phone use these exact coordinates; bedroomScale handles everything. */
+        .touch-device
+          .bedroom-scene.bedroom-unified-stage
+          .home-reference-room {
+          display: block !important;
+        }
+
+        /* Bedroom layout rebuild: this block intentionally neutralizes all
+           older bedroom positioning/scaling rules above. The viewport fills
+           the game shell; the fixed 960x540 room is centered and scaled once. */
+        .bedroom-viewport {
+          position: absolute;
+          inset: 0;
+          z-index: 15;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          background: #252849;
+          pointer-events: auto;
+        }
+
+        .bedroom-viewport .bedroom-scene.bedroom-unified-stage,
+        .touch-device .bedroom-viewport .bedroom-scene.bedroom-unified-stage,
+        .pointer-device .bedroom-viewport .bedroom-scene.bedroom-unified-stage {
+          position: relative !important;
+          inset: auto !important;
+          left: auto !important;
+          top: auto !important;
+          right: auto !important;
+          bottom: auto !important;
+          flex: 0 0 960px !important;
+          width: 960px !important;
+          height: 540px !important;
+          min-width: 960px !important;
+          max-width: 960px !important;
+          min-height: 540px !important;
+          max-height: 540px !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: hidden !important;
+          border: 0 !important;
+          border-radius: 0 !important;
+          box-shadow: none !important;
+          background: #252849 !important;
+        }
+
+        .bedroom-viewport .bedroom-scene.bedroom-unified-stage::before,
+        .bedroom-viewport .bedroom-scene.bedroom-unified-stage::after {
+          content: none !important;
+          display: none !important;
+        }
+
+        .bedroom-viewport .bedroom-wallpaper {
+          position: absolute !important;
+          inset: 0 !important;
+          width: 960px !important;
+          height: 540px !important;
+        }
+
+        .bedroom-viewport .home-reference-room {
+          position: absolute !important;
+          inset: 0 !important;
+          width: 960px !important;
+          height: 540px !important;
+        }
+
+        .bedroom-viewport .walking-home-player {
+          position: absolute !important;
+        }
+
+        .touch-device .bedroom-viewport {
+          width: 100% !important;
+          height: 100% !important;
+          min-width: 0 !important;
+          min-height: 0 !important;
+        }
+
+        /* Furniture scale pass — keep the stable 960x540 room layout and
+           make the furniture read at the same visual scale as the character.
+           Each object scales around an anchored edge so its intended location
+           and the sofa finish zone stay unchanged. */
+        .bedroom-viewport .ref-window {
+          transform: scale(0.72) !important;
+          transform-origin: 50% 0 !important;
+        }
+
+        .bedroom-viewport .ref-dresser {
+          transform: scale(0.68) !important;
+          transform-origin: 50% 100% !important;
+        }
+
+        .bedroom-viewport .ref-tv-console {
+          transform: scale(0.68) !important;
+          transform-origin: 0 100% !important;
+        }
+
+        .bedroom-viewport .ref-sofa {
+          transform: scale(0.68) !important;
+          transform-origin: 100% 100% !important;
+        }
+
+        .bedroom-viewport .ref-side-table {
+          transform: scale(0.74) !important;
+          transform-origin: 50% 100% !important;
+        }
+
+        .bedroom-viewport .ref-floating-shelf-top,
+        .bedroom-viewport .ref-floating-shelf-small {
+          transform: scale(0.72) !important;
+          transform-origin: 100% 100% !important;
+        }
+
+        .bedroom-viewport .ref-floor-rug {
+          transform: scale(0.78) !important;
+          transform-origin: 50% 100% !important;
+        }
+
+        /* Desktop sign: compact enough not to dominate the room. */
+        .bedroom-viewport .finish-sign {
+          width: 300px !important;
+          padding: 12px 16px !important;
+          top: 30px !important;
+          right: 34px !important;
+          text-align: center !important;
+        }
+
+        .bedroom-viewport .finish-sign > span {
+          display: block !important;
+          font-size: 15px !important;
+          line-height: 1.15 !important;
+          letter-spacing: 0.4px !important;
+        }
+
+        .bedroom-viewport .finish-sign > small {
+          display: block !important;
+          margin-top: 8px !important;
+          font-size: 13px !important;
+          line-height: 1.35 !important;
+        }
+
+        .bedroom-viewport .finish-sign > em {
+          display: block !important;
+          margin-top: 6px !important;
+          font-size: 10px !important;
+          line-height: 1.3 !important;
+          opacity: 0.72 !important;
+        }
+
+        /* Phone/tablet landscape: the whole 960x540 room is scaled down, so
+           deliberately enlarge the sign *inside* that room to keep it legible. */
+        @media (hover: none) and (pointer: coarse) {
+          .touch-device .bedroom-viewport .finish-sign {
+            width: 390px !important;
+            min-height: 112px !important;
+            top: 22px !important;
+            right: 24px !important;
+            padding: 17px 20px !important;
+            border-width: 5px !important;
+          }
+
+          .touch-device .bedroom-viewport .finish-sign > span {
+            font-size: 20px !important;
+            line-height: 1.15 !important;
+          }
+
+          .touch-device .bedroom-viewport .finish-sign > small {
+            margin-top: 10px !important;
+            font-size: 18px !important;
+            line-height: 1.3 !important;
+          }
+
+          .touch-device .bedroom-viewport .finish-sign > em {
+            margin-top: 8px !important;
+            font-size: 13px !important;
+            line-height: 1.25 !important;
           }
         }
 
