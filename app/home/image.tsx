@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, useTime, useTransform, type MotionValue } from "framer-motion";
 import Link from "next/link";
 

@@ -7,6 +7,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { siteConfig } from "./seo";
 
+/* =========================
+   Fonts
+========================= */
+
 const geist = Geist({
   variable: "--font-geist",
   subsets: ["latin"],
@@ -26,6 +30,10 @@ const notoSansThai = Noto_Sans_Thai({
   display: "swap",
 });
 
+/* =========================
+   Metadata / SEO
+========================= */
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
 
@@ -35,6 +43,7 @@ export const metadata: Metadata = {
   },
 
   description: siteConfig.description,
+
   applicationName: siteConfig.name,
 
   keywords: [
@@ -61,6 +70,7 @@ export const metadata: Metadata = {
 
   creator: siteConfig.name,
   publisher: siteConfig.name,
+
   category: "technology",
 
   alternates: {
@@ -71,9 +81,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: siteConfig.locale,
     url: "/",
+
     siteName: siteConfig.name,
+
     title: "Buildifyx | Software Development, Web, AI & Data Studio",
+
     description: siteConfig.description,
+
     images: [
       {
         url: "/opengraph-image",
@@ -86,8 +100,11 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
+
     title: "Buildifyx | Software Development, Web, AI & Data Studio",
+
     description: siteConfig.description,
+
     images: ["/opengraph-image"],
   },
 
@@ -98,6 +115,7 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
+
       "max-image-preview": "large",
       "max-snippet": -1,
       "max-video-preview": -1,
@@ -111,30 +129,49 @@ export const metadata: Metadata = {
   },
 };
 
+/* =========================
+   Viewport
+========================= */
+
 export const viewport: Viewport = {
   themeColor: "#ffffff",
   colorScheme: "light",
 };
+
+/* =========================
+   Root Layout
+========================= */
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  /* =========================
+     Structured Data
+  ========================= */
+
   const structuredData = {
     "@context": "https://schema.org",
 
     "@graph": [
       {
         "@type": "Organization",
+
         "@id": `${siteConfig.url}/#organization`,
 
         name: siteConfig.name,
+
         legalName: siteConfig.legalName,
+
         url: siteConfig.url,
+
         logo: `${siteConfig.url}/logo/logo.png`,
+
         description: siteConfig.description,
+
         foundingDate: "2025",
+
         email: siteConfig.email,
 
         address: {
@@ -159,18 +196,24 @@ export default function RootLayout({
 
         contactPoint: {
           "@type": "ContactPoint",
+
           email: siteConfig.email,
+
           contactType: "sales",
+
           availableLanguage: ["English", "Thai"],
         },
       },
 
       {
         "@type": "WebSite",
+
         "@id": `${siteConfig.url}/#website`,
 
         url: siteConfig.url,
+
         name: siteConfig.name,
+
         description: siteConfig.description,
 
         publisher: {
@@ -182,12 +225,18 @@ export default function RootLayout({
     ],
   };
 
+  /* =========================
+     Render
+  ========================= */
+
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geist.variable} ${geistMono.variable} ${notoSansThai.variable}`}
     >
       <body className="min-h-screen bg-white text-black antialiased">
+        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -195,10 +244,13 @@ export default function RootLayout({
           }}
         />
 
+        {/* Navigation */}
         <Navbar />
 
+        {/* Page Content */}
         <main className="min-h-screen bg-white text-black">{children}</main>
 
+        {/* Footer */}
         <Footer />
       </body>
     </html>

@@ -466,7 +466,12 @@ export default function TinyBuildifyJump() {
   const [isPortrait, setIsPortrait] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [isCompactLandscape, setIsCompactLandscape] = useState(false);
+  const [viewportSize, setViewportSize] = useState({
+    width: GAME_WIDTH,
+    height: GAME_HEIGHT,
+  });
   const bedroomPlayerXRef = useRef(9);
+  const bedroomPlayerElementRef = useRef<HTMLDivElement | null>(null);
   const [bedroomPlayerX, setBedroomPlayerX] = useState(9);
   const bedroomFacingRef = useRef<1 | -1>(1);
   const [bedroomFacing, setBedroomFacing] = useState<1 | -1>(1);
@@ -621,6 +626,7 @@ export default function TinyBuildifyJump() {
       setIsTablet(tablet);
       setIsPortrait(touch && height > width);
       setIsCompactLandscape(touch && width > height && height <= 540);
+      setViewportSize({ width, height });
     };
 
     updateDevice();
@@ -658,16 +664,12 @@ export default function TinyBuildifyJump() {
     });
     gameElement.addEventListener("contextmenu", preventGameGesture);
     window.addEventListener("blur", releaseAllControls);
-    window.addEventListener("pointerup", releaseAllControls);
-    window.addEventListener("pointercancel", releaseAllControls);
     document.addEventListener("visibilitychange", releaseAllControls);
 
     return () => {
       gameElement.removeEventListener("touchmove", preventGameGesture);
       gameElement.removeEventListener("contextmenu", preventGameGesture);
       window.removeEventListener("blur", releaseAllControls);
-      window.removeEventListener("pointerup", releaseAllControls);
-      window.removeEventListener("pointercancel", releaseAllControls);
       document.removeEventListener("visibilitychange", releaseAllControls);
     };
   }, [clearInput, isTouch]);
@@ -2704,11 +2706,19 @@ export default function TinyBuildifyJump() {
           setBedroomFacing(nextFacing);
         }
 
+        const bedroomMoveSpeed = isTouch ? 0.032 : 0.022;
+
         bedroomPlayerXRef.current = clamp(
-          bedroomPlayerXRef.current + direction * delta * 0.022,
+          bedroomPlayerXRef.current + direction * delta * bedroomMoveSpeed,
           4,
           78,
         );
+
+        // Move the bedroom sprite immediately instead of waiting for React's
+        // render cycle. This keeps touch movement continuous on mobile.
+        if (bedroomPlayerElementRef.current) {
+          bedroomPlayerElementRef.current.style.left = `${bedroomPlayerXRef.current}%`;
+        }
         setBedroomPlayerX(bedroomPlayerXRef.current);
       }
 
@@ -2745,7 +2755,7 @@ export default function TinyBuildifyJump() {
         statusRef.current = "finished";
       }
     },
-    [clearInput, setGameStatus],
+    [clearInput, isTouch, setGameStatus],
   );
 
   const renderGame = useCallback(
@@ -2882,23 +2892,26 @@ export default function TinyBuildifyJump() {
           <span>PLAYGROUND</span>
         </Link>
 
-        {(status === "playing" || status === "paused") && (
+        {status === "playing" && (
           <>
             <button
               type="button"
-              className={`pause-button ${status === "paused" ? "is-paused" : ""}`}
-              onClick={togglePause}
-              aria-label={status === "paused" ? "Resume game" : "Pause game"}
+              className="pause-button"
+              onPointerDown={
+                isTouch
+                  ? (event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      togglePause();
+                    }
+                  : undefined
+              }
+              onClick={isTouch ? undefined : togglePause}
+              aria-label="Pause game"
             >
               <span className="pause-icon" aria-hidden="true">
-                {status === "paused" ? (
-                  <span className="play-triangle" />
-                ) : (
-                  <>
-                    <span />
-                    <span />
-                  </>
-                )}
+                <span />
+                <span />
               </span>
             </button>
             <div className="biome-badge">{currentBiome.name}</div>
@@ -3033,49 +3046,32 @@ export default function TinyBuildifyJump() {
                 </div>
               </div>
 
-              <div className="dialog-actions">
+              <div className="dialog-actions pause-actions-v2">
                 <button
                   type="button"
-                  className="primary-action"
+                  className="pause-equal-action pause-action-resume"
                   onClick={togglePause}
                 >
-                  <span className="mini-play" />
                   RESUME
                 </button>
 
                 <button
                   type="button"
-                  className="secondary-action"
+                  className="pause-equal-action pause-action-restart"
                   onClick={startGame}
                 >
                   RESTART
                 </button>
 
-                <Link
-                  href="/playground"
-                  className="pause-playground-button"
-                  style={{
-                    display: "inline-flex",
-                    minWidth: "154px",
-                    minHeight: "51px",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "10px",
-                    padding: "0 23px",
-                    color: "#233253",
-                    border: "0",
-                    borderRadius: "8px",
-                    background: "#8fc8ff",
-                    boxShadow: "0 6px 0 #527cb6",
-                    fontWeight: 700,
-                    textDecoration: "none",
+                <button
+                  type="button"
+                  className="pause-equal-action pause-action-playground"
+                  onClick={() => {
+                    window.location.href = "/playground";
                   }}
                 >
-                  <span className="playground-arrow" aria-hidden="true">
-                    ←
-                  </span>
-                  <span>PLAYGROUND</span>
-                </Link>
+                  PLAYGROUND
+                </button>
               </div>
             </div>
 
@@ -3109,7 +3105,30 @@ export default function TinyBuildifyJump() {
         )}
 
         {status === "bedroom" && (
-          <div className="bedroom-scene">
+          <div
+            className={`bedroom-scene ${isTouch ? "bedroom-touch-fit" : ""}`}
+            style={
+              isTouch
+                ? (() => {
+                    const bedroomScale = Math.min(
+                      viewportSize.width / GAME_WIDTH,
+                      viewportSize.height / GAME_HEIGHT,
+                    );
+                    const scaledWidth = GAME_WIDTH * bedroomScale;
+                    const scaledHeight = GAME_HEIGHT * bedroomScale;
+
+                    return {
+                      width: `${GAME_WIDTH}px`,
+                      height: `${GAME_HEIGHT}px`,
+                      left: `${(viewportSize.width - scaledWidth) / 2}px`,
+                      top: `${(viewportSize.height - scaledHeight) / 2}px`,
+                      transform: `scale(${bedroomScale})`,
+                      transformOrigin: "top left",
+                    };
+                  })()
+                : undefined
+            }
+          >
             <div className="bedroom-wallpaper" />
 
             <div className="bedroom-fairy-lights" aria-hidden="true">
@@ -3263,6 +3282,7 @@ export default function TinyBuildifyJump() {
             </div>
 
             <div
+              ref={bedroomPlayerElementRef}
               className={`walking-home-player outdoor-sprite ${
                 bedroomWalking ? "is-walking" : "is-idle"
               } ${bedroomFacing === -1 ? "faces-left" : "faces-right"}`}
@@ -3326,7 +3346,7 @@ export default function TinyBuildifyJump() {
               <div className="dialog-actions">
                 <button
                   type="button"
-                  className="primary-action"
+                  className="primary-action finished-equal-action"
                   onClick={startGame}
                 >
                   PLAY AGAIN
@@ -3334,28 +3354,9 @@ export default function TinyBuildifyJump() {
 
                 <Link
                   href="/playground"
-                  className="ending-playground-button"
-                  style={{
-                    display: "inline-flex",
-                    minWidth: "154px",
-                    minHeight: "51px",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "10px",
-                    padding: "0 23px",
-                    color: "#20324d",
-                    border: "0",
-                    borderRadius: "8px",
-                    background: "#8fc8ff",
-                    boxShadow: "0 6px 0 #527cb6",
-                    fontWeight: 700,
-                    textDecoration: "none",
-                  }}
+                  className="primary-action finished-equal-action"
                 >
-                  <span className="playground-arrow" aria-hidden="true">
-                    ←
-                  </span>
-                  <span>PLAYGROUND</span>
+                  PLAYGROUND
                 </Link>
               </div>
             </div>
@@ -3404,7 +3405,6 @@ export default function TinyBuildifyJump() {
                 onContextMenu={(event) => event.preventDefault()}
               >
                 <span aria-hidden="true">↑</span>
-                <small>JUMP</small>
               </button>
             )}
           </div>
@@ -7289,7 +7289,7 @@ export default function TinyBuildifyJump() {
           }
         }
 
-        /* Mobile and iPad responsive system. */
+        /* Responsive system: only layout and touch-control behavior. */
         :global(html),
         :global(body) {
           width: 100%;
@@ -7297,51 +7297,43 @@ export default function TinyBuildifyJump() {
           min-height: 100%;
         }
 
-        :global(body) {
-          overflow: hidden;
-        }
-
+        /* Touch devices use the real visible viewport rather than the size of
+           the surrounding page/layout. This prevents headers and parent
+           containers from shrinking or covering the game. */
         .touch-device {
+          position: fixed;
+          inset: 0;
+          z-index: 2147483000;
+          display: block;
+          width: 100vw;
           width: 100dvw;
-          min-height: 100dvh;
-          padding: env(safe-area-inset-top) env(safe-area-inset-right)
-            env(safe-area-inset-bottom) env(safe-area-inset-left);
+          height: 100vh;
+          height: 100dvh;
+          min-height: 0;
+          padding: 0;
+          overflow: hidden;
+          background: #08091b;
           overscroll-behavior: none;
+          touch-action: none;
         }
 
         .touch-device .touch-game-shell {
-          width: min(
-            calc(
-              100dvw - env(safe-area-inset-left) - env(safe-area-inset-right)
-            ),
-            calc(
-              (
-                  100dvh - env(safe-area-inset-top) - env(
-                      safe-area-inset-bottom
-                    )
-                ) *
-                1.7777778
-            )
-          );
-          height: min(
-            calc(
-              100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)
-            ),
-            calc(
-              (
-                  100dvw - env(safe-area-inset-left) - env(
-                      safe-area-inset-right
-                    )
-                ) /
-                1.7777778
-            )
-          );
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
           max-width: none;
           max-height: none;
-          border-radius: clamp(0px, 1.6vw, 22px);
+          aspect-ratio: auto;
+          border: 0;
+          border-radius: 0;
+          box-shadow: none;
         }
 
         .touch-device .game-canvas {
+          position: absolute;
+          inset: 0;
+          display: block;
           width: 100%;
           height: 100%;
           object-fit: fill;
@@ -7354,84 +7346,128 @@ export default function TinyBuildifyJump() {
         .touch-device .dialog-actions button,
         .touch-device .dialog-actions a,
         .touch-device .landscape-retry-button {
-          min-width: 48px;
-          min-height: 48px;
+          min-width: 44px;
+          min-height: 44px;
+        }
+
+        .touch-device .back-button {
+          top: max(8px, env(safe-area-inset-top));
+          left: max(8px, env(safe-area-inset-left));
+          z-index: 80;
+        }
+
+        .touch-device .back-button span:last-child {
+          display: none;
+        }
+
+        .touch-device .pause-button {
+          top: max(8px, env(safe-area-inset-top));
+          right: max(8px, env(safe-area-inset-right));
+          z-index: 80;
+        }
+
+        .touch-device .biome-badge {
+          top: max(62px, calc(env(safe-area-inset-top) + 54px));
+          right: max(8px, env(safe-area-inset-right));
         }
 
         .touch-device .mobile-controls {
-          z-index: 45;
-          padding: 14px max(18px, env(safe-area-inset-right))
-            max(14px, env(safe-area-inset-bottom))
-            max(18px, env(safe-area-inset-left));
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 70;
+          display: flex;
+          min-height: 96px;
+          align-items: flex-end;
+          justify-content: space-between;
+          padding-top: 10px;
+          padding-right: max(14px, calc(env(safe-area-inset-right) + 8px));
+          padding-bottom: max(12px, calc(env(safe-area-inset-bottom) + 8px));
+          padding-left: max(14px, calc(env(safe-area-inset-left) + 8px));
+          pointer-events: none;
         }
 
         .touch-device .movement-buttons {
-          gap: clamp(10px, 1.6vw, 18px);
-        }
-
-        .touch-device .direction-button {
-          width: clamp(64px, 9.5vw, 94px);
-          height: clamp(64px, 9.5vw, 94px);
-          border-radius: clamp(12px, 1.6vw, 18px);
-          font-size: clamp(25px, 4vw, 40px);
-        }
-
-        .touch-device .jump-button {
-          width: clamp(82px, 11vw, 116px);
-          height: clamp(82px, 11vw, 116px);
+          display: flex;
+          gap: clamp(9px, 1.5vw, 16px);
         }
 
         .touch-device .control-button {
+          opacity: 1;
+          border: clamp(2px, 0.35vw, 3px) solid rgba(255, 255, 255, 0.7);
+          background: rgba(8, 10, 30, 0.88);
+          box-shadow:
+            0 clamp(4px, 0.9vh, 7px) 0 rgba(0, 0, 0, 0.52),
+            inset 0 0 16px rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(5px);
           -webkit-touch-callout: none;
           touch-action: none;
           user-select: none;
         }
 
-        .touch-device .control-button span {
+        .touch-device .control-button span,
+        .touch-device .control-button small {
           pointer-events: none;
         }
 
+        .touch-device .direction-button {
+          width: clamp(60px, min(10.6vw, 18vh), 98px);
+          height: clamp(60px, min(10.6vw, 18vh), 98px);
+          border-radius: clamp(11px, 1.5vw, 17px);
+          font-size: clamp(24px, min(4vw, 7vh), 39px);
+        }
+
+        .touch-device .jump-button {
+          width: clamp(78px, min(12.8vw, 22vh), 120px);
+          height: clamp(78px, min(12.8vw, 22vh), 120px);
+        }
+
+        .touch-device .jump-button span {
+          font-size: clamp(29px, min(5vw, 9vh), 45px);
+        }
+
+        .touch-device .jump-button small {
+          font-size: clamp(8px, min(1.2vw, 2.2vh), 11px);
+        }
+
+        /* Tablets get larger controls without changing the game itself. */
         .tablet-device .mobile-controls {
-          padding-right: max(34px, env(safe-area-inset-right));
-          padding-bottom: max(24px, env(safe-area-inset-bottom));
-          padding-left: max(34px, env(safe-area-inset-left));
+          padding-right: max(24px, calc(env(safe-area-inset-right) + 12px));
+          padding-bottom: max(18px, calc(env(safe-area-inset-bottom) + 10px));
+          padding-left: max(24px, calc(env(safe-area-inset-left) + 12px));
         }
 
         .tablet-device .direction-button {
-          width: clamp(82px, 9vw, 112px);
-          height: clamp(82px, 9vw, 112px);
+          width: clamp(78px, min(9.6vw, 17vh), 114px);
+          height: clamp(78px, min(9.6vw, 17vh), 114px);
         }
 
         .tablet-device .jump-button {
-          width: clamp(104px, 11vw, 134px);
-          height: clamp(104px, 11vw, 134px);
+          width: clamp(96px, min(11.6vw, 21vh), 138px);
+          height: clamp(96px, min(11.6vw, 21vh), 138px);
         }
 
+        /* Every overlay remains usable on short phones, tablets and desktop. */
         .touch-device .pause-overlay,
         .touch-device .dialog-overlay,
         .touch-device .finished-overlay {
-          padding: max(14px, env(safe-area-inset-top))
-            max(14px, env(safe-area-inset-right))
-            max(14px, env(safe-area-inset-bottom))
-            max(14px, env(safe-area-inset-left));
+          padding: max(10px, env(safe-area-inset-top))
+            max(10px, env(safe-area-inset-right))
+            max(10px, env(safe-area-inset-bottom))
+            max(10px, env(safe-area-inset-left));
         }
 
         .touch-device .pause-card,
         .touch-device .dialog-card,
         .touch-device .finished-card {
-          width: min(92vw, 690px);
+          width: min(92vw, 700px);
           max-height: calc(
             100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) -
-              24px
+              20px
           );
           overflow: auto;
           overscroll-behavior: contain;
-        }
-
-        .tablet-device .pause-card,
-        .tablet-device .dialog-card,
-        .tablet-device .finished-card {
-          width: min(78vw, 720px);
         }
 
         .touch-device .dialog-actions {
@@ -7439,50 +7475,40 @@ export default function TinyBuildifyJump() {
         }
 
         .touch-device .dialog-actions > * {
-          flex: 1 1 145px;
+          flex: 1 1 140px;
         }
 
-        .touch-device .back-button {
-          top: max(10px, env(safe-area-inset-top));
-          left: max(10px, env(safe-area-inset-left));
-        }
-
-        .touch-device .pause-button {
-          top: max(10px, env(safe-area-inset-top));
-          right: max(10px, env(safe-area-inset-right));
-        }
-
-        .touch-device .biome-badge {
-          top: max(68px, calc(env(safe-area-inset-top) + 58px));
-          right: max(8px, env(safe-area-inset-right));
-        }
-
-        .rotate-overlay {
+        /* Portrait is intentionally blocked by the rotate screen, but the
+           blocker itself must still cover the entire visible display. */
+        .touch-device .rotate-overlay {
           position: fixed;
           inset: 0;
+          z-index: 200;
+          width: 100vw;
           width: 100dvw;
+          height: 100vh;
           height: 100dvh;
-          min-height: 100dvh;
-          padding: max(28px, env(safe-area-inset-top))
-            max(24px, env(safe-area-inset-right))
-            max(28px, env(safe-area-inset-bottom))
-            max(24px, env(safe-area-inset-left));
+          min-height: 0;
+          padding: max(24px, env(safe-area-inset-top))
+            max(20px, env(safe-area-inset-right))
+            max(24px, env(safe-area-inset-bottom))
+            max(20px, env(safe-area-inset-left));
         }
 
-        .rotate-overlay h2 {
+        .touch-device .rotate-overlay h2 {
           margin: 0;
-          font-size: clamp(24px, 7vw, 48px);
+          font-size: clamp(22px, 7vw, 46px);
         }
 
-        .rotate-overlay p {
+        .touch-device .rotate-overlay p {
           max-width: 560px;
-          margin: 18px auto 0;
+          margin: 16px auto 0;
           font-size: clamp(11px, 2.7vw, 16px);
-          line-height: 1.75;
+          line-height: 1.7;
         }
 
         .landscape-retry-button {
-          margin: 24px auto 0;
+          margin: 22px auto 0;
           padding: 0 22px;
           color: #18243b;
           border: 0;
@@ -7497,192 +7523,873 @@ export default function TinyBuildifyJump() {
           transform: translateY(4px);
         }
 
+        /* Landscape touch devices always occupy the whole viewport, including
+           very wide phones and unusual tablet ratios. */
         @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
-          .tiny-game-page {
+          .touch-device,
+          .touch-device .touch-game-shell {
+            width: 100vw;
             width: 100dvw;
+            height: 100vh;
             height: 100dvh;
-            min-height: 100dvh;
-            padding: 0;
           }
 
-          .game-shell {
-            width: min(100dvw, calc(100dvh * 1.7777778));
-            height: min(100dvh, calc(100dvw / 1.7777778));
-            border-width: 0;
-            border-radius: 0;
-          }
-
-          .menu-controls {
+          .touch-device .menu-controls {
             bottom: max(3%, env(safe-area-inset-bottom));
           }
         }
 
-        @media (hover: none) and (pointer: coarse) and (max-height: 540px) and (orientation: landscape) {
+        /* Short landscape screens such as small iPhones. */
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 540px) {
           .compact-landscape .back-button,
           .compact-landscape .pause-button {
             top: max(6px, env(safe-area-inset-top));
-            min-width: 44px;
-            min-height: 44px;
+            min-width: 42px;
+            min-height: 42px;
           }
 
           .compact-landscape .biome-badge {
-            top: max(55px, calc(env(safe-area-inset-top) + 48px));
+            top: max(52px, calc(env(safe-area-inset-top) + 46px));
           }
 
           .compact-landscape .mobile-controls {
-            padding: 8px max(14px, env(safe-area-inset-right))
-              max(8px, env(safe-area-inset-bottom))
-              max(14px, env(safe-area-inset-left));
+            min-height: 74px;
+            padding-top: 6px;
+            padding-right: max(10px, calc(env(safe-area-inset-right) + 6px));
+            padding-bottom: max(7px, calc(env(safe-area-inset-bottom) + 5px));
+            padding-left: max(10px, calc(env(safe-area-inset-left) + 6px));
           }
 
           .compact-landscape .direction-button {
-            width: clamp(56px, 12vh, 72px);
-            height: clamp(56px, 12vh, 72px);
+            width: clamp(54px, 16vh, 72px);
+            height: clamp(54px, 16vh, 72px);
+            font-size: clamp(22px, 7vh, 31px);
           }
 
           .compact-landscape .jump-button {
-            width: clamp(70px, 15vh, 88px);
-            height: clamp(70px, 15vh, 88px);
+            width: clamp(68px, 20vh, 90px);
+            height: clamp(68px, 20vh, 90px);
+          }
+
+          .compact-landscape .jump-button span {
+            font-size: clamp(27px, 9vh, 38px);
           }
 
           .compact-landscape .jump-button small {
+            margin-top: 2px;
             font-size: 8px;
           }
 
           .compact-landscape .pause-card,
           .compact-landscape .dialog-card,
           .compact-landscape .finished-card {
-            width: min(88vw, 680px);
-            max-height: 94dvh;
-            padding: 18px 22px;
+            width: min(90vw, 680px);
+            max-height: calc(100dvh - 12px);
+            padding: 16px 20px;
           }
 
           .compact-landscape .pause-card {
-            padding-top: 40px;
+            padding-top: 36px;
           }
 
           .compact-landscape .pause-card h2,
           .compact-landscape .dialog-card h2,
           .compact-landscape .finished-card h2 {
-            font-size: clamp(24px, 7vh, 34px);
+            font-size: clamp(22px, 7vh, 32px);
           }
 
           .compact-landscape .pause-progress,
           .compact-landscape .finished-stats {
-            margin-top: 10px;
+            margin-top: 8px;
           }
 
           .compact-landscape .dialog-actions {
-            margin-top: 12px;
+            margin-top: 10px;
           }
 
           .compact-landscape .dialog-actions > * {
-            min-height: 44px;
+            min-height: 42px;
           }
         }
 
-        @media (hover: none) and (pointer: coarse) and (orientation: portrait) {
-          .game-shell {
-            width: 100dvw;
-            height: 100dvh;
-            border: 0;
-            border-radius: 0;
+        /* Desktop and non-touch screens keep the original 16:9 presentation,
+           but fit safely on short or narrow browser windows. */
+        @media (hover: hover) and (pointer: fine) {
+          .pointer-device .game-shell {
+            width: min(calc(100vw - 40px), 1280px);
+            max-height: calc(100dvh - 40px);
           }
         }
 
-        /* Mobile landscape: keep the whole game inside the visible viewport.
-           This also prevents an external site navbar from covering the controls. */
+        @media (hover: hover) and (pointer: fine) and (max-height: 760px) {
+          .pointer-device {
+            padding: 10px;
+          }
+
+          .pointer-device .game-shell {
+            width: min(calc(100vw - 20px), calc((100dvh - 20px) * 1.7777778));
+          }
+        }
+
+        /* Requested mobile-only fixes: bedroom fit + compact pause/finish dialogs. */
+        .touch-device .bedroom-scene.bedroom-touch-fit {
+          top: 0;
+          right: auto;
+          bottom: auto;
+          left: 0;
+          overflow: hidden;
+        }
+
         @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
-          .tiny-game-page {
-            position: fixed;
-            inset: 0;
-            z-index: 9998;
-            width: 100dvw;
-            height: 100dvh;
-            min-height: 100dvh;
-            padding: 0;
-            overflow: hidden;
-            background: #08091b;
-          }
-
-          .touch-game-shell {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            width: 100dvw;
-            height: 100dvh;
-            max-width: none;
-            max-height: none;
-            aspect-ratio: auto;
-            border: 0;
-            border-radius: 0;
-          }
-
-          .touch-game-shell .game-canvas {
-            width: 100dvw;
-            height: 100dvh;
-            object-fit: fill;
-          }
-
-          .touch-game-shell .mobile-controls {
+          .touch-device .pause-overlay,
+          .touch-device .finished-screen {
             position: absolute;
-            inset: auto 0 0 0;
-            z-index: 100;
-            min-height: 112px;
-            align-items: flex-end;
-            padding: 10px max(18px, calc(env(safe-area-inset-right) + 10px))
-              max(16px, calc(env(safe-area-inset-bottom) + 10px))
-              max(18px, calc(env(safe-area-inset-left) + 10px));
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: max(6px, env(safe-area-inset-top))
+              max(8px, env(safe-area-inset-right))
+              max(6px, env(safe-area-inset-bottom))
+              max(8px, env(safe-area-inset-left));
           }
 
-          .touch-game-shell .movement-buttons {
-            gap: 12px;
+          .touch-device .pause-card,
+          .touch-device .finished-card {
+            width: min(78vw, 560px);
+            max-height: calc(100dvh - 12px);
+            padding: 14px 18px;
+            overflow: hidden;
           }
 
-          .touch-game-shell .control-button {
-            opacity: 1;
-            border: 3px solid rgba(255, 255, 255, 0.72);
-            background: rgba(8, 10, 30, 0.9);
-            box-shadow:
-              0 6px 0 rgba(0, 0, 0, 0.58),
-              inset 0 0 18px rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(6px);
+          .touch-device .pause-card {
+            padding-top: 31px;
           }
 
-          .touch-game-shell .direction-button {
-            width: clamp(62px, 17dvh, 88px);
-            height: clamp(62px, 17dvh, 88px);
-            font-size: clamp(27px, 7dvh, 38px);
+          .touch-device .pause-orb {
+            top: -24px;
+            width: 48px;
+            height: 48px;
           }
 
-          .touch-game-shell .jump-button {
-            width: clamp(78px, 21dvh, 106px);
-            height: clamp(78px, 21dvh, 106px);
+          .touch-device .pause-card h2,
+          .touch-device .finished-card h2 {
+            margin-top: 4px;
+            font-size: clamp(21px, 5.8vh, 30px);
+            line-height: 1;
           }
 
-          .touch-game-shell .jump-button span {
-            font-size: clamp(31px, 8dvh, 44px);
+          .touch-device .pause-card > p:not(.dialog-kicker),
+          .touch-device
+            .finished-card
+            > p:not(.dialog-kicker, .finished-stars) {
+            margin-top: 6px;
+            font-size: clamp(9px, 2.6vh, 12px);
+            line-height: 1.35;
           }
 
-          .touch-game-shell .back-button {
-            top: max(8px, env(safe-area-inset-top));
-            left: max(8px, env(safe-area-inset-left));
-            z-index: 110;
+          .touch-device .dialog-kicker {
+            font-size: clamp(8px, 2.1vh, 10px);
           }
 
-          .touch-game-shell .back-button span:last-child {
-            display: none;
+          .touch-device .finished-stars {
+            margin-bottom: 5px;
+            font-size: clamp(18px, 4.8vh, 28px);
           }
 
-          .touch-game-shell .pause-button {
-            top: max(8px, env(safe-area-inset-top));
-            right: max(8px, env(safe-area-inset-right));
-            z-index: 110;
+          .touch-device .pause-progress,
+          .touch-device .finished-stats {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 6px;
+            margin-top: 8px;
           }
 
-          .touch-game-shell .biome-badge {
-            top: max(62px, calc(env(safe-area-inset-top) + 54px));
-            right: max(8px, env(safe-area-inset-right));
+          .touch-device .pause-progress > div,
+          .touch-device .finished-stats > div {
+            min-width: 0;
+            padding: 7px 5px;
+          }
+
+          .touch-device .pause-progress span,
+          .touch-device .finished-stats span {
+            font-size: clamp(7px, 1.9vh, 9px);
+          }
+
+          .touch-device .pause-progress strong,
+          .touch-device .finished-stats strong {
+            overflow: hidden;
+            font-size: clamp(11px, 2.9vh, 16px);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .touch-device .dialog-actions {
+            flex-direction: row;
+            flex-wrap: nowrap;
+            gap: 7px;
+            margin-top: 9px;
+          }
+
+          .touch-device .dialog-actions > * {
+            flex: 1 1 0;
+            min-width: 0 !important;
+            min-height: 38px !important;
+            height: 38px;
+            padding: 0 8px !important;
+            font-size: clamp(8px, 2.2vh, 10px);
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25) !important;
+          }
+        }
+
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 390px) {
+          .touch-device .pause-card,
+          .touch-device .finished-card {
+            width: min(82vw, 520px);
+            padding: 10px 14px;
+          }
+
+          .touch-device .pause-card {
+            padding-top: 27px;
+          }
+
+          .touch-device .pause-orb {
+            top: -20px;
+            width: 42px;
+            height: 42px;
+          }
+
+          .touch-device .pause-card h2,
+          .touch-device .finished-card h2 {
+            font-size: clamp(18px, 5.4vh, 24px);
+          }
+
+          .touch-device .pause-progress,
+          .touch-device .finished-stats {
+            margin-top: 6px;
+          }
+
+          .touch-device .dialog-actions {
+            margin-top: 7px;
+          }
+
+          .touch-device .dialog-actions > * {
+            min-height: 34px !important;
+            height: 34px;
+          }
+        }
+
+        /* Requested fixes only: bedroom mobile layout/movement, mobile pause layout,
+           and matching finish-screen action buttons. */
+        .walking-home-player.outdoor-sprite {
+          transition: none;
+          will-change: left;
+        }
+
+        .finished-equal-action {
+          width: 154px;
+          min-width: 154px;
+          min-height: 51px;
+          padding: 0 23px;
+          font: inherit;
+          font-weight: 900;
+          line-height: 1;
+          text-align: center;
+          text-decoration: none;
+        }
+
+        .touch-device .bedroom-scene.bedroom-touch-fit {
+          right: auto;
+          bottom: auto;
+          overflow: hidden;
+        }
+
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+          .touch-device .pause-overlay {
+            overflow: hidden;
+            padding: max(5px, env(safe-area-inset-top))
+              max(8px, env(safe-area-inset-right))
+              max(5px, env(safe-area-inset-bottom))
+              max(8px, env(safe-area-inset-left));
+          }
+
+          .touch-device .pause-card {
+            display: flex;
+            width: min(88vw, 610px);
+            max-height: calc(100dvh - 10px);
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: center;
+            padding: 8px 14px 10px;
+            overflow: visible;
+            border-width: 2px;
+          }
+
+          .touch-device .pause-orb {
+            position: relative;
+            top: auto;
+            left: auto;
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
+            margin: 0 auto 4px;
+            border-width: 3px;
+            border-radius: 12px;
+            box-shadow: 0 4px 0 #385a9a;
+            transform: rotate(45deg);
+          }
+
+          .touch-device .pause-orb .play-triangle.large {
+            transform: rotate(-45deg) scale(0.72);
+          }
+
+          .touch-device .pause-card .dialog-kicker {
+            margin: 1px 0 3px;
+            font-size: clamp(7px, 2vh, 9px);
+            line-height: 1.1;
+          }
+
+          .touch-device .pause-card h2 {
+            margin: 0;
+            font-size: clamp(18px, 6vh, 28px);
+            line-height: 0.95;
+          }
+
+          .touch-device .pause-card > p:not(.dialog-kicker) {
+            max-width: 470px;
+            margin: 4px auto 0;
+            font-size: clamp(8px, 2.4vh, 11px);
+            line-height: 1.25;
+          }
+
+          .touch-device .pause-progress {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 5px;
+            margin-top: 6px;
+          }
+
+          .touch-device .pause-progress div {
+            min-width: 0;
+            padding: 5px 4px;
+          }
+
+          .touch-device .pause-progress span {
+            font-size: clamp(6px, 1.7vh, 8px);
+          }
+
+          .touch-device .pause-progress strong {
+            margin-top: 2px;
+            overflow: hidden;
+            font-size: clamp(9px, 2.5vh, 12px);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .touch-device .pause-card .dialog-actions {
+            flex-direction: row;
+            flex-wrap: nowrap;
+            gap: 6px;
+            margin-top: 7px;
+          }
+
+          .touch-device .pause-card .dialog-actions > * {
+            min-width: 0 !important;
+            min-height: 34px !important;
+            height: 34px;
+            flex: 1 1 0;
+            padding: 0 7px !important;
+            font-size: clamp(7px, 2vh, 9px);
+          }
+
+          .touch-device .finished-card .dialog-actions .finished-equal-action {
+            width: auto;
+            min-width: 0 !important;
+          }
+        }
+
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 360px) {
+          .touch-device .pause-card {
+            width: min(91vw, 600px);
+            padding: 5px 11px 7px;
+          }
+
+          .touch-device .pause-orb {
+            width: 30px;
+            height: 30px;
+            flex-basis: 30px;
+            margin-bottom: 2px;
+          }
+
+          .touch-device .pause-card h2 {
+            font-size: clamp(16px, 5.4vh, 21px);
+          }
+
+          .touch-device .pause-card > p:not(.dialog-kicker) {
+            margin-top: 2px;
+            font-size: clamp(7px, 2.1vh, 9px);
+          }
+
+          .touch-device .pause-progress {
+            margin-top: 4px;
+          }
+
+          .touch-device .pause-card .dialog-actions {
+            margin-top: 5px;
+          }
+
+          .touch-device .pause-card .dialog-actions > * {
+            min-height: 30px !important;
+            height: 30px;
+          }
+        }
+
+        /* Final requested UI fixes only: bedroom composition, pause dialog,
+           and equal finish actions. Gameplay and movement are untouched. */
+
+        /* Bedroom: keep the original 960x540 stage and movement coordinates,
+           but make the room read as one intentional composition on every viewport. */
+        .bedroom-scene {
+          box-shadow: 0 0 0 200vmax #aeb0d4;
+        }
+
+        .bedroom-scene .bedroom-poster,
+        .bedroom-scene .family-gallery,
+        .bedroom-scene .bedroom-cabinet,
+        .bedroom-scene .bedroom-mirror,
+        .bedroom-scene .small-round-window,
+        .bedroom-scene .toy-chest {
+          display: none;
+        }
+
+        .bedroom-scene .bedroom-window-large {
+          top: 72px;
+          left: 62px;
+          width: 196px;
+          height: 146px;
+        }
+
+        .bedroom-scene .wall-shelf {
+          top: 70px;
+          left: 322px;
+          width: 205px;
+        }
+
+        .bedroom-scene .computer-desk {
+          left: 286px;
+          bottom: 72px;
+          width: 190px;
+        }
+
+        .bedroom-scene .aquarium {
+          top: 105px;
+          right: 72px;
+          width: 190px;
+          height: 150px;
+        }
+
+        .bedroom-scene .bedside-table {
+          right: 338px;
+          bottom: 72px;
+        }
+
+        .bedroom-scene .bedroom-rug {
+          right: 42px;
+          bottom: 25px;
+          width: 390px;
+          height: 78px;
+        }
+
+        .bedroom-scene .bedroom-bed-right {
+          right: 18px;
+          bottom: 52px;
+          width: 350px;
+          transform: scale(0.9);
+          transform-origin: right bottom;
+        }
+
+        .bedroom-scene .floor-plant {
+          right: 410px;
+          bottom: 72px;
+        }
+
+        .bedroom-scene .bedroom-clock {
+          top: 172px;
+          left: 548px;
+        }
+
+        .bedroom-scene .finish-sign {
+          top: 26px;
+          right: 30px;
+          bottom: auto;
+          width: 280px;
+          padding: 11px 15px;
+          gap: 4px;
+          border-radius: 8px;
+          background: rgba(18, 20, 48, 0.9);
+        }
+
+        .bedroom-scene .finish-sign span {
+          font-size: 11px;
+        }
+
+        .bedroom-scene .finish-sign small,
+        .bedroom-scene .finish-sign em {
+          font-size: 8px;
+          line-height: 1.35;
+        }
+
+        /* Pause: the dialog owns the screen while paused. No floating HUD button
+           is rendered over it, and every part stays inside the card. */
+        .pause-overlay {
+          padding: clamp(12px, 2.4vw, 24px);
+          overflow: auto;
+        }
+
+        .pause-card {
+          display: flex;
+          width: min(620px, calc(100% - 12px));
+          max-height: calc(100% - 8px);
+          flex-direction: column;
+          justify-content: center;
+          padding: clamp(18px, 3.2vw, 34px);
+          overflow: hidden;
+        }
+
+        .pause-orb {
+          position: relative;
+          top: auto;
+          left: auto;
+          width: clamp(48px, 8vw, 66px);
+          height: clamp(48px, 8vw, 66px);
+          margin: 0 auto 12px;
+          border-width: 4px;
+          border-radius: 20px;
+          transform: rotate(45deg);
+          flex: 0 0 auto;
+        }
+
+        .pause-card h2 {
+          font-size: clamp(28px, 5vw, 44px);
+        }
+
+        .pause-card > p:not(.dialog-kicker) {
+          margin-top: 12px;
+        }
+
+        .pause-progress {
+          margin-top: 18px;
+        }
+
+        .pause-card .dialog-actions {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+          width: 100%;
+          margin-top: 18px;
+        }
+
+        .pause-card .dialog-actions > * {
+          width: 100%;
+          min-width: 0 !important;
+          min-height: 48px;
+          padding: 0 12px !important;
+          font: inherit;
+          font-weight: 900;
+          text-decoration: none;
+        }
+
+        .pause-card .pause-equal-action,
+        .touch-device .pause-card .pause-equal-action {
+          --pause-action-bg: #67e8a5;
+          --pause-action-shadow: #29966a;
+          --pause-action-text: #12382a;
+          display: inline-flex;
+          width: 100% !important;
+          min-width: 0 !important;
+          min-height: 48px;
+          height: 48px;
+          align-items: center;
+          justify-content: center;
+          margin: 0;
+          padding: 0 12px !important;
+          color: var(--pause-action-text) !important;
+          border: 0 !important;
+          border-radius: 8px;
+          background: var(--pause-action-bg) !important;
+          box-shadow: 0 6px 0 var(--pause-action-shadow) !important;
+          font: inherit;
+          font-weight: 900;
+          line-height: 1;
+          text-align: center;
+          text-decoration: none;
+          cursor: pointer;
+          transition:
+            transform 120ms ease,
+            filter 120ms ease,
+            box-shadow 120ms ease;
+        }
+
+        .pause-card .pause-action-resume,
+        .touch-device .pause-card .pause-action-resume {
+          --pause-action-bg: #67e8a5;
+          --pause-action-shadow: #29966a;
+          --pause-action-text: #12382a;
+        }
+
+        .pause-card .pause-action-restart,
+        .touch-device .pause-card .pause-action-restart {
+          --pause-action-bg: #ffd166;
+          --pause-action-shadow: #c58b20;
+          --pause-action-text: #49320a;
+        }
+
+        .pause-card .pause-action-playground,
+        .touch-device .pause-card .pause-action-playground {
+          --pause-action-bg: #70b7ff;
+          --pause-action-shadow: #397fc4;
+          --pause-action-text: #102f55;
+        }
+
+        .pause-card .pause-equal-action:hover {
+          filter: brightness(1.08);
+          transform: translateY(-2px);
+        }
+
+        .pause-card .pause-equal-action:active {
+          box-shadow: 0 2px 0 var(--pause-action-shadow) !important;
+          transform: translateY(4px);
+        }
+
+        .pause-card .pause-equal-action:focus-visible {
+          outline: 3px solid rgba(255, 255, 255, 0.9);
+          outline-offset: 4px;
+        }
+
+        /* Finish: PLAY AGAIN and PLAYGROUND are deliberately the exact same
+           button component visually on desktop and touch layouts. */
+        .finished-card .dialog-actions {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          width: min(430px, 100%);
+          margin-right: auto;
+          margin-left: auto;
+        }
+
+        .finished-card .finished-equal-action,
+        .touch-device .finished-card .finished-equal-action {
+          display: inline-flex;
+          width: 100% !important;
+          min-width: 0 !important;
+          min-height: 51px !important;
+          height: 51px;
+          align-items: center;
+          justify-content: center;
+          margin: 0;
+          padding: 0 18px !important;
+          color: #18362f;
+          border: 0;
+          border-radius: 8px;
+          background: #8de4b6;
+          box-shadow: 0 6px 0 #3f9879;
+          font: inherit;
+          font-weight: 900;
+          line-height: 1;
+          text-align: center;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+          .touch-device .pause-overlay {
+            padding: max(6px, env(safe-area-inset-top))
+              max(8px, env(safe-area-inset-right))
+              max(6px, env(safe-area-inset-bottom))
+              max(8px, env(safe-area-inset-left));
+          }
+
+          .touch-device .pause-card {
+            width: min(78vw, 590px);
+            max-height: calc(100dvh - 12px);
+            padding: 10px 16px 12px;
+          }
+
+          .touch-device .pause-orb {
+            width: 38px;
+            height: 38px;
+            margin-bottom: 5px;
+            border-width: 3px;
+            border-radius: 12px;
+            box-shadow: 0 4px 0 #385a9a;
+          }
+
+          .touch-device .pause-card .dialog-kicker {
+            margin: 0 0 3px;
+            font-size: clamp(7px, 1.9vh, 9px);
+          }
+
+          .touch-device .pause-card h2 {
+            font-size: clamp(19px, 5.4vh, 27px);
+          }
+
+          .touch-device .pause-card > p:not(.dialog-kicker) {
+            margin-top: 4px;
+            font-size: clamp(8px, 2.2vh, 10px);
+            line-height: 1.25;
+          }
+
+          .touch-device .pause-progress {
+            gap: 5px;
+            margin-top: 7px;
+          }
+
+          .touch-device .pause-progress div {
+            padding: 5px 4px;
+          }
+
+          .touch-device .pause-card .dialog-actions {
+            gap: 6px;
+            margin-top: 7px;
+          }
+
+          .touch-device .pause-card .dialog-actions > * {
+            min-height: 32px !important;
+            height: 32px;
+            padding: 0 6px !important;
+            font-size: clamp(7px, 1.9vh, 9px);
+          }
+
+          .touch-device .pause-card .pause-equal-action {
+            min-height: 32px !important;
+            height: 32px;
+            border-radius: 6px;
+            box-shadow: 0 4px 0 var(--pause-action-shadow) !important;
+          }
+
+          .touch-device .finished-card .dialog-actions {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            width: min(390px, 100%);
+          }
+
+          .touch-device .finished-card .finished-equal-action {
+            min-height: 38px !important;
+            height: 38px;
+            font-size: clamp(8px, 2.2vh, 10px);
+          }
+        }
+
+        /* Pause actions v2: all three controls are intentionally the same
+           element type and geometry. Only their inline colours differ. */
+        .pause-card .pause-actions-v2 {
+          display: grid !important;
+          grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+          align-items: stretch !important;
+          gap: 10px !important;
+          width: 100% !important;
+        }
+
+        .pause-card .pause-actions-v2 > .pause-equal-action,
+        .touch-device .pause-card .pause-actions-v2 > .pause-equal-action {
+          appearance: none !important;
+          -webkit-appearance: none !important;
+          display: inline-flex !important;
+          width: 100% !important;
+          min-width: 0 !important;
+          min-height: 48px !important;
+          height: 48px !important;
+          flex: none !important;
+          align-items: center !important;
+          justify-content: center !important;
+          margin: 0 !important;
+          padding: 0 12px !important;
+          border: 0 !important;
+          border-radius: 8px !important;
+          font: inherit !important;
+          font-weight: 900 !important;
+          font-size: 16px !important;
+          letter-spacing: 0.04em !important;
+          line-height: 1 !important;
+          text-align: center !important;
+          text-decoration: none !important;
+          cursor: pointer !important;
+        }
+
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+          .touch-device .pause-card .pause-actions-v2 {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 6px !important;
+          }
+
+          .touch-device .pause-card .pause-actions-v2 > .pause-equal-action {
+            min-height: 32px !important;
+            height: 32px !important;
+            padding: 0 6px !important;
+            border-radius: 6px !important;
+            font-size: clamp(11px, 2.6vh, 14px) !important;
+          }
+        }
+
+        /* Final pause alignment fix: keep the diamond, play icon and labels
+           optically centered on every viewport. */
+        .pause-card {
+          align-items: center;
+          text-align: center;
+        }
+
+        .pause-card > .dialog-kicker,
+        .pause-card > h2,
+        .pause-card > p:not(.dialog-kicker),
+        .pause-card > .pause-progress,
+        .pause-card > .pause-actions-v2 {
+          width: 100%;
+          text-align: center;
+        }
+
+        .pause-orb {
+          align-self: center;
+          display: grid;
+          place-items: center;
+          padding: 0;
+        }
+
+        .pause-orb .play-triangle,
+        .pause-orb .play-triangle.large,
+        .touch-device .pause-orb .play-triangle.large {
+          width: 28px;
+          height: 32px;
+          margin: 0 0 0 3px;
+          border: 0;
+          background: #ffffff;
+          clip-path: polygon(0 0, 100% 50%, 0 100%);
+          filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.18));
+          transform: rotate(-45deg);
+          transform-origin: 50% 50%;
+        }
+
+        .pause-card .dialog-kicker {
+          margin-left: 0;
+          margin-right: 0;
+          letter-spacing: 0.14em;
+        }
+
+        .pause-card h2 {
+          margin-left: 0;
+          margin-right: 0;
+          letter-spacing: -0.025em;
+          text-indent: 0;
+        }
+
+        @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+          .touch-device .pause-orb .play-triangle.large {
+            width: 18px;
+            height: 21px;
+            margin-left: 2px;
+          }
+
+          .touch-device .pause-card .dialog-kicker,
+          .touch-device .pause-card h2 {
+            width: 100%;
+            text-align: center;
           }
         }
 
