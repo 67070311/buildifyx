@@ -1,42 +1,52 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
 export default function AboutUs() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const isActive = useInView(sectionRef, { amount: 0.08 });
   return (
-    <section className="relative overflow-hidden border-y border-[#151433]/10 bg-[#fffdf7] px-5 py-16 text-[#151433] sm:px-8 sm:py-20 lg:px-12 lg:py-24">
+    <section
+      ref={sectionRef}
+      className="perf-section relative overflow-hidden border-y border-[#151433]/10 bg-[#fffdf7] px-5 py-16 text-[#151433] sm:px-8 sm:py-20 lg:px-12 lg:py-24"
+    >
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">
         <motion.div
-          animate={{
-            x: [0, 24, 0],
-            y: [0, 18, 0],
-            scale: [1, 1.05, 1],
-          }}
+          animate={
+            isActive
+              ? { x: [0, 24, 0], y: [0, 18, 0], scale: [1, 1.05, 1] }
+              : { x: 0, y: 0, scale: 1 }
+          }
           transition={{
-            duration: 12,
-            repeat: Infinity,
+            duration: isActive ? 12 : 0,
+            repeat: isActive ? Infinity : 0,
             ease: "easeInOut",
           }}
-          className="absolute -left-40 top-10 h-[380px] w-[380px] rounded-full bg-[#ffb9d9]/30 blur-[120px]"
-        />
+          className="absolute -left-40 top-10 h-[380px] w-[380px]"
+        >
+          <div className="absolute inset-0 rounded-full bg-[#ffb9d9]/30 blur-[120px]" />
+        </motion.div>
 
         <motion.div
-          animate={{
-            x: [0, -22, 0],
-            y: [0, 16, 0],
-            scale: [1, 1.06, 1],
-          }}
+          animate={
+            isActive
+              ? { x: [0, -22, 0], y: [0, 16, 0], scale: [1, 1.06, 1] }
+              : { x: 0, y: 0, scale: 1 }
+          }
           transition={{
-            duration: 11,
-            repeat: Infinity,
+            duration: isActive ? 11 : 0,
+            repeat: isActive ? Infinity : 0,
             ease: "easeInOut",
           }}
-          className="absolute -right-40 top-20 h-[420px] w-[420px] rounded-full bg-[#9edfff]/35 blur-[130px]"
-        />
+          className="absolute -right-40 top-20 h-[420px] w-[420px]"
+        >
+          <div className="absolute inset-0 rounded-full bg-[#9edfff]/35 blur-[130px]" />
+        </motion.div>
 
         <div className="absolute bottom-[-220px] left-1/2 h-[440px] w-[650px] -translate-x-1/2 rounded-full bg-[#ffd22e]/25 blur-[130px]" />
 
@@ -217,13 +227,14 @@ export default function AboutUs() {
         >
           {/* Glow */}
           <motion.div
-            animate={{
-              scale: [1, 1.08, 1],
-              opacity: [0.65, 1, 0.65],
-            }}
+            animate={
+              isActive
+                ? { scale: [1, 1.08, 1], opacity: [0.65, 1, 0.65] }
+                : { scale: 1, opacity: 0.65 }
+            }
             transition={{
-              duration: 5,
-              repeat: Infinity,
+              duration: isActive ? 5 : 0,
+              repeat: isActive ? Infinity : 0,
               ease: "easeInOut",
             }}
             className="absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#ffd22e]/30 blur-[95px]"
@@ -242,13 +253,14 @@ export default function AboutUs() {
           >
             <div className="relative flex min-h-[300px] items-center justify-center sm:min-h-[420px] lg:min-h-[500px]">
               <motion.div
-                animate={{
-                  y: [0, -8, 0],
-                  rotate: [-0.5, 0.5, -0.5],
-                }}
+                animate={
+                  isActive
+                    ? { y: [0, -8, 0], rotate: [-0.5, 0.5, -0.5] }
+                    : { y: 0, rotate: -0.5 }
+                }
                 transition={{
-                  duration: 5.8,
-                  repeat: Infinity,
+                  duration: isActive ? 5.8 : 0,
+                  repeat: isActive ? Infinity : 0,
                   ease: "easeInOut",
                 }}
                 className="relative w-full max-w-[500px]"
@@ -258,6 +270,9 @@ export default function AboutUs() {
                   alt="Buildifyx rocket illustration"
                   width={500}
                   height={500}
+                  loading="lazy"
+                  fetchPriority="low"
+                  decoding="async"
                   unoptimized
                   className="h-auto w-full object-contain drop-shadow-[0_24px_40px_rgba(21,20,51,0.18)]"
                 />

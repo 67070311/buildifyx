@@ -24,3 +24,127 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Skip layout/paint work for long sections until they approach the viewport. */
+.perf-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+@keyframes perf-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.perf-marquee-track {
+  animation-name: perf-marquee;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes perf-float-up {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -5px, 0);
+  }
+}
+
+@keyframes perf-float-down {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 5px, 0);
+  }
+}
+
+.perf-float-up,
+.perf-float-down {
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.perf-float-up {
+  animation-name: perf-float-up;
+}
+
+.perf-float-down {
+  animation-name: perf-float-down;
+}
+
+/* Why Us: lightweight, transform-only motion. */
+@keyframes whyus-rise-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.whyus-rise-in {
+  animation: whyus-rise-in 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.whyus-rise-in-delayed {
+  animation: whyus-rise-in 780ms 90ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes whyus-botanical-drift {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(-2deg);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0) rotate(2deg);
+  }
+}
+
+@keyframes whyus-botanical-drift-alt {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(3deg);
+  }
+  50% {
+    transform: translate3d(5px, -5px, 0) rotate(-2deg);
+  }
+}
+
+.whyus-drift {
+  animation: whyus-botanical-drift 7.5s ease-in-out infinite;
+}
+
+.whyus-drift-alt {
+  animation: whyus-botanical-drift-alt 9s ease-in-out infinite;
+}
+
+@keyframes whyus-note-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.whyus-note-in {
+  animation: whyus-note-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whyus-rise-in,
+  .whyus-rise-in-delayed,
+  .whyus-drift,
+  .whyus-drift-alt,
+  .whyus-note-in {
+    animation: none !important;
+  }
+}

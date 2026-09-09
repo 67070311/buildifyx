@@ -1,246 +1,276 @@
-"use client";
+import type { LucideIcon } from "lucide-react";
+import {
+  ArrowUpRight,
+  Code2,
+  Compass,
+  Flower2,
+  Leaf,
+  Palette,
+  Sparkles,
+  Sprout,
+} from "lucide-react";
 
-import Image from "next/image";
-import { motion } from "framer-motion";
-
-const items = [
+const items: Array<{
+  number: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  tone: string;
+  visual: "seed" | "shape" | "bloom";
+  note: string;
+  label: string;
+}> = [
   {
     number: "01",
-    label: "Digital Product",
-    title: "Build products that solve real problems",
+    eyebrow: "Discover",
+    title: "Start with the roots, not the decoration.",
     description:
-      "We design and develop digital products that solve real problems, scale with confidence, and create meaningful user experiences.",
-    image: "/whyus/whyus1.gif",
-    accent: {
-      number: "bg-sky-50 text-sky-700 ring-sky-100",
-      label: "border-sky-100 bg-sky-50/80 text-sky-700",
-      glow: "bg-sky-100/75",
-      imageBackground: "bg-gradient-to-br from-sky-50 via-white to-slate-50",
-      imageGlow: "bg-sky-100/65",
-    },
+      "We learn what your business needs, who the product is for, and what should happen next. Clear roots make every design decision easier later.",
+    icon: Compass,
+    tone: "bg-[#eaf0df] border-[#d8e2cf] text-[#4f6649]",
+    visual: "seed",
+    note: "listen first",
+    label: "plant the right seed",
   },
   {
     number: "02",
-    label: "Startup Partner",
-    title: "Work like your product partner",
+    eyebrow: "Shape",
+    title: "Give every idea its own character.",
     description:
-      "Whether you are validating a new idea or scaling an existing platform, we work as an extension of your team with clear communication and fast execution.",
-    image: "/whyus/whyus2.gif",
-    accent: {
-      number: "bg-emerald-50 text-emerald-700 ring-emerald-100",
-      label: "border-emerald-100 bg-emerald-50/80 text-emerald-700",
-      glow: "bg-emerald-100/75",
-      imageBackground:
-        "bg-gradient-to-br from-emerald-50 via-white to-slate-50",
-      imageGlow: "bg-emerald-100/65",
-    },
+      "We turn strategy into a visual system with personality — thoughtful typography, natural rhythm, useful interaction, and enough restraint to stay clear.",
+    icon: Palette,
+    tone: "bg-[#fff0e8] border-[#f0dacd] text-[#98654d]",
+    visual: "shape",
+    note: "make it yours",
+    label: "shape with intention",
   },
   {
     number: "03",
-    label: "Engineering",
-    title: "Strong engineering behind every product",
+    eyebrow: "Grow",
+    title: "Build it light enough to keep evolving.",
     description:
-      "We build high-performance web and mobile applications with scalable architecture, clean code, and smooth user experiences.",
-    image: "/whyus/whyus3.gif",
-    accent: {
-      number: "bg-blue-50 text-blue-700 ring-blue-100",
-      label: "border-blue-100 bg-blue-50/80 text-blue-700",
-      glow: "bg-blue-100/75",
-      imageBackground: "bg-gradient-to-br from-blue-50 via-white to-slate-50",
-      imageGlow: "bg-blue-100/65",
-    },
+      "The final product is responsive, maintainable, and performance-aware from the start, so new pages and features can grow without weighing everything down.",
+    icon: Code2,
+    tone: "bg-[#e7f0ee] border-[#d1e0dd] text-[#426863]",
+    visual: "bloom",
+    note: "leave room to grow",
+    label: "ready to bloom",
   },
 ];
 
 export default function Body() {
   return (
-    <section className="relative overflow-hidden bg-[#fbfcfd] px-3 py-14 text-slate-950 sm:px-6 sm:py-18 md:py-20 lg:px-8 lg:py-24">
-      {/* Background */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbfc_48%,#ffffff_100%)]" />
+    <section className="perf-section relative overflow-hidden bg-[#f3f1e7] px-4 py-20 text-[#2b3529] sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(74,91,69,0.028)_1px,transparent_1px),linear-gradient(90deg,rgba(74,91,69,0.028)_1px,transparent_1px)] bg-[size:76px_76px]" />
+      <div className="pointer-events-none absolute -left-24 top-24 h-64 w-64 rounded-full border border-[#dce3d4] bg-[#eef2e7]/70" />
+      <div className="pointer-events-none absolute -right-28 bottom-16 h-72 w-72 rounded-[44%_56%_62%_38%/55%_42%_58%_45%] border border-[#ead8cc] bg-[#f8e9df]/50" />
 
-        <div className="absolute left-1/2 top-[-230px] h-[560px] w-[760px] -translate-x-1/2 rounded-full bg-sky-100/65 blur-[150px]" />
+      <div className="relative mx-auto max-w-7xl">
+        <div className="grid gap-10 border-b border-[#d9dfd3] pb-12 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#ced8c6] bg-[#faf9f3] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#61735b]">
+              <Sprout className="h-3.5 w-3.5" />
+              How we grow ideas
+            </div>
+            <p className="mt-5 max-w-xs text-sm leading-6 text-[#7a8275]">
+              A process that stays simple enough to move quickly, but thoughtful enough to make the result feel distinct.
+            </p>
+          </div>
 
-        <div className="absolute -left-40 top-[35%] h-[370px] w-[370px] rounded-full bg-emerald-100/55 blur-[125px]" />
+          <h2 className="max-w-4xl font-serif text-[40px] font-medium leading-[1.02] tracking-[-0.04em] text-[#2d382c] sm:text-[52px] lg:text-[64px]">
+            From first seed to a product
+            <span className="italic text-[#7c9472]"> ready to bloom.</span>
+          </h2>
+        </div>
 
-        <div className="absolute -right-40 bottom-[6%] h-[390px] w-[390px] rounded-full bg-blue-100/55 blur-[130px]" />
+        <GardenPath />
 
-        <div
-          className="absolute inset-0 opacity-40"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(14,116,144,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(14,116,144,0.035) 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
-            maskImage: "linear-gradient(to bottom, black, transparent 92%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, black, transparent 92%)",
-          }}
-        />
+        <div className="mt-10 space-y-6 sm:mt-12 sm:space-y-8">
+          {items.map((item, index) => {
+            const Icon = item.icon;
+            const reverse = index % 2 === 1;
 
-        <div className="absolute inset-x-0 top-0 h-px bg-slate-900/[0.06]" />
-      </div>
+            return (
+              <article
+                key={item.number}
+                className="group relative grid overflow-hidden rounded-[34px] border border-[#d8ded2] bg-[#fbfaf5] shadow-[0_18px_55px_rgba(55,67,51,0.055)] transition-[transform,box-shadow,border-color] duration-500 hover:-translate-y-1 hover:border-[#c2cdbb] hover:shadow-[0_28px_75px_rgba(55,67,51,0.085)] lg:grid-cols-2"
+              >
+                <div className="pointer-events-none absolute left-5 top-5 z-20 h-2.5 w-2.5 rounded-full bg-[#c8d7bd] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="pointer-events-none absolute left-9 top-8 z-20 h-1.5 w-1.5 rounded-full bg-[#e6b99f] opacity-0 transition-opacity delay-75 duration-300 group-hover:opacity-100" />
 
-      <div className="relative z-10 mx-auto max-w-7xl">
-        {/* Header */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 32,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 0.65,
-            ease: "easeOut",
-          }}
-          viewport={{
-            once: true,
-          }}
-          className="mx-auto max-w-3xl text-center"
-        >
-          <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-sky-700 sm:text-xs">
-            Our Process
-          </p>
+                <div
+                  className={`relative flex min-h-[320px] flex-col justify-between p-6 sm:p-8 lg:min-h-[430px] lg:p-10 ${
+                    reverse ? "lg:order-2" : ""
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <span className="font-serif text-4xl italic text-[#c5cdbf] transition-colors duration-300 group-hover:text-[#9dac96]">
+                          {item.number}
+                        </span>
+                        <div className="mt-3 inline-flex rotate-[-2deg] items-center gap-1.5 rounded-full border border-[#e6d5c8] bg-[#fff7f1] px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-[#9a6d57] transition-transform duration-300 group-hover:rotate-0">
+                          <Sparkles className="h-3 w-3" />
+                          {item.note}
+                        </div>
+                      </div>
 
-          <h1 className="mt-4 text-3xl font-semibold leading-tight tracking-[-0.035em] text-slate-950 sm:text-4xl md:text-5xl">
-            Why teams choose
-            <br />
-            BuildifyX
-          </h1>
+                      <div className={`grid h-11 w-11 place-items-center rounded-full border transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105 ${item.tone}`}>
+                        <Icon className="h-4 w-4" />
+                      </div>
+                    </div>
 
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
-            We combine strategy, design, and engineering to create digital
-            products that feel clear, reliable, and ready to scale.
-          </p>
-        </motion.div>
+                    <p className="mt-10 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#7a8a73]">
+                      {item.eyebrow}
+                    </p>
+                    <h3 className="mt-4 max-w-xl font-serif text-[34px] font-medium leading-[1.04] tracking-[-0.035em] text-[#2e392d] sm:text-[42px]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-5 max-w-xl text-sm leading-7 text-[#6f786a] sm:text-[15px]">
+                      {item.description}
+                    </p>
+                  </div>
 
-        {/* Rows */}
-        <div className="mt-10 space-y-5 sm:mt-14 sm:space-y-8 md:mt-16 md:space-y-10">
-          {items.map((item, index) => (
-            <motion.article
-              key={item.number}
-              initial={{
-                opacity: 0,
-                y: 40,
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                duration: 0.65,
-                delay: index * 0.08,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              viewport={{
-                once: true,
-                amount: 0.2,
-              }}
-              className="grid grid-cols-[1.05fr_0.95fr] items-stretch gap-2.5 sm:gap-5 lg:gap-8"
-            >
-              <TextCard item={item} />
+                  <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-[#e2e6dd] pt-5">
+                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#65755f]">
+                      <Leaf className="h-3.5 w-3.5" />
+                      Built with intention, not excess
+                    </div>
+                    <span className="font-serif text-sm italic text-[#a2aa9c]">
+                      {item.label}
+                    </span>
+                  </div>
+                </div>
 
-              <ImageCard item={item} />
-            </motion.article>
-          ))}
+                <div
+                  className={`relative min-h-[300px] overflow-hidden border-t border-[#dfe4da] bg-[#f5f5ee] lg:min-h-[430px] lg:border-t-0 ${
+                    reverse ? "lg:order-1 lg:border-r" : "lg:border-l"
+                  }`}
+                >
+                  <div className="absolute right-5 top-5 z-10 rotate-[3deg] rounded-full border border-[#d8ded2] bg-[#fffdf8]/95 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-[#7d8b76] shadow-[0_8px_24px_rgba(55,67,51,0.05)] transition-transform duration-300 group-hover:rotate-0">
+                    field study · {item.number}
+                  </div>
+
+                  <div className="whyus-drift pointer-events-none absolute left-[12%] top-[18%] h-2.5 w-2.5 rounded-full bg-[#d7a78c]/70" />
+                  <div className="whyus-drift-alt pointer-events-none absolute bottom-[17%] right-[15%] h-3 w-3 rounded-full border border-[#9eb095] bg-[#eef3e9]" />
+
+                  <ProcessVisual type={item.visual} index={index} />
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="mt-14 grid gap-6 rounded-[34px] border border-[#d8ded2] bg-[#fbfaf5] p-6 shadow-[0_18px_55px_rgba(55,67,51,0.045)] sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center lg:p-10">
+          <div>
+            <div className="flex items-center gap-2 text-[#6c8065]">
+              <Flower2 className="h-4 w-4" />
+              <span className="text-[10px] font-semibold uppercase tracking-[0.2em]">
+                The result
+              </span>
+            </div>
+            <h3 className="mt-4 max-w-3xl font-serif text-3xl font-medium leading-tight tracking-[-0.03em] text-[#2e392d] sm:text-4xl">
+              Clear enough to use. Distinct enough to remember. Light enough to stay fast.
+            </h3>
+          </div>
+
+          <a
+            href="/Contact"
+            className="inline-flex w-fit items-center gap-2 rounded-full bg-[#2f3b2e] px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#455742]"
+          >
+            Start a project
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
         </div>
       </div>
     </section>
   );
 }
 
-function TextCard({ item }: { item: (typeof items)[number] }) {
+function GardenPath() {
   return (
-    <motion.div
-      whileHover={{
-        y: -4,
-      }}
-      transition={{
-        duration: 0.25,
-      }}
-      className="relative flex min-h-[210px] flex-col justify-center overflow-hidden rounded-[20px] border border-slate-200/80 bg-white/85 p-4 shadow-[0_18px_55px_rgba(15,23,42,0.07)] backdrop-blur-xl sm:min-h-[280px] sm:rounded-[26px] sm:p-7 lg:min-h-[340px] lg:p-9"
-    >
-      <div
-        className={`pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full blur-3xl sm:h-44 sm:w-44 ${item.accent.glow}`}
-      />
-
-      <div className="relative">
-        <div className="mb-4 flex flex-col items-start gap-2 sm:mb-6 sm:flex-row sm:items-center sm:gap-3">
-          <span
-            className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-[10px] font-semibold ring-1 sm:h-10 sm:w-10 sm:text-xs ${item.accent.number}`}
-          >
-            {item.number}
-          </span>
-
-          <span
-            className={`max-w-full rounded-full border px-2.5 py-1.5 text-[7px] font-semibold uppercase tracking-[0.12em] sm:px-4 sm:py-2 sm:text-[10px] sm:tracking-[0.2em] ${item.accent.label}`}
-          >
-            {item.label}
-          </span>
+    <div className="relative mt-10 hidden grid-cols-3 gap-4 rounded-[26px] border border-[#dce2d6] bg-[#f8f7ef]/80 p-4 sm:grid lg:p-5">
+      <div className="pointer-events-none absolute left-[16%] right-[16%] top-1/2 border-t border-dashed border-[#bfcab8]" />
+      {[
+        ["01", "Roots"],
+        ["02", "Character"],
+        ["03", "Bloom"],
+      ].map(([number, label], index) => (
+        <div key={number} className="relative flex items-center justify-center">
+          <div className={`relative z-10 flex items-center gap-2 rounded-full border px-4 py-2 shadow-[0_6px_18px_rgba(55,67,51,0.04)] ${
+            index === 1
+              ? "border-[#ead7ca] bg-[#fff4ed] text-[#93624b]"
+              : index === 2
+                ? "border-[#cfe0dc] bg-[#edf5f3] text-[#4d716c]"
+                : "border-[#d6e1cd] bg-[#eef3e8] text-[#56704f]"
+          }`}>
+            <span className="font-serif text-sm italic">{number}</span>
+            <span className="text-[10px] font-semibold uppercase tracking-[0.16em]">{label}</span>
+          </div>
         </div>
-
-        <h2 className="text-base font-semibold leading-[1.2] tracking-[-0.03em] text-slate-950 sm:text-2xl lg:max-w-lg lg:text-3xl">
-          {item.title}
-        </h2>
-
-        <p className="mt-3 line-clamp-4 text-[10px] leading-[1.65] text-slate-500 sm:mt-5 sm:text-sm sm:leading-7 lg:text-base">
-          {item.description}
-        </p>
-      </div>
-    </motion.div>
+      ))}
+    </div>
   );
 }
 
-function ImageCard({ item }: { item: (typeof items)[number] }) {
+function ProcessVisual({ type, index }: { type: "seed" | "shape" | "bloom"; index: number }) {
+  const palette = [
+    { leaf: "#839a78", soft: "#dce6d3", flower: "#e2ad8d" },
+    { leaf: "#8d9d79", soft: "#f1ddd2", flower: "#c98b6c" },
+    { leaf: "#6f8d83", soft: "#d8e5e1", flower: "#d3a277" },
+  ][index];
+
   return (
-    <motion.div
-      whileHover={{
-        y: -4,
-      }}
-      transition={{
-        duration: 0.25,
-      }}
-      className="relative min-w-0 overflow-hidden rounded-[20px] border border-slate-200/80 bg-white/85 p-2 shadow-[0_18px_55px_rgba(15,23,42,0.07)] backdrop-blur-xl sm:rounded-[26px] sm:p-4"
-    >
-      <div
-        className={`pointer-events-none absolute inset-0 opacity-80 ${item.accent.imageBackground}`}
-      />
-
-      <div className="relative flex h-full min-h-[210px] items-center justify-center overflow-hidden rounded-[15px] border border-slate-200/60 bg-[#f8fafc] sm:min-h-[280px] sm:rounded-[20px] lg:min-h-[340px]">
-        <div
-          className={`pointer-events-none absolute left-1/2 top-1/2 h-[65%] w-[65%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[75px] ${item.accent.imageGlow}`}
+    <div className="absolute inset-0 flex items-center justify-center p-8 sm:p-10">
+      <svg
+        viewBox="0 0 520 430"
+        className="h-full w-full max-w-[520px] transition-transform duration-700 ease-out group-hover:scale-[1.025] group-hover:-rotate-1"
+        aria-hidden="true"
+        fill="none"
+      >
+        <path
+          d="M258 388C254 330 255 268 262 213C269 160 284 111 307 70"
+          stroke={palette.leaf}
+          strokeWidth="5"
+          strokeLinecap="round"
         />
+        <path d="M260 303C215 271 172 269 136 290C165 329 205 332 260 303Z" fill={palette.soft} stroke={palette.leaf} strokeWidth="3" />
+        <path d="M263 236C311 207 354 208 388 233C355 266 315 267 263 236Z" fill={palette.soft} stroke={palette.leaf} strokeWidth="3" />
+        <path d="M277 171C239 144 216 111 215 77C255 84 281 117 277 171Z" fill="#f7f7ef" stroke={palette.leaf} strokeWidth="3" />
 
-        <motion.div
-          initial={{
-            opacity: 0,
-            scale: 0.94,
-          }}
-          whileInView={{
-            opacity: 1,
-            scale: 1,
-          }}
-          transition={{
-            duration: 0.6,
-            delay: 0.08,
-          }}
-          viewport={{
-            once: true,
-          }}
-          className="relative flex h-full w-full items-center justify-center p-2 sm:p-4"
-        >
-          <Image
-            src={item.image}
-            alt={item.title}
-            width={520}
-            height={520}
-            unoptimized
-            className="h-auto max-h-[180px] w-full max-w-[170px] object-contain drop-shadow-[0_22px_38px_rgba(15,23,42,0.11)] sm:max-h-[250px] sm:max-w-[280px] lg:max-h-[310px] lg:max-w-[350px]"
-          />
-        </motion.div>
-      </div>
-    </motion.div>
+        {type === "seed" && (
+          <>
+            <ellipse cx="308" cy="73" rx="29" ry="39" fill="#f8f4e9" stroke={palette.flower} strokeWidth="3" />
+            <circle cx="308" cy="74" r="10" fill={palette.flower} />
+            <circle cx="151" cy="289" r="11" fill={palette.flower} opacity="0.65" />
+          </>
+        )}
+
+        {type === "shape" && (
+          <>
+            <path d="M314 90C287 62 297 24 331 18C363 34 365 70 340 92C333 99 322 99 314 90Z" fill="#fff8f2" stroke={palette.flower} strokeWidth="3" />
+            <path d="M338 92C370 72 401 91 400 123C379 146 346 136 334 108C331 102 332 96 338 92Z" fill="#fff8f2" stroke={palette.flower} strokeWidth="3" />
+            <circle cx="332" cy="95" r="15" fill={palette.flower} />
+            <path d="M114 110C154 84 194 88 224 118" stroke={palette.flower} strokeWidth="3" strokeLinecap="round" strokeDasharray="8 10" />
+          </>
+        )}
+
+        {type === "bloom" && (
+          <g transform="translate(311 78)">
+            <ellipse cx="0" cy="-34" rx="21" ry="43" fill="#fffaf4" stroke={palette.flower} strokeWidth="3" />
+            <ellipse cx="32" cy="-10" rx="21" ry="43" transform="rotate(60 32 -10)" fill="#fffaf4" stroke={palette.flower} strokeWidth="3" />
+            <ellipse cx="20" cy="28" rx="21" ry="43" transform="rotate(120 20 28)" fill="#fffaf4" stroke={palette.flower} strokeWidth="3" />
+            <ellipse cx="-20" cy="28" rx="21" ry="43" transform="rotate(-120 -20 28)" fill="#fffaf4" stroke={palette.flower} strokeWidth="3" />
+            <ellipse cx="-32" cy="-10" rx="21" ry="43" transform="rotate(-60 -32 -10)" fill="#fffaf4" stroke={palette.flower} strokeWidth="3" />
+            <circle cx="0" cy="0" r="18" fill={palette.flower} />
+          </g>
+        )}
+
+        <circle cx="95" cy="340" r="48" fill="#fffdf8" stroke="#d9dfd3" strokeWidth="2" />
+        <path d="M78 344C93 327 108 324 121 334C110 351 95 354 78 344Z" fill={palette.soft} stroke={palette.leaf} strokeWidth="2" />
+        <path d="M101 349C104 338 109 327 117 318" stroke={palette.leaf} strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    </div>
   );
 }

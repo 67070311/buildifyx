@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Gamepad2, Pencil } from "lucide-react";
 
 type EyeProps = {
@@ -12,6 +13,7 @@ type EyeProps = {
   pupilRx?: number;
   pupilRy?: number;
   delay?: number;
+  active: boolean;
 };
 
 function Eye({
@@ -22,6 +24,7 @@ function Eye({
   pupilRx = rx * 0.42,
   pupilRy = ry * 0.52,
   delay = 0,
+  active,
 }: EyeProps) {
   return (
     <>
@@ -41,14 +44,18 @@ function Eye({
         rx={pupilRx}
         ry={pupilRy}
         fill="#151433"
-        animate={{
-          x: [0, -8, 7, 3, -5, 0],
-          y: [0, 2, -3, 3, -1, 0],
-        }}
+        animate={
+          active
+            ? {
+                x: [0, -8, 7, 3, -5, 0],
+                y: [0, 2, -3, 3, -1, 0],
+              }
+            : { x: 0, y: 0 }
+        }
         transition={{
-          duration: 4.2,
-          delay,
-          repeat: Infinity,
+          duration: active ? 4.2 : 0,
+          delay: active ? delay : 0,
+          repeat: active ? Infinity : 0,
           ease: "easeInOut",
         }}
       />
@@ -67,7 +74,7 @@ function Sparkle() {
   );
 }
 
-function BigYellowMascot() {
+function BigYellowMascot({ active }: { active: boolean }) {
   return (
     <svg
       viewBox="0 0 440 285"
@@ -94,6 +101,7 @@ function BigYellowMascot() {
         pupilRx={17}
         pupilRy={18}
         delay={0}
+        active={active}
       />
 
       <Eye
@@ -104,6 +112,7 @@ function BigYellowMascot() {
         pupilRx={17}
         pupilRy={18}
         delay={0.15}
+        active={active}
       />
 
       <ellipse cx="220" cy="166" rx="32" ry="25" fill="#151433" />
@@ -120,6 +129,8 @@ function BigYellowMascot() {
 }
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const isActive = useInView(sectionRef, { amount: 0.08 });
   const sparkles = [
     "left-[9%] top-[31%] h-5 w-5 text-[#2458ff] sm:left-[16%] sm:top-[38%] sm:h-7 sm:w-7",
     "right-[11%] top-[26%] h-7 w-7 text-[#ff5570] sm:right-[26%] sm:top-[25%] sm:h-10 sm:w-10",
@@ -128,7 +139,10 @@ export default function Hero() {
   ];
 
   return (
-    <section className="relative min-h-[760px] overflow-hidden bg-[#fffdf7] px-5 py-10 text-[#151433] sm:min-h-[800px] sm:px-6 sm:py-12 md:min-h-[830px] md:py-14 lg:min-h-[850px]">
+    <section
+      ref={sectionRef}
+      className="relative min-h-[760px] overflow-hidden bg-[#fffdf7] px-5 py-10 text-[#151433] sm:min-h-[800px] sm:px-6 sm:py-12 md:min-h-[830px] md:py-14 lg:min-h-[850px]"
+    >
       {/* Background gradients */}
       <div
         className="pointer-events-none absolute inset-0"
@@ -140,32 +154,36 @@ export default function Hero() {
 
       {/* Soft color shapes */}
       <motion.div
-        animate={{
-          x: [0, 22, 0],
-          y: [0, 14, 0],
-          scale: [1, 1.05, 1],
-        }}
+        animate={
+          isActive
+            ? { x: [0, 22, 0], y: [0, 14, 0], scale: [1, 1.05, 1] }
+            : { x: 0, y: 0, scale: 1 }
+        }
         transition={{
-          duration: 12,
-          repeat: Infinity,
+          duration: isActive ? 12 : 0,
+          repeat: isActive ? Infinity : 0,
           ease: "easeInOut",
         }}
-        className="pointer-events-none absolute -left-28 top-16 h-72 w-72 rounded-full bg-[#ffb9d9]/35 blur-[90px] sm:h-96 sm:w-96"
-      />
+        className="pointer-events-none absolute -left-28 top-16 h-72 w-72 sm:h-96 sm:w-96"
+      >
+        <div className="absolute inset-0 rounded-full bg-[#ffb9d9]/35 blur-[90px]" />
+      </motion.div>
 
       <motion.div
-        animate={{
-          x: [0, -20, 0],
-          y: [0, 18, 0],
-          scale: [1, 1.06, 1],
-        }}
+        animate={
+          isActive
+            ? { x: [0, -20, 0], y: [0, 18, 0], scale: [1, 1.06, 1] }
+            : { x: 0, y: 0, scale: 1 }
+        }
         transition={{
-          duration: 11,
-          repeat: Infinity,
+          duration: isActive ? 11 : 0,
+          repeat: isActive ? Infinity : 0,
           ease: "easeInOut",
         }}
-        className="pointer-events-none absolute -right-32 top-20 h-80 w-80 rounded-full bg-[#9edfff]/40 blur-[100px] sm:h-[430px] sm:w-[430px]"
-      />
+        className="pointer-events-none absolute -right-32 top-20 h-80 w-80 sm:h-[430px] sm:w-[430px]"
+      >
+        <div className="absolute inset-0 rounded-full bg-[#9edfff]/40 blur-[100px]" />
+      </motion.div>
 
       {/* Dot pattern */}
       <div
@@ -192,14 +210,18 @@ export default function Hero() {
         <motion.div
           key={className}
           className={`pointer-events-none absolute z-10 ${className}`}
-          animate={{
-            scale: [1, 0.65, 1],
-            rotate: [0, 18, 0],
-            opacity: [0.9, 0.45, 0.9],
-          }}
+          animate={
+            isActive
+              ? {
+                  scale: [1, 0.65, 1],
+                  rotate: [0, 18, 0],
+                  opacity: [0.9, 0.45, 0.9],
+                }
+              : { scale: 1, rotate: 0, opacity: 0.9 }
+          }
           transition={{
-            duration: 2.4 + index * 0.35,
-            repeat: Infinity,
+            duration: isActive ? 2.4 + index * 0.35 : 0,
+            repeat: isActive ? Infinity : 0,
             ease: "easeInOut",
           }}
         >
@@ -374,17 +396,18 @@ export default function Hero() {
         style={{
           x: "-50%",
         }}
-        animate={{
-          y: [0, -8, 0],
-          rotate: [-0.8, 0.8, -0.8],
-        }}
+        animate={
+          isActive
+            ? { y: [0, -8, 0], rotate: [-0.8, 0.8, -0.8] }
+            : { y: 0, rotate: -0.8 }
+        }
         transition={{
-          duration: 5.8,
-          repeat: Infinity,
+          duration: isActive ? 5.8 : 0,
+          repeat: isActive ? Infinity : 0,
           ease: "easeInOut",
         }}
       >
-        <BigYellowMascot />
+        <BigYellowMascot active={isActive} />
       </motion.div>
     </section>
   );

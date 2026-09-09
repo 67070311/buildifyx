@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useTime, useTransform, type MotionValue } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useInView, useMotionValue, useTransform, type MotionValue } from "framer-motion";
 import Link from "next/link";
 
 const processCards = [
@@ -88,9 +88,10 @@ type OrbitValues = {
   opacity: MotionValue<number>;
 };
 
-function useSmoothOrbit(index: number): OrbitValues {
-  const time = useTime();
-
+function useSmoothOrbit(
+  index: number,
+  time: MotionValue<number>,
+): OrbitValues {
   const orbitDuration = 24000;
   const phaseOffset = (index * Math.PI * 2) / people.length;
 
@@ -124,10 +125,20 @@ function useSmoothOrbit(index: number): OrbitValues {
   };
 }
 
-function CartoonFace({ person, index }: { person: Person; index: number }) {
+function CartoonFace({
+  person,
+  index,
+  time,
+  active,
+}: {
+  person: Person;
+  index: number;
+  time: MotionValue<number>;
+  active: boolean;
+}) {
   const isFemale = person.gender === "female";
 
-  const { x, y, scale, rotate, zIndex, opacity } = useSmoothOrbit(index);
+  const { x, y, scale, rotate, zIndex, opacity } = useSmoothOrbit(index, time);
 
   return (
     <motion.div
@@ -143,14 +154,12 @@ function CartoonFace({ person, index }: { person: Person; index: number }) {
     >
       <div className="-translate-x-1/2 -translate-y-1/2 transform-gpu">
         <motion.div
-          animate={{
-            y: [0, -7, 0],
-          }}
+          animate={active ? { y: [0, -7, 0] } : { y: 0 }}
           transition={{
-            duration: 4.8 + index * 0.45,
-            repeat: Infinity,
+            duration: active ? 4.8 + index * 0.45 : 0,
+            repeat: active ? Infinity : 0,
             ease: "easeInOut",
-            delay: person.delay,
+            delay: active ? person.delay : 0,
           }}
           className="relative transform-gpu will-change-transform"
         >
@@ -453,7 +462,7 @@ function ProcessCard({
         y: -6,
         scale: 1.015,
       }}
-      className="group relative min-h-[185px] transform-gpu overflow-hidden rounded-[1.35rem] border border-[#151433]/10 bg-white/90 p-4 backdrop-blur-xl will-change-transform min-[380px]:min-h-[195px] sm:min-h-[210px] sm:rounded-[1.8rem] sm:p-6 lg:min-h-0"
+      className="group relative min-h-[185px] transform-gpu overflow-hidden rounded-[1.35rem] border border-[#151433]/10 bg-white/90 p-4 backdrop-blur-xl min-[380px]:min-h-[195px] sm:min-h-[210px] sm:rounded-[1.8rem] sm:p-6 lg:min-h-0"
       style={{
         boxShadow: `0 20px 55px rgba(21,20,51,0.07), 0 15px 45px ${item.accent}10`,
       }}
@@ -493,35 +502,71 @@ function ProcessCard({
   );
 }
 
+function usePausableTime(active: boolean) {
+  const time = useMotionValue(0);
+  const elapsedRef = useRef(0);
+
+  useEffect(() => {
+    if (!active) return;
+
+    let lastTick = window.performance.now();
+    const intervalId = window.setInterval(() => {
+      const now = window.performance.now();
+      elapsedRef.current += now - lastTick;
+      lastTick = now;
+      time.set(elapsedRef.current);
+    }, 1000 / 30);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [active, time]);
+
+  return time;
+}
+
 function TeamFacesVisual() {
+  const visualRef = useRef<HTMLDivElement | null>(null);
+  const isActive = useInView(visualRef, { amount: 0.05 });
+  const time = usePausableTime(isActive);
+
   return (
-    <div className="relative mx-auto h-[360px] w-full max-w-[650px] overflow-visible min-[380px]:h-[400px] sm:h-[560px] lg:h-[620px]">
+    <div
+      ref={visualRef}
+      className="relative mx-auto h-[360px] w-full max-w-[650px] overflow-visible min-[380px]:h-[400px] sm:h-[560px] lg:h-[620px]"
+    >
       <div className="pointer-events-none absolute inset-0 z-0">
         <motion.div
-          animate={{
-            scale: [1, 1.06, 1],
-            opacity: [0.18, 0.34, 0.18],
-          }}
+          animate={
+            isActive
+              ? { scale: [1, 1.06, 1], opacity: [0.18, 0.34, 0.18] }
+              : { scale: 1, opacity: 0.18 }
+          }
           transition={{
-            duration: 5.8,
-            repeat: Infinity,
+            duration: isActive ? 5.8 : 0,
+            repeat: isActive ? Infinity : 0,
             ease: "easeInOut",
           }}
-          className="absolute left-1/2 top-[32%] h-56 w-56 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(85,120,255,0.24),rgba(56,189,248,0.08)_46%,transparent_72%)] blur-3xl sm:h-80 sm:w-80"
-        />
+          className="absolute left-1/2 top-[32%] h-56 w-56 -translate-x-1/2 sm:h-80 sm:w-80"
+        >
+          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(85,120,255,0.24),rgba(56,189,248,0.08)_46%,transparent_72%)] blur-3xl" />
+        </motion.div>
 
         <motion.div
-          animate={{
-            opacity: [0.08, 0.18, 0.08],
-            x: [0, 15, 0],
-          }}
+          animate={
+            isActive
+              ? { opacity: [0.08, 0.18, 0.08], x: [0, 15, 0] }
+              : { opacity: 0.08, x: 0 }
+          }
           transition={{
-            duration: 6.5,
-            repeat: Infinity,
+            duration: isActive ? 6.5 : 0,
+            repeat: isActive ? Infinity : 0,
             ease: "easeInOut",
           }}
-          className="absolute left-1/2 top-[38%] h-44 w-[270px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,107,74,0.2),transparent_68%)] blur-3xl sm:h-64 sm:w-[460px]"
-        />
+          className="absolute left-1/2 top-[38%] h-44 w-[270px] -translate-x-1/2 sm:h-64 sm:w-[460px]"
+        >
+          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(255,107,74,0.2),transparent_68%)] blur-3xl" />
+        </motion.div>
 
         <div className="absolute left-1/2 top-[64%] h-24 w-[70%] -translate-x-1/2 rounded-full bg-[#151433]/5 blur-3xl sm:h-28" />
 
@@ -547,12 +592,10 @@ function TeamFacesVisual() {
         <div className="absolute left-1/2 top-[52%] h-[195px] w-[195px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#151433]/10 min-[380px]:h-[220px] min-[380px]:w-[220px] sm:h-[330px] sm:w-[330px] lg:h-[370px] lg:w-[370px]" />
 
         <motion.div
-          animate={{
-            rotate: 360,
-          }}
+          animate={isActive ? { rotate: 360 } : { rotate: 0 }}
           transition={{
-            duration: 34,
-            repeat: Infinity,
+            duration: isActive ? 34 : 0,
+            repeat: isActive ? Infinity : 0,
             ease: "linear",
           }}
           className="absolute left-1/2 top-[52%] h-[225px] w-[225px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#2458ff]/15 min-[380px]:h-[255px] min-[380px]:w-[255px] sm:h-[380px] sm:w-[380px] lg:h-[430px] lg:w-[430px]"
@@ -561,7 +604,13 @@ function TeamFacesVisual() {
 
       <div className="relative z-20 h-full w-full">
         {people.map((person, index) => (
-          <CartoonFace key={person.name} person={person} index={index} />
+          <CartoonFace
+            key={person.name}
+            person={person}
+            index={index}
+            time={time}
+            active={isActive}
+          />
         ))}
       </div>
     </div>
@@ -569,40 +618,50 @@ function TeamFacesVisual() {
 }
 
 export default function ImageSlider() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const isActive = useInView(sectionRef, { amount: 0.04 });
+
   return (
-    <section className="relative w-full overflow-hidden border-y border-[#151433]/10 bg-[#fffdf7] px-3 py-16 text-[#151433] min-[380px]:px-4 sm:px-8 sm:py-20 md:py-28 lg:px-12">
+    <section
+      ref={sectionRef}
+      className="perf-section relative w-full overflow-hidden border-y border-[#151433]/10 bg-[#fffdf7] px-3 py-16 text-[#151433] min-[380px]:px-4 sm:px-8 sm:py-20 md:py-28 lg:px-12"
+    >
       {/* Background */}
       <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#fffdf7_45%,#fbfcff_72%,#ffffff_100%)]" />
 
       {/* Top left glow */}
       <motion.div
-        animate={{
-          x: [0, 28, 0],
-          y: [0, 18, 0],
-          scale: [1, 1.06, 1],
-        }}
+        animate={
+          isActive
+            ? { x: [0, 28, 0], y: [0, 18, 0], scale: [1, 1.06, 1] }
+            : { x: 0, y: 0, scale: 1 }
+        }
         transition={{
-          duration: 12,
-          repeat: Infinity,
+          duration: isActive ? 12 : 0,
+          repeat: isActive ? Infinity : 0,
           ease: "easeInOut",
         }}
-        className="absolute -left-40 top-20 h-[420px] w-[420px] rounded-full bg-[#ffb9d9]/20 blur-[130px]"
-      />
+        className="absolute -left-40 top-20 h-[420px] w-[420px]"
+      >
+        <div className="absolute inset-0 rounded-full bg-[#ffb9d9]/20 blur-[130px]" />
+      </motion.div>
 
       {/* Top right glow */}
       <motion.div
-        animate={{
-          x: [0, -26, 0],
-          y: [0, 20, 0],
-          scale: [1, 1.08, 1],
-        }}
+        animate={
+          isActive
+            ? { x: [0, -26, 0], y: [0, 20, 0], scale: [1, 1.08, 1] }
+            : { x: 0, y: 0, scale: 1 }
+        }
         transition={{
-          duration: 13,
-          repeat: Infinity,
+          duration: isActive ? 13 : 0,
+          repeat: isActive ? Infinity : 0,
           ease: "easeInOut",
         }}
-        className="absolute -right-40 top-40 h-[450px] w-[450px] rounded-full bg-[#9edfff]/24 blur-[140px]"
-      />
+        className="absolute -right-40 top-40 h-[450px] w-[450px]"
+      >
+        <div className="absolute inset-0 rounded-full bg-[#9edfff]/24 blur-[140px]" />
+      </motion.div>
 
       {/* Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(21,20,51,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(21,20,51,0.04)_1px,transparent_1px)] bg-[size:48px_48px] sm:bg-[size:72px_72px]" />
@@ -686,33 +745,22 @@ export default function ImageSlider() {
           </div>
         </motion.div>
 
-        {/* Mobile and tablet layout */}
-        <div className="mt-8 lg:hidden">
-          <TeamFacesVisual />
-
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:mt-6 sm:gap-4">
-            {processCards.map((item, index) => (
+        {/* Responsive process layout */}
+        <div className="mt-8 flex flex-col lg:mt-20 lg:grid lg:grid-cols-[0.9fr_1.25fr_0.9fr] lg:items-center lg:gap-8">
+          <div className="order-2 mt-3 grid grid-cols-2 gap-3 sm:mt-6 sm:gap-4 lg:order-1 lg:mt-0 lg:grid-cols-1 lg:gap-4">
+            {processCards.slice(0, 2).map((item, index) => (
               <ProcessCard key={item.title} item={item} index={index} />
             ))}
           </div>
-        </div>
 
-        {/* Desktop layout */}
-        <div className="relative mt-20 hidden lg:block">
-          <div className="grid items-center gap-8 lg:grid-cols-[0.9fr_1.25fr_0.9fr]">
-            <div className="grid gap-4">
-              {processCards.slice(0, 2).map((item, index) => (
-                <ProcessCard key={item.title} item={item} index={index} />
-              ))}
-            </div>
-
+          <div className="order-1 lg:order-2">
             <TeamFacesVisual />
+          </div>
 
-            <div className="grid gap-4">
-              {processCards.slice(2, 4).map((item, index) => (
-                <ProcessCard key={item.title} item={item} index={index + 2} />
-              ))}
-            </div>
+          <div className="order-3 mt-3 grid grid-cols-2 gap-3 sm:mt-4 sm:gap-4 lg:mt-0 lg:grid-cols-1 lg:gap-4">
+            {processCards.slice(2, 4).map((item, index) => (
+              <ProcessCard key={item.title} item={item} index={index + 2} />
+            ))}
           </div>
         </div>
 
@@ -735,23 +783,18 @@ export default function ImageSlider() {
           className="mx-auto mt-10 flex max-w-4xl flex-wrap items-center justify-center gap-2 sm:mt-12 sm:gap-3"
         >
           {serviceTags.map((tag, index) => (
-            <motion.div
+            <div
               key={tag}
-              animate={{
-                y: [0, index % 2 === 0 ? -5 : 5, 0],
+              style={{
+                animationDuration: `${3.2 + index * 0.25}s`,
+                animationPlayState: isActive ? "running" : "paused",
               }}
-              transition={{
-                duration: 3.2 + index * 0.25,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              whileHover={{
-                scale: 1.05,
-              }}
-              className="transform-gpu rounded-full border border-[#151433]/10 bg-white/85 px-3 py-1.5 text-[10px] font-medium text-[#151433]/55 shadow-[0_10px_25px_rgba(21,20,51,0.05)] backdrop-blur-xl will-change-transform sm:px-4 sm:py-2 sm:text-xs"
+              className={`${
+                index % 2 === 0 ? "perf-float-up" : "perf-float-down"
+              } transform-gpu rounded-full border border-[#151433]/10 bg-white/85 px-3 py-1.5 text-[10px] font-medium text-[#151433]/55 shadow-[0_10px_25px_rgba(21,20,51,0.05)] backdrop-blur-xl transition-transform duration-300 hover:scale-105 sm:px-4 sm:py-2 sm:text-xs`}
             >
               {tag}
-            </motion.div>
+            </div>
           ))}
         </motion.div>
       </div>

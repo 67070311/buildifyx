@@ -1,21 +1,33 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import * as simpleIcons from "simple-icons";
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import SiAnthropic from "@icons-pack/react-simple-icons/icons/SiAnthropic.mjs";
+import SiDiscord from "@icons-pack/react-simple-icons/icons/SiDiscord.mjs";
+import SiFigma from "@icons-pack/react-simple-icons/icons/SiFigma.mjs";
+import SiGithub from "@icons-pack/react-simple-icons/icons/SiGithub.mjs";
+import SiHuggingface from "@icons-pack/react-simple-icons/icons/SiHuggingface.mjs";
+import SiInstagram from "@icons-pack/react-simple-icons/icons/SiInstagram.mjs";
+import SiNextdotjs from "@icons-pack/react-simple-icons/icons/SiNextdotjs.mjs";
+import SiNotion from "@icons-pack/react-simple-icons/icons/SiNotion.mjs";
+import SiPython from "@icons-pack/react-simple-icons/icons/SiPython.mjs";
+import SiPytorch from "@icons-pack/react-simple-icons/icons/SiPytorch.mjs";
+import SiReact from "@icons-pack/react-simple-icons/icons/SiReact.mjs";
+import SiTailwindcss from "@icons-pack/react-simple-icons/icons/SiTailwindcss.mjs";
+import SiTensorflow from "@icons-pack/react-simple-icons/icons/SiTensorflow.mjs";
+import SiTiktok from "@icons-pack/react-simple-icons/icons/SiTiktok.mjs";
+import SiTypescript from "@icons-pack/react-simple-icons/icons/SiTypescript.mjs";
+import SiVercel from "@icons-pack/react-simple-icons/icons/SiVercel.mjs";
+import SiYoutube from "@icons-pack/react-simple-icons/icons/SiYoutube.mjs";
+
+type BrandIconComponent = typeof SiReact;
 
 type BrandIconData = {
   title: string;
   slug: string;
   hex: string;
-  path?: string;
+  Icon?: BrandIconComponent;
   monogram?: string;
-};
-
-type PackageIcon = {
-  title: string;
-  slug: string;
-  hex: string;
-  path: string;
 };
 
 type AppItem = {
@@ -25,10 +37,25 @@ type AppItem = {
   iconColor?: string;
 };
 
-const packageIcons = simpleIcons as unknown as Record<
-  string,
-  PackageIcon | undefined
->;
+const packageIcons: Record<string, BrandIconComponent | undefined> = {
+  siAnthropic: SiAnthropic,
+  siHuggingface: SiHuggingface,
+  siTensorflow: SiTensorflow,
+  siPytorch: SiPytorch,
+  siFigma: SiFigma,
+  siNotion: SiNotion,
+  siDiscord: SiDiscord,
+  siNextdotjs: SiNextdotjs,
+  siReact: SiReact,
+  siTypescript: SiTypescript,
+  siPython: SiPython,
+  siGithub: SiGithub,
+  siVercel: SiVercel,
+  siTailwindcss: SiTailwindcss,
+  siInstagram: SiInstagram,
+  siTiktok: SiTiktok,
+  siYoutube: SiYoutube,
+};
 
 function getIcon(
   exportName: string,
@@ -36,20 +63,21 @@ function getIcon(
   monogram: string,
   hex = "ffffff",
 ): BrandIconData {
-  const icon = packageIcons[exportName];
+  const Icon = packageIcons[exportName];
+  const slug = title.toLowerCase().replace(/\s+/g, "-");
 
-  if (icon?.path) {
-    return icon;
+  if (Icon) {
+    return { title, slug, hex, Icon };
   }
 
   return {
     title,
-    slug: title.toLowerCase().replace(/\s+/g, "-"),
+    slug,
     hex,
-    path: "",
     monogram,
   };
 }
+
 
 const rowOne: AppItem[] = [
   {
@@ -195,6 +223,19 @@ function BrandIcon({
   title: string;
 }) {
   const fillColor = color ?? `#${icon.hex}`;
+  const Icon = icon.Icon;
+
+  if (Icon) {
+    return (
+      <Icon
+        role="img"
+        aria-label={`${title} logo`}
+        title={title}
+        color={fillColor}
+        className="relative z-10 h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 lg:h-11 lg:w-11"
+      />
+    );
+  }
 
   return (
     <svg
@@ -204,25 +245,21 @@ function BrandIcon({
       className="relative z-10 h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 lg:h-11 lg:w-11"
     >
       <title>{title}</title>
-
-      {icon.path ? (
-        <path d={icon.path} fill={fillColor} />
-      ) : (
-        <text
-          x="12"
-          y="15.5"
-          textAnchor="middle"
-          fill={fillColor}
-          fontSize="8"
-          fontWeight="700"
-          fontFamily="Arial, Helvetica, sans-serif"
-        >
-          {icon.monogram}
-        </text>
-      )}
+      <text
+        x="12"
+        y="15.5"
+        textAnchor="middle"
+        fill={fillColor}
+        fontSize="8"
+        fontWeight="700"
+        fontFamily="Arial, Helvetica, sans-serif"
+      >
+        {icon.monogram}
+      </text>
     </svg>
   );
 }
+
 
 function AppIcon({ app }: { app: AppItem }) {
   return (
@@ -285,10 +322,12 @@ function MarqueeRow({
   apps,
   reverse = false,
   duration = 48,
+  active,
 }: {
   apps: AppItem[];
   reverse?: boolean;
   duration?: number;
+  active: boolean;
 }) {
   const reduceMotion = useReducedMotion();
 
@@ -310,68 +349,70 @@ function MarqueeRow({
           "linear-gradient(to right, transparent, black 7%, black 93%, transparent)",
       }}
     >
-      <motion.div
-        className="flex w-max will-change-transform group-hover/marquee:[animation-play-state:paused]"
-        initial={{
-          x: reverse ? "-50%" : "0%",
-        }}
-        animate={{
-          x: reverse ? ["-50%", "0%"] : ["0%", "-50%"],
-        }}
-        transition={{
-          duration,
-          repeat: Infinity,
-          ease: "linear",
+      <div
+        className={`perf-marquee-track flex w-max will-change-transform group-hover/marquee:[animation-play-state:paused] ${
+          active ? "[animation-play-state:running]" : "[animation-play-state:paused]"
+        }`}
+        style={{
+          animationDuration: `${duration}s`,
+          animationDirection: reverse ? "reverse" : "normal",
         }}
       >
         <AppGroup apps={apps} />
 
         <AppGroup apps={apps} ariaHidden />
-      </motion.div>
+      </div>
     </div>
   );
 }
 
 export default function WorkflowProblem() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const isActive = useInView(sectionRef, { amount: 0.04 });
   const allApps = [...rowOne, ...rowTwo];
 
   return (
     <section
+      ref={sectionRef}
       id="workflow-tools"
       aria-labelledby="workflow-tools-title"
-      className="relative isolate w-full overflow-hidden bg-[#fffdf8] px-4 py-20 text-center text-[#24212d] sm:px-6 sm:py-24 md:py-28 lg:px-10"
+      className="perf-section relative isolate w-full overflow-hidden bg-[#fffdf8] px-4 py-20 text-center text-[#24212d] sm:px-6 sm:py-24 md:py-28 lg:px-10"
     >
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#fffdf8_48%,#ffffff_100%)]" />
 
         <motion.div
-          animate={{
-            x: [0, 25, 0],
-            y: [0, 18, 0],
-            scale: [1, 1.06, 1],
-          }}
+          animate={
+            isActive
+              ? { x: [0, 25, 0], y: [0, 18, 0], scale: [1, 1.06, 1] }
+              : { x: 0, y: 0, scale: 1 }
+          }
           transition={{
-            duration: 13,
-            repeat: Infinity,
+            duration: isActive ? 13 : 0,
+            repeat: isActive ? Infinity : 0,
             ease: "easeInOut",
           }}
-          className="absolute -left-52 top-[-140px] h-[460px] w-[460px] rounded-full bg-[#e4dcff]/45 blur-[150px]"
-        />
+          className="absolute -left-52 top-[-140px] h-[460px] w-[460px]"
+        >
+          <div className="absolute inset-0 rounded-full bg-[#e4dcff]/45 blur-[150px]" />
+        </motion.div>
 
         <motion.div
-          animate={{
-            x: [0, -24, 0],
-            y: [0, 20, 0],
-            scale: [1, 1.05, 1],
-          }}
+          animate={
+            isActive
+              ? { x: [0, -24, 0], y: [0, 20, 0], scale: [1, 1.05, 1] }
+              : { x: 0, y: 0, scale: 1 }
+          }
           transition={{
-            duration: 14,
-            repeat: Infinity,
+            duration: isActive ? 14 : 0,
+            repeat: isActive ? Infinity : 0,
             ease: "easeInOut",
           }}
-          className="absolute -right-52 top-[5%] h-[480px] w-[480px] rounded-full bg-[#dcf7ec]/45 blur-[150px]"
-        />
+          className="absolute -right-52 top-[5%] h-[480px] w-[480px]"
+        >
+          <div className="absolute inset-0 rounded-full bg-[#dcf7ec]/45 blur-[150px]" />
+        </motion.div>
 
         <div
           className="absolute inset-0 opacity-[0.18]"
@@ -468,11 +509,11 @@ export default function WorkflowProblem() {
 
             {/* Rows */}
             <div className="relative space-y-4 sm:space-y-5 md:space-y-6">
-              <MarqueeRow apps={rowOne} duration={50} />
+              <MarqueeRow apps={rowOne} duration={50} active={isActive} />
 
               <div className="mx-auto h-px w-[90%] bg-gradient-to-r from-transparent via-[#151433]/[0.06] to-transparent" />
 
-              <MarqueeRow apps={rowTwo} reverse duration={56} />
+              <MarqueeRow apps={rowTwo} reverse duration={56} active={isActive} />
             </div>
           </div>
         </motion.div>
