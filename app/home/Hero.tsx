@@ -141,14 +141,23 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[760px] overflow-hidden bg-[#fffdf7] px-5 py-10 text-[#151433] sm:min-h-[800px] sm:px-6 sm:py-12 md:min-h-[830px] md:py-14 lg:min-h-[850px]"
+      className="relative min-h-[760px] overflow-hidden bg-[#050814] px-5 py-10 text-[#151433] sm:min-h-[800px] sm:px-6 sm:py-12 md:min-h-[830px] md:py-14 lg:min-h-[850px]"
     >
-      {/* Background gradients */}
+      {/* Space background — visual layer only; hero content stays unchanged */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
+          background:
+            "radial-gradient(circle at 18% 24%, rgba(67,97,238,0.22), transparent 25%), radial-gradient(circle at 82% 20%, rgba(123,97,255,0.20), transparent 28%), radial-gradient(circle at 50% 88%, rgba(43,114,255,0.16), transparent 34%), linear-gradient(180deg, #050814 0%, #091126 55%, #101938 100%)",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-90"
+        style={{
           backgroundImage:
-            "radial-gradient(circle at 16% 18%, rgba(255,95,190,0.20), transparent 28%), radial-gradient(circle at 84% 22%, rgba(103,189,232,0.22), transparent 30%), radial-gradient(circle at 50% 92%, rgba(255,210,46,0.30), transparent 36%)",
+            "radial-gradient(circle, rgba(255,255,255,0.95) 1px, transparent 1.4px), radial-gradient(circle, rgba(142,184,255,0.75) 1px, transparent 1.3px), radial-gradient(circle, rgba(255,255,255,0.5) 0.7px, transparent 1px)",
+          backgroundPosition: "0 0, 47px 73px, 91px 31px",
+          backgroundSize: "137px 137px, 193px 193px, 83px 83px",
         }}
       />
 

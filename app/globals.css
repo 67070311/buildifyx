@@ -148,3 +148,107 @@ body {
     animation: none !important;
   }
 }
+
+/* Why Us night hero: cinematic, lightweight motion using transform/opacity only. */
+@keyframes whyus-night-scene-breathe {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1.035);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0) scale(1.055);
+  }
+}
+
+@keyframes whyus-night-aura-breathe {
+  0%, 100% { opacity: 0.72; }
+  50% { opacity: 1; }
+}
+
+@keyframes whyus-night-particle-float {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.55);
+  }
+  22% { opacity: 0.8; }
+  78% { opacity: 0.52; }
+  100% {
+    opacity: 0;
+    transform: translate3d(7px, -28px, 0) scale(1.15);
+  }
+}
+
+@keyframes whyus-night-word-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.whyus-night-scene {
+  animation: whyus-night-scene-breathe 18s ease-in-out infinite;
+  transform-origin: 50% 72%;
+  will-change: transform;
+}
+
+.whyus-night-aura {
+  animation: whyus-night-aura-breathe 6s ease-in-out infinite;
+}
+
+.whyus-night-particle {
+  animation: whyus-night-particle-float 4.8s ease-in-out infinite;
+}
+
+.whyus-night-star {
+  background: transparent;
+  box-shadow: none;
+}
+
+.whyus-night-star::before,
+.whyus-night-star::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: rgba(236, 255, 247, 0.95);
+  border-radius: 999px;
+  box-shadow: 0 0 12px rgba(190, 255, 229, 0.9);
+  transform: translate(-50%, -50%);
+}
+
+.whyus-night-star::before {
+  width: 2px;
+  height: 12px;
+}
+
+.whyus-night-star::after {
+  width: 12px;
+  height: 2px;
+}
+
+.whyus-night-word {
+  animation: whyus-night-word-arrive 850ms 140ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.whyus-night-cta {
+  background-image: linear-gradient(105deg, #ffffff 0%, #ffffff 38%, #e8fff6 50%, #ffffff 62%, #ffffff 100%);
+  background-size: 220% 100%;
+  background-position: 100% 0;
+  transition: transform 300ms ease, background-position 700ms ease;
+}
+
+.whyus-night-cta:hover {
+  background-position: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whyus-night-scene,
+  .whyus-night-aura,
+  .whyus-night-particle,
+  .whyus-night-word {
+    animation: none !important;
+  }
+}

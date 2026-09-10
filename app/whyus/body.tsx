@@ -1,276 +1,310 @@
-import type { LucideIcon } from "lucide-react";
-import {
-  ArrowUpRight,
-  Code2,
-  Compass,
-  Flower2,
-  Leaf,
-  Palette,
-  Sparkles,
-  Sprout,
-} from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, Code2, Compass, Palette, Sparkles } from "lucide-react";
 
-const items: Array<{
-  number: string;
-  eyebrow: string;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  tone: string;
-  visual: "seed" | "shape" | "bloom";
-  note: string;
-  label: string;
-}> = [
-  {
-    number: "01",
-    eyebrow: "Discover",
-    title: "Start with the roots, not the decoration.",
-    description:
-      "We learn what your business needs, who the product is for, and what should happen next. Clear roots make every design decision easier later.",
-    icon: Compass,
-    tone: "bg-[#eaf0df] border-[#d8e2cf] text-[#4f6649]",
-    visual: "seed",
-    note: "listen first",
-    label: "plant the right seed",
-  },
-  {
-    number: "02",
-    eyebrow: "Shape",
-    title: "Give every idea its own character.",
-    description:
-      "We turn strategy into a visual system with personality — thoughtful typography, natural rhythm, useful interaction, and enough restraint to stay clear.",
-    icon: Palette,
-    tone: "bg-[#fff0e8] border-[#f0dacd] text-[#98654d]",
-    visual: "shape",
-    note: "make it yours",
-    label: "shape with intention",
-  },
-  {
-    number: "03",
-    eyebrow: "Grow",
-    title: "Build it light enough to keep evolving.",
-    description:
-      "The final product is responsive, maintainable, and performance-aware from the start, so new pages and features can grow without weighing everything down.",
-    icon: Code2,
-    tone: "bg-[#e7f0ee] border-[#d1e0dd] text-[#426863]",
-    visual: "bloom",
-    note: "leave room to grow",
-    label: "ready to bloom",
-  },
-];
+const discoverImage =
+  "https://cdn.dribbble.com/userupload/7238553/file/original-35f83ba3560d384332a8b00c8a1ed614.jpg?resize=900x0";
+const discoverThinkingImage =
+  "https://upload.wikimedia.org/wikipedia/commons/b/b0/Cartoon_Woman_Curiously_Reading_A_Text_In_Her_Laptop.svg";
+const shapeImage =
+  "https://images.pexels.com/photos/9281786/pexels-photo-9281786.jpeg?auto=compress&cs=tinysrgb&w=1600";
+const buildDeveloperImage =
+  "https://commons.wikimedia.org/wiki/Special:Redirect/file/Happy_Cartoon_Man_At_Work_Using_A_Computer.svg";
+const buildReviewImage =
+  "https://commons.wikimedia.org/wiki/Special:Redirect/file/Happy_Cartoon_Woman_Using_A_Laptop_At_The_Office.svg";
 
 export default function Body() {
   return (
-    <section className="perf-section relative overflow-hidden bg-[#f3f1e7] px-4 py-20 text-[#2b3529] sm:px-6 sm:py-24 lg:px-8 lg:py-28">
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(74,91,69,0.028)_1px,transparent_1px),linear-gradient(90deg,rgba(74,91,69,0.028)_1px,transparent_1px)] bg-[size:76px_76px]" />
-      <div className="pointer-events-none absolute -left-24 top-24 h-64 w-64 rounded-full border border-[#dce3d4] bg-[#eef2e7]/70" />
-      <div className="pointer-events-none absolute -right-28 bottom-16 h-72 w-72 rounded-[44%_56%_62%_38%/55%_42%_58%_45%] border border-[#ead8cc] bg-[#f8e9df]/50" />
-
-      <div className="relative mx-auto max-w-7xl">
-        <div className="grid gap-10 border-b border-[#d9dfd3] pb-12 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#ced8c6] bg-[#faf9f3] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#61735b]">
-              <Sprout className="h-3.5 w-3.5" />
-              How we grow ideas
+    <section className="perf-section overflow-hidden bg-white text-[#151a17]">
+      <div className="relative mx-auto max-w-7xl px-5 pb-8 pt-24 sm:px-8 sm:pt-28 lg:px-10 lg:pt-32">
+        <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
+          <div className="pt-2">
+            <div className="inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.26em] text-[#5f6b63]">
+              <Sparkles className="h-3.5 w-3.5" />
+              How we work
             </div>
-            <p className="mt-5 max-w-xs text-sm leading-6 text-[#7a8275]">
-              A process that stays simple enough to move quickly, but thoughtful enough to make the result feel distinct.
+            <div className="mt-6 h-px w-24 bg-[#1b241e]/25" />
+            <p className="mt-5 max-w-sm text-sm leading-7 text-[#69716c]">
+              One process, three different energies — clarity first, expression second, performance all the way through.
             </p>
           </div>
 
-          <h2 className="max-w-4xl font-serif text-[40px] font-medium leading-[1.02] tracking-[-0.04em] text-[#2d382c] sm:text-[52px] lg:text-[64px]">
-            From first seed to a product
-            <span className="italic text-[#7c9472]"> ready to bloom.</span>
-          </h2>
-        </div>
-
-        <GardenPath />
-
-        <div className="mt-10 space-y-6 sm:mt-12 sm:space-y-8">
-          {items.map((item, index) => {
-            const Icon = item.icon;
-            const reverse = index % 2 === 1;
-
-            return (
-              <article
-                key={item.number}
-                className="group relative grid overflow-hidden rounded-[34px] border border-[#d8ded2] bg-[#fbfaf5] shadow-[0_18px_55px_rgba(55,67,51,0.055)] transition-[transform,box-shadow,border-color] duration-500 hover:-translate-y-1 hover:border-[#c2cdbb] hover:shadow-[0_28px_75px_rgba(55,67,51,0.085)] lg:grid-cols-2"
-              >
-                <div className="pointer-events-none absolute left-5 top-5 z-20 h-2.5 w-2.5 rounded-full bg-[#c8d7bd] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                <div className="pointer-events-none absolute left-9 top-8 z-20 h-1.5 w-1.5 rounded-full bg-[#e6b99f] opacity-0 transition-opacity delay-75 duration-300 group-hover:opacity-100" />
-
-                <div
-                  className={`relative flex min-h-[320px] flex-col justify-between p-6 sm:p-8 lg:min-h-[430px] lg:p-10 ${
-                    reverse ? "lg:order-2" : ""
-                  }`}
-                >
-                  <div>
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <span className="font-serif text-4xl italic text-[#c5cdbf] transition-colors duration-300 group-hover:text-[#9dac96]">
-                          {item.number}
-                        </span>
-                        <div className="mt-3 inline-flex rotate-[-2deg] items-center gap-1.5 rounded-full border border-[#e6d5c8] bg-[#fff7f1] px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-[#9a6d57] transition-transform duration-300 group-hover:rotate-0">
-                          <Sparkles className="h-3 w-3" />
-                          {item.note}
-                        </div>
-                      </div>
-
-                      <div className={`grid h-11 w-11 place-items-center rounded-full border transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105 ${item.tone}`}>
-                        <Icon className="h-4 w-4" />
-                      </div>
-                    </div>
-
-                    <p className="mt-10 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#7a8a73]">
-                      {item.eyebrow}
-                    </p>
-                    <h3 className="mt-4 max-w-xl font-serif text-[34px] font-medium leading-[1.04] tracking-[-0.035em] text-[#2e392d] sm:text-[42px]">
-                      {item.title}
-                    </h3>
-                    <p className="mt-5 max-w-xl text-sm leading-7 text-[#6f786a] sm:text-[15px]">
-                      {item.description}
-                    </p>
-                  </div>
-
-                  <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-[#e2e6dd] pt-5">
-                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#65755f]">
-                      <Leaf className="h-3.5 w-3.5" />
-                      Built with intention, not excess
-                    </div>
-                    <span className="font-serif text-sm italic text-[#a2aa9c]">
-                      {item.label}
-                    </span>
-                  </div>
-                </div>
-
-                <div
-                  className={`relative min-h-[300px] overflow-hidden border-t border-[#dfe4da] bg-[#f5f5ee] lg:min-h-[430px] lg:border-t-0 ${
-                    reverse ? "lg:order-1 lg:border-r" : "lg:border-l"
-                  }`}
-                >
-                  <div className="absolute right-5 top-5 z-10 rotate-[3deg] rounded-full border border-[#d8ded2] bg-[#fffdf8]/95 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-[#7d8b76] shadow-[0_8px_24px_rgba(55,67,51,0.05)] transition-transform duration-300 group-hover:rotate-0">
-                    field study · {item.number}
-                  </div>
-
-                  <div className="whyus-drift pointer-events-none absolute left-[12%] top-[18%] h-2.5 w-2.5 rounded-full bg-[#d7a78c]/70" />
-                  <div className="whyus-drift-alt pointer-events-none absolute bottom-[17%] right-[15%] h-3 w-3 rounded-full border border-[#9eb095] bg-[#eef3e9]" />
-
-                  <ProcessVisual type={item.visual} index={index} />
-                </div>
-              </article>
-            );
-          })}
-        </div>
-
-        <div className="mt-14 grid gap-6 rounded-[34px] border border-[#d8ded2] bg-[#fbfaf5] p-6 shadow-[0_18px_55px_rgba(55,67,51,0.045)] sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center lg:p-10">
-          <div>
-            <div className="flex items-center gap-2 text-[#6c8065]">
-              <Flower2 className="h-4 w-4" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.2em]">
-                The result
+          <div className="relative">
+            <span className="pointer-events-none absolute -left-2 -top-10 font-serif text-[90px] italic leading-none text-[#7f8d83]/[0.08] sm:text-[130px] lg:text-[170px]">
+              01—03
+            </span>
+            <h2 className="relative max-w-5xl text-balance text-[46px] font-light leading-[0.94] tracking-[-0.06em] sm:text-[62px] lg:text-[82px]">
+              We do not hand ideas through a conveyor belt.
+              <span className="mt-2 block font-serif italic text-[#718074]">
+                We let each one find its own rhythm.
               </span>
-            </div>
-            <h3 className="mt-4 max-w-3xl font-serif text-3xl font-medium leading-tight tracking-[-0.03em] text-[#2e392d] sm:text-4xl">
-              Clear enough to use. Distinct enough to remember. Light enough to stay fast.
-            </h3>
+            </h2>
           </div>
-
-          <a
-            href="/Contact"
-            className="inline-flex w-fit items-center gap-2 rounded-full bg-[#2f3b2e] px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#455742]"
-          >
-            Start a project
-            <ArrowUpRight className="h-4 w-4" />
-          </a>
         </div>
       </div>
-    </section>
-  );
-}
 
-function GardenPath() {
-  return (
-    <div className="relative mt-10 hidden grid-cols-3 gap-4 rounded-[26px] border border-[#dce2d6] bg-[#f8f7ef]/80 p-4 sm:grid lg:p-5">
-      <div className="pointer-events-none absolute left-[16%] right-[16%] top-1/2 border-t border-dashed border-[#bfcab8]" />
-      {[
-        ["01", "Roots"],
-        ["02", "Character"],
-        ["03", "Bloom"],
-      ].map(([number, label], index) => (
-        <div key={number} className="relative flex items-center justify-center">
-          <div className={`relative z-10 flex items-center gap-2 rounded-full border px-4 py-2 shadow-[0_6px_18px_rgba(55,67,51,0.04)] ${
-            index === 1
-              ? "border-[#ead7ca] bg-[#fff4ed] text-[#93624b]"
-              : index === 2
-                ? "border-[#cfe0dc] bg-[#edf5f3] text-[#4d716c]"
-                : "border-[#d6e1cd] bg-[#eef3e8] text-[#56704f]"
-          }`}>
-            <span className="font-serif text-sm italic">{number}</span>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.16em]">{label}</span>
+      <div className="relative mx-auto max-w-[1500px] px-5 pb-24 pt-12 sm:px-8 sm:pb-28 lg:px-10 lg:pb-32">
+        <div className="relative grid min-h-[720px] items-center gap-12 lg:grid-cols-[0.86fr_1.14fr] lg:gap-16">
+          <div className="relative z-10 max-w-xl lg:pl-8">
+            <div className="pointer-events-none absolute -left-8 -top-24 select-none font-serif text-[190px] italic leading-none text-black/[0.035] sm:text-[250px] lg:-left-12 lg:text-[320px]">
+              01
+            </div>
+
+            <div className="relative">
+              <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#5e6d63]">
+                <Compass className="h-4 w-4" />
+                Discover
+              </div>
+              <h3 className="mt-6 max-w-lg text-[42px] font-light leading-[0.98] tracking-[-0.05em] sm:text-[54px] lg:text-[64px]">
+                Before we draw anything,
+                <span className="font-serif italic text-[#708075]"> we listen for what matters.</span>
+              </h3>
+              <p className="mt-7 max-w-lg text-[15px] leading-8 text-[#667069]">
+                We start with the business, the audience, and the decisions that need to become easier. The visual direction comes after the reason to build is clear.
+              </p>
+
+              <div className="mt-9 flex flex-wrap gap-x-8 gap-y-3 border-t border-black/10 pt-5 text-[10px] font-medium uppercase tracking-[0.16em] text-[#7b847e]">
+                <span>Goals & audience</span>
+                <span>User journey</span>
+                <span>Direction</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative flex min-h-[560px] items-center sm:min-h-[650px] lg:min-h-[700px]">
+            <div className="grid w-full max-w-[720px] gap-4 sm:grid-cols-2 sm:gap-5">
+              <article className="group relative overflow-hidden rounded-[32px] border border-[#dce5de] bg-[#edf3ef] p-4 shadow-[0_24px_70px_rgba(35,50,40,0.10)] sm:p-5">
+                <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em] text-[#657268]">
+                  <span>Discovery board</span>
+                  <span className="font-serif text-sm italic text-[#839084]">01A</span>
+                </div>
+
+                <div className="relative mt-4 overflow-hidden rounded-[24px] bg-[#fbfaf5]">
+                  <img
+                    src={discoverImage}
+                    alt="Cartoon developer working on a laptop"
+                    loading="lazy"
+                    decoding="async"
+                    className="h-[300px] w-full scale-[1.08] object-cover object-top transition-transform duration-700 group-hover:scale-[1.12] sm:h-[350px]"
+                  />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-[linear-gradient(180deg,transparent,#fbfaf5)]" />
+                  <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
+                    {["Audience", "Flow"].map((item) => (
+                      <span key={item} className="rounded-full border border-[#d8e2da] bg-white/92 px-2.5 py-1 text-[8px] font-semibold uppercase tracking-[0.13em] text-[#526258]">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="px-1 pb-1 pt-4">
+                  <p className="font-serif text-xl italic text-[#253129]">Clarity before pixels.</p>
+                  <p className="mt-1 text-xs leading-5 text-[#69736c]">
+                    Understand the problem before deciding what the screen should become.
+                  </p>
+                </div>
+              </article>
+
+              <article className="group relative overflow-hidden rounded-[32px] border border-[#e7dfd4] bg-[#f6f1e9] p-4 shadow-[0_24px_70px_rgba(64,49,35,0.09)] sm:translate-y-12 sm:p-5">
+                <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em] text-[#74695f]">
+                  <span>Signal map</span>
+                  <span className="font-serif text-sm italic text-[#998d82]">01B</span>
+                </div>
+
+                <div className="relative mt-4 overflow-hidden rounded-[24px] bg-[#fffaf2]">
+                  <img
+                    src={discoverThinkingImage}
+                    alt="Cartoon woman thinking while working on a laptop"
+                    loading="lazy"
+                    decoding="async"
+                    className="h-[250px] w-full object-contain object-center p-3 transition-transform duration-700 group-hover:scale-[1.035] sm:h-[290px]"
+                  />
+                  <div className="absolute bottom-3 left-3 right-3 grid grid-cols-3 gap-1.5">
+                    {["Goal", "Journey", "Scope"].map((item, index) => (
+                      <span key={item} className={`rounded-full px-2 py-1.5 text-center text-[7px] font-semibold uppercase tracking-[0.12em] ${index === 1 ? "bg-[#dceadf] text-[#294033]" : "bg-white/85 text-[#59665e]"}`}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="relative px-1 pb-1 pt-4">
+                  <div className="mb-3 flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#9fcab0]" />
+                    <span className="h-px flex-1 bg-[#cfc5b8]" />
+                    <span className="h-2.5 w-2.5 rounded-full border border-[#b79470]" />
+                  </div>
+                  <p className="font-serif text-xl italic text-[#2b332d]">Turn signals into direction.</p>
+                  <p className="mt-1 text-xs leading-5 text-[#716a63]">
+                    Connect goals, user needs, and constraints into one clear product path.
+                  </p>
+                </div>
+              </article>
+            </div>
+
+            <div className="whyus-drift pointer-events-none absolute right-[7%] top-[6%] h-3 w-3 rounded-full bg-[#b9d3c2]" />
+            <div className="whyus-drift-alt pointer-events-none absolute left-[2%] bottom-[11%] h-2.5 w-2.5 rounded-full bg-[#d6ad82]" />
           </div>
         </div>
-      ))}
-    </div>
-  );
-}
+      </div>
 
-function ProcessVisual({ type, index }: { type: "seed" | "shape" | "bloom"; index: number }) {
-  const palette = [
-    { leaf: "#839a78", soft: "#dce6d3", flower: "#e2ad8d" },
-    { leaf: "#8d9d79", soft: "#f1ddd2", flower: "#c98b6c" },
-    { leaf: "#6f8d83", soft: "#d8e5e1", flower: "#d3a277" },
-  ][index];
-
-  return (
-    <div className="absolute inset-0 flex items-center justify-center p-8 sm:p-10">
-      <svg
-        viewBox="0 0 520 430"
-        className="h-full w-full max-w-[520px] transition-transform duration-700 ease-out group-hover:scale-[1.025] group-hover:-rotate-1"
-        aria-hidden="true"
-        fill="none"
-      >
-        <path
-          d="M258 388C254 330 255 268 262 213C269 160 284 111 307 70"
-          stroke={palette.leaf}
-          strokeWidth="5"
-          strokeLinecap="round"
+      <section className="relative isolate min-h-[760px] overflow-hidden bg-[#070a08] text-white">
+        <img
+          src={shapeImage}
+          alt="Laptop showing a graphic design interface"
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-68"
         />
-        <path d="M260 303C215 271 172 269 136 290C165 329 205 332 260 303Z" fill={palette.soft} stroke={palette.leaf} strokeWidth="3" />
-        <path d="M263 236C311 207 354 208 388 233C355 266 315 267 263 236Z" fill={palette.soft} stroke={palette.leaf} strokeWidth="3" />
-        <path d="M277 171C239 144 216 111 215 77C255 84 281 117 277 171Z" fill="#f7f7ef" stroke={palette.leaf} strokeWidth="3" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,8,6,0.96)_0%,rgba(5,8,6,0.8)_38%,rgba(5,8,6,0.24)_72%,rgba(5,8,6,0.7)_100%)]" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-[linear-gradient(180deg,#fff,transparent)]" />
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(0deg,#fff,transparent)] opacity-95" />
 
-        {type === "seed" && (
-          <>
-            <ellipse cx="308" cy="73" rx="29" ry="39" fill="#f8f4e9" stroke={palette.flower} strokeWidth="3" />
-            <circle cx="308" cy="74" r="10" fill={palette.flower} />
-            <circle cx="151" cy="289" r="11" fill={palette.flower} opacity="0.65" />
-          </>
-        )}
+        <div className="relative mx-auto flex min-h-[760px] max-w-7xl items-center px-5 py-28 sm:px-8 lg:px-10">
+          <div className="grid w-full items-end gap-12 lg:grid-cols-[0.86fr_1.14fr]">
+            <div className="max-w-xl">
+              <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-100/70">
+                <Palette className="h-4 w-4" />
+                Shape
+              </div>
+              <h3 className="mt-6 max-w-2xl text-[44px] font-light leading-[0.96] tracking-[-0.055em] sm:text-[58px] lg:text-[72px]">
+                Then we give it a visual language
+                <span className="font-serif italic text-emerald-100"> people can feel.</span>
+              </h3>
+              <p className="mt-7 max-w-lg text-[15px] leading-8 text-white/62">
+                Typography, motion, interaction, and rhythm all work together. The point is not decoration — it is creating something unmistakably yours.
+              </p>
+            </div>
 
-        {type === "shape" && (
-          <>
-            <path d="M314 90C287 62 297 24 331 18C363 34 365 70 340 92C333 99 322 99 314 90Z" fill="#fff8f2" stroke={palette.flower} strokeWidth="3" />
-            <path d="M338 92C370 72 401 91 400 123C379 146 346 136 334 108C331 102 332 96 338 92Z" fill="#fff8f2" stroke={palette.flower} strokeWidth="3" />
-            <circle cx="332" cy="95" r="15" fill={palette.flower} />
-            <path d="M114 110C154 84 194 88 224 118" stroke={palette.flower} strokeWidth="3" strokeLinecap="round" strokeDasharray="8 10" />
-          </>
-        )}
+            <div className="relative min-h-[330px] self-stretch lg:min-h-[460px]">
+              <div className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 font-serif text-[170px] italic leading-none text-white/[0.07] sm:text-[240px] lg:text-[300px]">
+                02
+              </div>
+              <p className="absolute bottom-[12%] right-[4%] max-w-sm text-right font-serif text-2xl italic leading-snug text-white/88 sm:text-3xl">
+                Personality works best when it grows from purpose, not from trend.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        {type === "bloom" && (
-          <g transform="translate(311 78)">
-            <ellipse cx="0" cy="-34" rx="21" ry="43" fill="#fffaf4" stroke={palette.flower} strokeWidth="3" />
-            <ellipse cx="32" cy="-10" rx="21" ry="43" transform="rotate(60 32 -10)" fill="#fffaf4" stroke={palette.flower} strokeWidth="3" />
-            <ellipse cx="20" cy="28" rx="21" ry="43" transform="rotate(120 20 28)" fill="#fffaf4" stroke={palette.flower} strokeWidth="3" />
-            <ellipse cx="-20" cy="28" rx="21" ry="43" transform="rotate(-120 -20 28)" fill="#fffaf4" stroke={palette.flower} strokeWidth="3" />
-            <ellipse cx="-32" cy="-10" rx="21" ry="43" transform="rotate(-60 -32 -10)" fill="#fffaf4" stroke={palette.flower} strokeWidth="3" />
-            <circle cx="0" cy="0" r="18" fill={palette.flower} />
-          </g>
-        )}
+      <section className="relative overflow-hidden bg-[#f5f8f4] text-[#151a17]">
+        <div className="pointer-events-none absolute -left-8 top-10 font-serif text-[220px] italic leading-none text-[#263129]/[0.035] sm:text-[300px] lg:text-[390px]">03</div>
+        <div className="whyus-drift pointer-events-none absolute right-[8%] top-[16%] h-3 w-3 rounded-full bg-[#a8ccb4]" />
+        <div className="whyus-drift-alt pointer-events-none absolute left-[46%] bottom-[14%] h-2.5 w-2.5 rounded-full bg-[#d9ad7b]" />
 
-        <circle cx="95" cy="340" r="48" fill="#fffdf8" stroke="#d9dfd3" strokeWidth="2" />
-        <path d="M78 344C93 327 108 324 121 334C110 351 95 354 78 344Z" fill={palette.soft} stroke={palette.leaf} strokeWidth="2" />
-        <path d="M101 349C104 338 109 327 117 318" stroke={palette.leaf} strokeWidth="2" strokeLinecap="round" />
-      </svg>
-    </div>
+        <div className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-28 lg:px-10 lg:py-32">
+          <div className="grid items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
+            <div className="relative flex min-h-[620px] items-center">
+              <div className="grid w-full max-w-[760px] gap-4 sm:grid-cols-2 sm:gap-5">
+                <article className="group relative overflow-hidden rounded-[32px] border border-[#d8e4dc] bg-[#eaf2ed] p-4 shadow-[0_24px_70px_rgba(35,50,40,0.10)] sm:p-5">
+                  <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em] text-[#657268]">
+                    <span>Build room</span>
+                    <span className="font-serif text-sm italic text-[#839084]">03A</span>
+                  </div>
+
+                  <div className="relative mt-4 overflow-hidden rounded-[24px] bg-[#f9fbf8]">
+                    <img
+                      src={buildDeveloperImage}
+                      alt="Cartoon developer working at a desktop computer"
+                      loading="lazy"
+                      decoding="async"
+                      className="h-[300px] w-full object-contain object-center p-4 transition-transform duration-700 group-hover:scale-[1.035] sm:h-[350px]"
+                    />
+                    <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
+                      {["Code", "Responsive"].map((item) => (
+                        <span key={item} className="rounded-full border border-[#d7e2da] bg-white/92 px-2.5 py-1 text-[8px] font-semibold uppercase tracking-[0.13em] text-[#526258]">
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="px-1 pb-1 pt-4">
+                    <p className="font-serif text-xl italic text-[#253129]">Structure before scale.</p>
+                    <p className="mt-1 text-xs leading-5 text-[#69736c]">
+                      Build clean foundations first, then make every screen adapt with confidence.
+                    </p>
+                  </div>
+                </article>
+
+                <article className="group relative overflow-hidden rounded-[32px] border border-[#e7dfd4] bg-[#f6f1e9] p-4 shadow-[0_24px_70px_rgba(64,49,35,0.09)] sm:translate-y-12 sm:p-5">
+                  <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em] text-[#74695f]">
+                    <span>Review desk</span>
+                    <span className="font-serif text-sm italic text-[#998d82]">03B</span>
+                  </div>
+
+                  <div className="relative mt-4 overflow-hidden rounded-[24px] bg-[#fffaf2]">
+                    <img
+                      src={buildReviewImage}
+                      alt="Cartoon woman reviewing work on a laptop"
+                      loading="lazy"
+                      decoding="async"
+                      className="h-[250px] w-full object-contain object-center p-4 transition-transform duration-700 group-hover:scale-[1.035] sm:h-[290px]"
+                    />
+                    <div className="absolute bottom-3 left-3 right-3 grid grid-cols-3 gap-1.5">
+                      {["Test", "Tune", "Ship"].map((item, index) => (
+                        <span key={item} className={`rounded-full px-2 py-1.5 text-center text-[7px] font-semibold uppercase tracking-[0.12em] ${index === 1 ? "bg-[#dceadf] text-[#294033]" : "bg-white/88 text-[#59665e]"}`}>
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="relative px-1 pb-1 pt-4">
+                    <div className="mb-3 flex items-center gap-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#9fcab0]" />
+                      <span className="h-px flex-1 bg-[#cfc5b8]" />
+                      <span className="h-2.5 w-2.5 rounded-full border border-[#b79470]" />
+                    </div>
+                    <p className="font-serif text-xl italic text-[#2b332d]">Polish without the weight.</p>
+                    <p className="mt-1 text-xs leading-5 text-[#716a63]">
+                      Test the details, tune performance, and ship something that stays easy to grow.
+                    </p>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#5e6d63]">
+                <Code2 className="h-4 w-4" />
+                Build
+              </div>
+              <h3 className="mt-6 max-w-2xl text-[44px] font-light leading-[0.96] tracking-[-0.055em] sm:text-[58px] lg:text-[70px]">
+                Beautiful on the surface.
+                <span className="block font-serif italic text-[#708075]">Serious underneath.</span>
+              </h3>
+              <p className="mt-7 max-w-xl text-[15px] leading-8 text-[#667069]">
+                We turn the visual system into responsive, maintainable software without losing the personality that made the idea worth building in the first place.
+              </p>
+
+              <div className="mt-10 space-y-0 border-y border-black/10">
+                {[
+                  ["01", "Responsive by default", "Layouts adapt cleanly from small screens to large ones."],
+                  ["02", "Performance aware", "Motion, media, and code stay intentional instead of becoming weight."],
+                  ["03", "Built to evolve", "The structure stays understandable when the next feature arrives."],
+                ].map(([number, title, description]) => (
+                  <div key={number} className="group flex gap-5 border-b border-black/10 py-5 last:border-b-0">
+                    <span className="pt-0.5 font-serif text-lg italic text-[#849087]">{number}</span>
+                    <div>
+                      <p className="text-sm font-semibold text-[#253028] transition-transform duration-300 group-hover:translate-x-1">{title}</p>
+                      <p className="mt-1 max-w-md text-xs leading-6 text-[#758078]">{description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <Link
+                href="/Contact"
+                className="group mt-9 inline-flex items-center gap-3 rounded-full bg-[#172019] px-5 py-3 text-sm font-medium text-white transition-transform duration-300 hover:-translate-y-1"
+              >
+                Start a project
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
   );
 }
