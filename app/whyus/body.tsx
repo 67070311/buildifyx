@@ -71,8 +71,8 @@ export default function Body() {
           </div>
 
           <div className="relative flex min-h-[560px] items-center sm:min-h-[650px] lg:min-h-[700px]">
-            <div className="grid w-full max-w-[720px] gap-4 sm:grid-cols-2 sm:gap-5">
-              <article className="group relative overflow-hidden rounded-[32px] border border-[#dce5de] bg-[#edf3ef] p-4 shadow-[0_24px_70px_rgba(35,50,40,0.10)] sm:p-5">
+            <div className="grid w-full max-w-[720px] grid-cols-2 gap-2.5 sm:gap-5">
+              <article className="group relative overflow-hidden rounded-[20px] border border-[#dce5de] bg-[#edf3ef] p-2.5 shadow-[0_18px_50px_rgba(35,50,40,0.10)] sm:rounded-[32px] sm:p-5 sm:shadow-[0_24px_70px_rgba(35,50,40,0.10)]">
                 <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em] text-[#657268]">
                   <span>Discovery board</span>
                   <span className="font-serif text-sm italic text-[#839084]">01A</span>
@@ -104,7 +104,7 @@ export default function Body() {
                 </div>
               </article>
 
-              <article className="group relative overflow-hidden rounded-[32px] border border-[#e7dfd4] bg-[#f6f1e9] p-4 shadow-[0_24px_70px_rgba(64,49,35,0.09)] sm:translate-y-12 sm:p-5">
+              <article className="group relative overflow-hidden rounded-[20px] border border-[#e7dfd4] bg-[#f6f1e9] p-2.5 shadow-[0_18px_50px_rgba(64,49,35,0.09)] sm:translate-y-12 sm:rounded-[32px] sm:p-5 sm:shadow-[0_24px_70px_rgba(64,49,35,0.09)]">
                 <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em] text-[#74695f]">
                   <span>Signal map</span>
                   <span className="font-serif text-sm italic text-[#998d82]">01B</span>
@@ -195,8 +195,8 @@ export default function Body() {
         <div className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-28 lg:px-10 lg:py-32">
           <div className="grid items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
             <div className="relative flex min-h-[620px] items-center">
-              <div className="grid w-full max-w-[760px] gap-4 sm:grid-cols-2 sm:gap-5">
-                <article className="group relative overflow-hidden rounded-[32px] border border-[#d8e4dc] bg-[#eaf2ed] p-4 shadow-[0_24px_70px_rgba(35,50,40,0.10)] sm:p-5">
+              <div className="grid w-full max-w-[760px] grid-cols-2 gap-2.5 sm:gap-5">
+                <article className="group relative overflow-hidden rounded-[20px] border border-[#d8e4dc] bg-[#eaf2ed] p-2.5 shadow-[0_18px_50px_rgba(35,50,40,0.10)] sm:rounded-[32px] sm:p-5 sm:shadow-[0_24px_70px_rgba(35,50,40,0.10)]">
                   <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em] text-[#657268]">
                     <span>Build room</span>
                     <span className="font-serif text-sm italic text-[#839084]">03A</span>
@@ -208,7 +208,7 @@ export default function Body() {
                       alt="Cartoon developer working at a desktop computer"
                       loading="lazy"
                       decoding="async"
-                      className="h-[300px] w-full object-contain object-center p-4 transition-transform duration-700 group-hover:scale-[1.035] sm:h-[350px]"
+                      className="h-[180px] w-full object-contain object-center p-2 transition-transform duration-700 group-hover:scale-[1.035] sm:h-[350px] sm:p-4"
                     />
                     <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
                       {["Code", "Responsive"].map((item) => (
@@ -227,7 +227,7 @@ export default function Body() {
                   </div>
                 </article>
 
-                <article className="group relative overflow-hidden rounded-[32px] border border-[#e7dfd4] bg-[#f6f1e9] p-4 shadow-[0_24px_70px_rgba(64,49,35,0.09)] sm:translate-y-12 sm:p-5">
+                <article className="group relative overflow-hidden rounded-[20px] border border-[#e7dfd4] bg-[#f6f1e9] p-2.5 shadow-[0_18px_50px_rgba(64,49,35,0.09)] sm:translate-y-12 sm:rounded-[32px] sm:p-5 sm:shadow-[0_24px_70px_rgba(64,49,35,0.09)]">
                   <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em] text-[#74695f]">
                     <span>Review desk</span>
                     <span className="font-serif text-sm italic text-[#998d82]">03B</span>

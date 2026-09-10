@@ -12,7 +12,7 @@ export default function AboutUs() {
   return (
     <section
       ref={sectionRef}
-      className="perf-section relative overflow-hidden border-y border-[#151433]/10 bg-[#fffdf7] px-5 py-16 text-[#151433] sm:px-8 sm:py-20 lg:px-12 lg:py-24"
+      className="perf-section relative overflow-hidden border-y border-[#d8e4dc] bg-[#f4f2e9] px-5 py-16 text-[#172019] sm:px-8 sm:py-20 lg:px-12 lg:py-24"
     >
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">
@@ -101,7 +101,7 @@ export default function AboutUs() {
               delay: 0.08,
             }}
             viewport={{ once: true }}
-            className="mb-5 rounded-full border border-[#151433]/10 bg-white/75 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#2458ff] shadow-[0_10px_30px_rgba(21,20,51,0.07)] backdrop-blur-xl sm:text-[11px]"
+            className="mb-5 rounded-full border border-[#203128]/10 bg-white/70 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#52705f] shadow-[0_10px_30px_rgba(35,50,40,0.07)] backdrop-blur-xl sm:text-[11px]"
           >
             About Us
           </motion.div>
@@ -124,7 +124,7 @@ export default function AboutUs() {
             className="max-w-xl text-4xl font-semibold leading-[1.05] tracking-[-0.04em] text-[#151433] sm:text-5xl lg:text-6xl"
           >
             Buildifyx is a
-            <span className="mt-1 block text-[#2458ff]">software studio</span>
+            <span className="mt-1 block text-[#5f7466]">software studio</span>
           </motion.h2>
 
           {/* Paragraphs */}

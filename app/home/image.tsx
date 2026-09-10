@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValue, useTransform, type MotionValue } from "framer-motion";
 import Link from "next/link";
 
@@ -9,32 +9,31 @@ const processCards = [
     number: "01",
     title: "Strategy",
     text: "We define goals, users, structure, and the right direction before building.",
-    accent: "#5578FF",
+    accent: "#6F8F7A",
     side: "left",
   },
   {
     number: "02",
     title: "Design",
     text: "We create clean, modern, and user-friendly interfaces for real users.",
-    accent: "#FF6B4A",
+    accent: "#9A806C",
     side: "left",
   },
   {
     number: "03",
     title: "Development",
     text: "We build fast, responsive, and scalable digital products with clean code.",
-    accent: "#16A34A",
+    accent: "#789884",
     side: "right",
   },
   {
     number: "04",
     title: "Launch",
     text: "We test, publish, improve, and support your product after launch.",
-    accent: "#0EA5E9",
+    accent: "#7E8A6A",
     side: "right",
   },
 ];
-
 const serviceTags = [
   "UI/UX",
   "Web App",
@@ -52,7 +51,7 @@ const people = [
     skin: "#DFA27D",
     hair: "#171717",
     cheek: "#F59E9E",
-    accent: "#5578FF",
+    accent: "#76937E",
     delay: 0,
   },
   {
@@ -62,7 +61,7 @@ const people = [
     skin: "#F1B59E",
     hair: "#5A2D1F",
     cheek: "#FB7185",
-    accent: "#FF6B4A",
+    accent: "#A08672",
     delay: 0.35,
   },
   {
@@ -72,7 +71,7 @@ const people = [
     skin: "#C9865D",
     hair: "#2A1710",
     cheek: "#FCA5A5",
-    accent: "#0EA5E9",
+    accent: "#809A87",
     delay: 0.7,
   },
 ] as const;
@@ -84,8 +83,6 @@ type OrbitValues = {
   y: MotionValue<number>;
   scale: MotionValue<number>;
   rotate: MotionValue<number>;
-  zIndex: MotionValue<number>;
-  opacity: MotionValue<number>;
 };
 
 function useSmoothOrbit(
@@ -99,30 +96,11 @@ function useSmoothOrbit(
     return (latestTime / orbitDuration) * Math.PI * 2 + phaseOffset;
   });
 
-  const x = useTransform(angle, (value) => {
-    return Math.sin(value) * 172;
-  });
-
-  const y = useTransform(angle, (value) => {
-    return -Math.cos(value) * 62;
-  });
-
+  const x = useTransform(angle, (value) => Math.sin(value) * 172);
+  const y = useTransform(angle, (value) => -Math.cos(value) * 62);
   const scale = useTransform(y, [-62, 62], [1.06, 0.76]);
-
   const rotate = useTransform(x, [-172, 172], [-7, 7]);
-
-  const zIndex = useTransform(y, [-62, 62], [40, 10]);
-
-  const opacity = useTransform(y, [-62, 62], [1, 0.82]);
-
-  return {
-    x,
-    y,
-    scale,
-    rotate,
-    zIndex,
-    opacity,
-  };
+  return { x, y, scale, rotate };
 }
 
 function CartoonFace({
@@ -136,21 +114,20 @@ function CartoonFace({
   time: MotionValue<number>;
   active: boolean;
 }) {
+  const [mounted, setMounted] = useState(false);
   const isFemale = person.gender === "female";
+  const { x, y, scale, rotate } = useSmoothOrbit(index, time);
 
-  const { x, y, scale, rotate, zIndex, opacity } = useSmoothOrbit(index, time);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <motion.div
       className="absolute left-1/2 top-1/2 w-[128px] transform-gpu will-change-transform min-[380px]:w-[142px] sm:w-[195px] lg:w-[220px]"
-      style={{
-        x,
-        y,
-        scale,
-        rotate,
-        zIndex,
-        opacity,
-      }}
+      style={{ x, y, scale, rotate }}
     >
       <div className="-translate-x-1/2 -translate-y-1/2 transform-gpu">
         <motion.div
@@ -512,11 +489,14 @@ function usePausableTime(active: boolean) {
     let lastTick = window.performance.now();
     const intervalId = window.setInterval(() => {
       const now = window.performance.now();
+      if (document.hidden) {
+        lastTick = now;
+        return;
+      }
       elapsedRef.current += now - lastTick;
       lastTick = now;
       time.set(elapsedRef.current);
     }, 1000 / 30);
-
     return () => {
       window.clearInterval(intervalId);
     };
@@ -549,7 +529,7 @@ function TeamFacesVisual() {
           }}
           className="absolute left-1/2 top-[32%] h-56 w-56 -translate-x-1/2 sm:h-80 sm:w-80"
         >
-          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(85,120,255,0.24),rgba(56,189,248,0.08)_46%,transparent_72%)] blur-3xl" />
+          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(111,143,122,0.22),rgba(154,128,108,0.07)_46%,transparent_72%)] blur-3xl" />
         </motion.div>
 
         <motion.div
@@ -565,7 +545,7 @@ function TeamFacesVisual() {
           }}
           className="absolute left-1/2 top-[38%] h-44 w-[270px] -translate-x-1/2 sm:h-64 sm:w-[460px]"
         >
-          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(255,107,74,0.2),transparent_68%)] blur-3xl" />
+          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(160,134,114,0.16),transparent_68%)] blur-3xl" />
         </motion.div>
 
         <div className="absolute left-1/2 top-[64%] h-24 w-[70%] -translate-x-1/2 rounded-full bg-[#151433]/5 blur-3xl sm:h-28" />
@@ -598,7 +578,7 @@ function TeamFacesVisual() {
             repeat: isActive ? Infinity : 0,
             ease: "linear",
           }}
-          className="absolute left-1/2 top-[52%] h-[225px] w-[225px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#2458ff]/15 min-[380px]:h-[255px] min-[380px]:w-[255px] sm:h-[380px] sm:w-[380px] lg:h-[430px] lg:w-[430px]"
+          className="absolute left-1/2 top-[52%] h-[225px] w-[225px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#7b9481]/18 min-[380px]:h-[255px] min-[380px]:w-[255px] sm:h-[380px] sm:w-[380px] lg:h-[430px] lg:w-[430px]"
         />
       </div>
 
@@ -643,7 +623,7 @@ export default function ImageSlider() {
         }}
         className="absolute -left-40 top-20 h-[420px] w-[420px]"
       >
-        <div className="absolute inset-0 rounded-full bg-[#ffb9d9]/20 blur-[130px]" />
+        <div className="absolute inset-0 rounded-full bg-[#c9d8cd]/24 blur-[130px]" />
       </motion.div>
 
       {/* Top right glow */}
@@ -660,7 +640,7 @@ export default function ImageSlider() {
         }}
         className="absolute -right-40 top-40 h-[450px] w-[450px]"
       >
-        <div className="absolute inset-0 rounded-full bg-[#9edfff]/24 blur-[140px]" />
+        <div className="absolute inset-0 rounded-full bg-[#d9cdbc]/22 blur-[140px]" />
       </motion.div>
 
       {/* Grid */}
@@ -689,14 +669,14 @@ export default function ImageSlider() {
           }}
           className="mx-auto max-w-4xl text-center"
         >
-          <p className="text-[9px] font-semibold uppercase tracking-[0.32em] text-[#2458ff] sm:text-xs sm:tracking-[0.4em]">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.32em] text-[#718777] sm:text-xs sm:tracking-[0.4em]">
             Behind the Designs
           </p>
 
           <h1 className="mt-4 text-[34px] font-semibold leading-[0.98] tracking-[-0.055em] text-[#151433] min-[380px]:text-4xl sm:mt-5 sm:text-5xl md:text-6xl lg:text-7xl">
             Crafting Digital
             <br />
-            <span className="bg-gradient-to-r from-[#5578FF] via-[#FF6B4A] to-[#0EA5E9] bg-clip-text text-transparent">
+            <span className="text-[#718777]">
               Experiences
             </span>
           </h1>
@@ -719,7 +699,7 @@ export default function ImageSlider() {
             >
               <Link
                 href="/mywork"
-                className="inline-flex w-full justify-center rounded-full bg-[#151433] px-7 py-3 text-sm font-semibold text-white shadow-[0_14px_35px_rgba(21,20,51,0.18)] transition-colors duration-300 hover:bg-[#2458ff] sm:w-auto"
+                className="inline-flex w-full justify-center rounded-full bg-[#151433] px-7 py-3 text-sm font-semibold text-white shadow-[0_14px_35px_rgba(21,20,51,0.18)] transition-colors duration-300 hover:bg-[#6f8f7a] sm:w-auto"
               >
                 See More Projects
               </Link>
@@ -737,7 +717,7 @@ export default function ImageSlider() {
             >
               <Link
                 href="/Contact"
-                className="inline-flex w-full justify-center rounded-full border border-[#151433]/10 bg-white/75 px-7 py-3 text-sm font-semibold text-[#151433]/75 shadow-[0_12px_30px_rgba(21,20,51,0.06)] backdrop-blur-xl transition-colors duration-300 hover:border-[#2458ff]/25 hover:bg-white hover:text-[#2458ff] sm:w-auto"
+                className="inline-flex w-full justify-center rounded-full border border-[#151433]/10 bg-white/75 px-7 py-3 text-sm font-semibold text-[#151433]/75 shadow-[0_12px_30px_rgba(21,20,51,0.06)] backdrop-blur-xl transition-colors duration-300 hover:border-[#6f8f7a]/30 hover:bg-white hover:text-[#6f8f7a] sm:w-auto"
               >
                 Contact Us
               </Link>

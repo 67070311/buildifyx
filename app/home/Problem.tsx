@@ -489,7 +489,7 @@ function UseCaseCard({ card, index }: { card: ProblemCard; index: number }) {
 
 export default function Problem() {
   return (
-    <section className="perf-section relative overflow-hidden bg-[#fbfaff] px-4 py-12 text-[#24212d] sm:px-5 md:py-18 lg:py-20">
+    <section className="perf-section relative overflow-hidden bg-[#f3f5ee] px-4 py-12 text-[#202821] sm:px-5 md:py-18 lg:py-20">
       {/* Light background */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#f8f5ff_52%,#ffffff_100%)]" />

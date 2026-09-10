@@ -376,7 +376,7 @@ export default function WorkflowProblem() {
       ref={sectionRef}
       id="workflow-tools"
       aria-labelledby="workflow-tools-title"
-      className="perf-section relative isolate w-full overflow-hidden bg-[#fffdf8] px-4 py-20 text-center text-[#24212d] sm:px-6 sm:py-24 md:py-28 lg:px-10"
+      className="perf-section relative isolate w-full overflow-hidden bg-[#f7f4eb] px-4 py-20 text-center text-[#202821] sm:px-6 sm:py-24 md:py-28 lg:px-10"
     >
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">
