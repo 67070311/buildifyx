@@ -19,7 +19,7 @@ const links = [
 
 export default function Footer() {
   return (
-    <footer className="relative isolate overflow-hidden bg-[#fafbf6] text-[#1d2a21]">
+    <footer className="relative isolate overflow-hidden bg-white text-[#1d2a21]">
       <div aria-hidden="true" className="absolute inset-0">
         <div
           className="absolute inset-x-0 bottom-0 h-[72%] bg-cover bg-[center_60%] opacity-[0.48] saturate-[0.9]"
@@ -28,14 +28,12 @@ export default function Footer() {
               "url('https://images.pexels.com/photos/33000454/pexels-photo-33000454.jpeg?auto=compress&cs=tinysrgb&w=2200')",
           }}
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#fafbf6_0%,rgba(250,251,246,0.98)_18%,rgba(250,251,246,0.82)_42%,rgba(250,251,246,0.3)_72%,rgba(250,251,246,0.9)_100%)]" />
-        <div className="absolute inset-x-0 top-0 h-48 bg-[radial-gradient(circle_at_18%_20%,rgba(118,145,112,0.18),transparent_28%),radial-gradient(circle_at_78%_4%,rgba(223,230,193,0.4),transparent_32%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,rgba(255,255,255,0.99)_18%,rgba(255,255,255,0.88)_42%,rgba(255,255,255,0.38)_72%,rgba(255,255,255,0.92)_100%)]" />
+        <div className="absolute inset-x-0 top-0 h-48 bg-[radial-gradient(circle_at_18%_20%,rgba(255,255,255,0.78),transparent_30%),radial-gradient(circle_at_78%_4%,rgba(255,255,255,0.88),transparent_34%)]" />
       </div>
 
-      <div aria-hidden="true" className="pointer-events-none absolute left-[-5%] top-[30%] h-52 w-52 rounded-full bg-[#bfd6b4]/35 blur-[90px]" />
-      <div aria-hidden="true" className="pointer-events-none absolute right-[-4%] top-[26%] h-64 w-64 rounded-full bg-[#e2dcb4]/30 blur-[100px]" />
-      <span aria-hidden="true" className="pointer-events-none absolute left-[5%] top-[22%] rotate-[-22deg] text-5xl text-[#708d68]/35">❧</span>
-      <span aria-hidden="true" className="pointer-events-none absolute right-[7%] top-[18%] rotate-[20deg] text-6xl text-[#7f9876]/30">❧</span>
+      <div aria-hidden="true" className="pointer-events-none absolute left-[-5%] top-[30%] h-52 w-52 rounded-full bg-white/55 blur-[90px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute right-[-4%] top-[26%] h-64 w-64 rounded-full bg-white/45 blur-[100px]" />
       <span aria-hidden="true" className="pointer-events-none absolute right-[12%] top-[34%] text-2xl text-[#d7b486]/60">✦</span>
       <span aria-hidden="true" className="pointer-events-none absolute left-[13%] top-[46%] text-xl text-[#d7b486]/45">✦</span>
 
