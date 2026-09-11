@@ -376,11 +376,10 @@ export default function WorkflowProblem() {
       ref={sectionRef}
       id="workflow-tools"
       aria-labelledby="workflow-tools-title"
-      className="perf-section relative isolate w-full overflow-hidden bg-[#f7f4eb] px-4 py-20 text-center text-[#202821] sm:px-6 sm:py-24 md:py-28 lg:px-10"
+      className="perf-section relative isolate w-full overflow-hidden border-y border-[#d7e2da] bg-[#eef3ef] px-4 py-20 text-center text-[#172019] sm:px-6 sm:py-24 md:py-28 lg:px-10"
     >
-      {/* Background */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#fffdf8_48%,#ffffff_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#edf3ee_0%,#f5f2e8_48%,#eef3ef_100%)]" />
 
         <motion.div
           animate={
@@ -395,7 +394,7 @@ export default function WorkflowProblem() {
           }}
           className="absolute -left-52 top-[-140px] h-[460px] w-[460px]"
         >
-          <div className="absolute inset-0 rounded-full bg-[#e4dcff]/45 blur-[150px]" />
+          <div className="absolute inset-0 rounded-full bg-[#b7cdbd]/34 blur-[150px]" />
         </motion.div>
 
         <motion.div
@@ -411,7 +410,7 @@ export default function WorkflowProblem() {
           }}
           className="absolute -right-52 top-[5%] h-[480px] w-[480px]"
         >
-          <div className="absolute inset-0 rounded-full bg-[#dcf7ec]/45 blur-[150px]" />
+          <div className="absolute inset-0 rounded-full bg-[#d2ddcf]/38 blur-[150px]" />
         </motion.div>
 
         <div
@@ -453,18 +452,17 @@ export default function WorkflowProblem() {
           }}
           className="mx-auto max-w-4xl"
         >
-          <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-[#7567e8] sm:text-xs">
-            Workflow Tools
+          <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-[#6f8878] sm:text-xs">
+            Built to move
           </p>
 
           <h2
-            id="workflow-tools-title"
-            className="mx-auto mt-5 max-w-4xl text-[34px] font-light leading-[1.08] tracking-[-0.05em] text-[#24212d] sm:text-4xl md:text-5xl lg:text-[58px]"
+            className="mx-auto mt-5 max-w-4xl text-[34px] font-light leading-[1.08] tracking-[-0.05em] text-[#172019] sm:text-4xl md:text-5xl lg:text-[58px]"
           >
-            Connect AI, social, and software tools into one smooth workflow.
+            From idea to something people can actually use.
           </h2>
 
-          <p className="mx-auto mt-6 max-w-2xl text-sm font-normal leading-7 text-[#6d6877] sm:text-base">
+          <p className="mx-auto mt-6 max-w-2xl text-sm font-normal leading-7 text-[#657068] sm:text-base">
             A modern technology stack section with adaptive brand icons, smooth
             motion, responsive layout, and search-friendly structure.
           </p>

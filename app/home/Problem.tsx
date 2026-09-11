@@ -488,16 +488,16 @@ function UseCaseCard({ card, index }: { card: ProblemCard; index: number }) {
 
 export default function Problem() {
   return (
-    <section className="perf-section relative overflow-hidden bg-[#f3f5ee] px-4 py-12 text-[#202821] sm:px-5 md:py-18 lg:py-20">
+    <section className="perf-section relative overflow-hidden border-y border-[#d7e2da] bg-[#f3f1e7] px-4 py-12 text-[#202821] sm:px-5 md:py-18 lg:py-20">
       {/* Light background */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#f8f5ff_52%,#ffffff_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#f7f5ed_0%,#eef3ef_52%,#f7f5ed_100%)]" />
 
-        <div className="absolute -left-40 top-[-80px] h-[420px] w-[420px] rounded-full bg-[#eadfff]/70 blur-[130px]" />
+        <div className="absolute -left-40 top-[-80px] h-[420px] w-[420px] rounded-full bg-[#b9cfbf]/32 blur-[130px]" />
 
-        <div className="absolute -right-40 top-[20%] h-[430px] w-[430px] rounded-full bg-[#dff8eb]/75 blur-[140px]" />
+        <div className="absolute -right-40 top-[20%] h-[430px] w-[430px] rounded-full bg-[#8fad9a]/24 blur-[140px]" />
 
-        <div className="absolute bottom-[-180px] left-1/2 h-[380px] w-[650px] -translate-x-1/2 rounded-full bg-[#ffe2ee]/65 blur-[150px]" />
+        <div className="absolute bottom-[-180px] left-1/2 h-[380px] w-[650px] -translate-x-1/2 rounded-full bg-[#d8d3bf]/38 blur-[150px]" />
 
         <div
           className="absolute inset-0 opacity-[0.22]"
@@ -528,17 +528,17 @@ export default function Problem() {
           }}
           className="mx-auto max-w-3xl text-center"
         >
-          <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#7d70e8] sm:text-[10px]">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#6f8878] sm:text-[10px]">
             Why Buildifyx
           </p>
 
-          <h3 className="mt-4 text-2xl font-medium leading-[1.08] tracking-[-0.045em] text-[#24212d] sm:text-3xl md:text-4xl lg:text-5xl">
+          <h3 className="mt-4 text-2xl font-medium leading-[1.08] tracking-[-0.045em] text-[#172019] sm:text-3xl md:text-4xl lg:text-5xl">
             When problems need
             <br className="hidden md:block" />
             real digital solutions
           </h3>
 
-          <p className="mx-auto mt-4 max-w-xl text-xs font-light leading-6 text-[#686471] sm:text-sm sm:leading-7">
+          <p className="mx-auto mt-4 max-w-xl text-xs font-light leading-6 text-[#657068] sm:text-sm sm:leading-7">
             We believe technology should solve meaningful real-world challenges.
             Every product is crafted with purpose, innovation, and long-term
             impact in mind.
@@ -571,14 +571,14 @@ export default function Problem() {
         >
           <Link
             href="/whyus"
-            className="rounded-full bg-[#24212d] px-6 py-3 text-xs font-medium text-white shadow-[0_14px_35px_rgba(36,33,45,0.18)] transition hover:-translate-y-1 hover:bg-[#37323f] sm:text-sm"
+            className="site-cta-dark"
           >
             See More
           </Link>
 
           <Link
             href="/Contact"
-            className="rounded-full border border-[#24212d]/15 bg-white/80 px-6 py-3 text-xs font-medium text-[#3f3a48] shadow-[0_12px_35px_rgba(64,50,94,0.08)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-[#7d70e8]/45 hover:bg-white sm:text-sm"
+            className="site-cta-outline"
           >
             Contact Us
           </Link>

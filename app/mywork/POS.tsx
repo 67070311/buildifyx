@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const ArrowUpRight = () => (
   <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
@@ -91,10 +92,15 @@ const features = [
 ];
 
 export default function POS() {
+  const heroRef = useRef<HTMLElement>(null);
+  const productRef = useRef<HTMLElement>(null);
+  const heroActive = useInView(heroRef, { amount: 0.05 });
+  const productActive = useInView(productRef, { amount: 0.05 });
+
   return (
     <main className="overflow-hidden bg-[#faf9ff] text-slate-950">
       {/* Hero */}
-      <section className="relative overflow-hidden">
+      <section ref={heroRef} className="relative overflow-hidden">
         {/* Background */}
         <div className="pointer-events-none absolute inset-0">
           <motion.div
@@ -105,7 +111,7 @@ export default function POS() {
             }}
             transition={{
               duration: 12,
-              repeat: Infinity,
+              repeat: heroActive ? Infinity : 0,
               ease: "easeInOut",
             }}
             className="absolute left-1/2 top-[-260px] h-[620px] w-[860px] -translate-x-1/2 rounded-full bg-violet-200/60 blur-[140px]"
@@ -118,7 +124,7 @@ export default function POS() {
             }}
             transition={{
               duration: 10,
-              repeat: Infinity,
+              repeat: heroActive ? Infinity : 0,
               ease: "easeInOut",
             }}
             className="absolute -left-40 top-[35%] h-[380px] w-[380px] rounded-full bg-purple-100/70 blur-[120px]"
@@ -131,7 +137,7 @@ export default function POS() {
             }}
             transition={{
               duration: 11,
-              repeat: Infinity,
+              repeat: heroActive ? Infinity : 0,
               ease: "easeInOut",
             }}
             className="absolute -right-40 top-[20%] h-[440px] w-[440px] rounded-full bg-indigo-100/60 blur-[130px]"
@@ -253,7 +259,7 @@ export default function POS() {
                   whileTap={{
                     scale: 0.98,
                   }}
-                  className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#6557dc] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_16px_36px_rgba(101,87,220,0.22)] transition-colors duration-300 hover:bg-[#5749cb] sm:w-auto"
+                  className="site-cta-dark group w-full sm:w-auto"
                 >
                   Visit website
                   <span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
@@ -331,7 +337,7 @@ export default function POS() {
                 }}
                 transition={{
                   duration: 5,
-                  repeat: Infinity,
+                  repeat: heroActive ? Infinity : 0,
                   ease: "easeInOut",
                 }}
                 className="absolute left-1/2 top-1/2 h-[62%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-300/35 blur-[95px]"
@@ -371,7 +377,7 @@ export default function POS() {
                       }}
                       transition={{
                         duration: 5.5 + index * 0.35,
-                        repeat: Infinity,
+                        repeat: heroActive ? Infinity : 0,
                         ease: "easeInOut",
                         delay: index * 0.2,
                       }}
@@ -386,7 +392,7 @@ export default function POS() {
       </section>
 
       {/* Product Experience */}
-      <section className="relative overflow-hidden border-t border-violet-950/10 bg-white">
+      <section ref={productRef} className="relative overflow-hidden border-t border-violet-950/10 bg-white">
         {/* Background */}
         <div className="pointer-events-none absolute inset-0">
           <motion.div
@@ -396,7 +402,7 @@ export default function POS() {
             }}
             transition={{
               duration: 11,
-              repeat: Infinity,
+              repeat: productActive ? Infinity : 0,
               ease: "easeInOut",
             }}
             className="absolute bottom-[-220px] left-1/2 h-[420px] w-[620px] -translate-x-1/2 rounded-full bg-violet-200/50 blur-[130px]"
@@ -409,7 +415,7 @@ export default function POS() {
             }}
             transition={{
               duration: 10,
-              repeat: Infinity,
+              repeat: productActive ? Infinity : 0,
               ease: "easeInOut",
             }}
             className="absolute -right-36 top-20 h-[320px] w-[320px] rounded-full bg-purple-100/70 blur-[110px]"
@@ -527,7 +533,7 @@ export default function POS() {
                   }}
                   transition={{
                     duration: 5,
-                    repeat: Infinity,
+                    repeat: productActive ? Infinity : 0,
                     ease: "easeInOut",
                   }}
                   className="absolute left-1/2 top-1/2 h-[60%] w-[60%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-300/35 blur-[85px]"

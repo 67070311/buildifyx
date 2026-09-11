@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const ArrowUpRight = () => (
   <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
@@ -99,10 +100,13 @@ const fadeUp = {
 };
 
 export default function Bigger() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const heroActive = useInView(heroRef, { amount: 0.05 });
+
   return (
     <section className="overflow-hidden bg-[#f6fbff] text-slate-950">
       {/* Hero */}
-      <div className="relative overflow-hidden">
+      <div ref={heroRef} className="relative overflow-hidden">
         {/* Background */}
         <div className="pointer-events-none absolute inset-0">
           <motion.div
@@ -113,7 +117,7 @@ export default function Bigger() {
             }}
             transition={{
               duration: 12,
-              repeat: Infinity,
+              repeat: heroActive ? Infinity : 0,
               ease: "easeInOut",
             }}
             className="absolute left-1/2 top-[-260px] h-[620px] w-[820px] -translate-x-1/2 rounded-full bg-cyan-300/30 blur-[130px]"
@@ -126,7 +130,7 @@ export default function Bigger() {
             }}
             transition={{
               duration: 10,
-              repeat: Infinity,
+              repeat: heroActive ? Infinity : 0,
               ease: "easeInOut",
             }}
             className="absolute -left-40 top-[35%] h-[420px] w-[420px] rounded-full bg-sky-200/45 blur-[120px]"
@@ -139,7 +143,7 @@ export default function Bigger() {
             }}
             transition={{
               duration: 11,
-              repeat: Infinity,
+              repeat: heroActive ? Infinity : 0,
               ease: "easeInOut",
             }}
             className="absolute -right-48 top-[25%] h-[500px] w-[500px] rounded-full bg-blue-300/30 blur-[130px]"
@@ -174,7 +178,7 @@ export default function Bigger() {
                 }}
                 transition={{
                   duration: 2,
-                  repeat: Infinity,
+                  repeat: heroActive ? Infinity : 0,
                   ease: "easeInOut",
                 }}
                 className="h-2 w-2 rounded-full bg-cyan-500 shadow-[0_0_14px_rgba(6,182,212,0.65)]"
@@ -277,7 +281,7 @@ export default function Bigger() {
                 whileTap={{
                   scale: 0.98,
                 }}
-                className="group mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-cyan-500 px-6 py-3.5 text-sm font-semibold text-slate-950 shadow-[0_16px_35px_rgba(6,182,212,0.25)] transition-colors duration-300 hover:bg-cyan-400"
+                className="site-cta-dark group mt-7"
               >
                 View website
                 <motion.span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
@@ -304,7 +308,7 @@ export default function Bigger() {
                 }}
                 transition={{
                   duration: 5,
-                  repeat: Infinity,
+                  repeat: heroActive ? Infinity : 0,
                   ease: "easeInOut",
                 }}
                 className="absolute left-1/2 top-1/2 h-[75%] w-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/20 blur-[100px]"

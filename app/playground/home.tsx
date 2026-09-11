@@ -16,7 +16,7 @@ import {
   Sparkles,
   Star,
 } from "lucide-react";
-import { motion, type Variants } from "framer-motion";
+import { motion, useInView, type Variants } from "framer-motion";
 import { useRef } from "react";
 
 const games = [
@@ -137,6 +137,10 @@ const cardVariants: Variants = {
 
 export default function PlaygroundHome() {
   const sliderRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const gamesRef = useRef<HTMLElement>(null);
+  const heroActive = useInView(heroRef, { amount: 0.05 });
+  const gamesActive = useInView(gamesRef, { amount: 0.05 });
 
   const scrollGames = (direction: "left" | "right") => {
     const slider = sliderRef.current;
@@ -170,7 +174,7 @@ export default function PlaygroundHome() {
           }}
           transition={{
             duration: 12,
-            repeat: Infinity,
+            repeat: heroActive ? Infinity : 0,
             ease: "easeInOut",
           }}
           className="absolute -left-44 top-20 h-[430px] w-[430px] rounded-full bg-purple-600/20 blur-[150px]"
@@ -184,7 +188,7 @@ export default function PlaygroundHome() {
           }}
           transition={{
             duration: 13,
-            repeat: Infinity,
+            repeat: heroActive ? Infinity : 0,
             ease: "easeInOut",
           }}
           className="absolute -right-40 top-24 h-[450px] w-[450px] rounded-full bg-blue-500/20 blur-[160px]"
@@ -197,7 +201,7 @@ export default function PlaygroundHome() {
           }}
           transition={{
             duration: 8,
-            repeat: Infinity,
+            repeat: heroActive ? Infinity : 0,
             ease: "easeInOut",
           }}
           className="absolute bottom-0 left-1/2 h-[360px] w-[540px] -translate-x-1/2 rounded-full bg-pink-500/10 blur-[160px]"
@@ -209,7 +213,7 @@ export default function PlaygroundHome() {
           }}
           transition={{
             duration: 14,
-            repeat: Infinity,
+            repeat: heroActive ? Infinity : 0,
             ease: "linear",
           }}
           className="absolute inset-0 opacity-[0.15]"
@@ -227,6 +231,7 @@ export default function PlaygroundHome() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
+          ref={heroRef}
           className="mb-20 grid min-h-[430px] items-center gap-12 lg:grid-cols-[1.08fr_0.92fr]"
         >
           {/* Hero content */}
@@ -245,7 +250,7 @@ export default function PlaygroundHome() {
                 }}
                 transition={{
                   duration: 3,
-                  repeat: Infinity,
+                  repeat: heroActive ? Infinity : 0,
                   ease: "easeInOut",
                 }}
               >
@@ -265,7 +270,7 @@ export default function PlaygroundHome() {
                 }}
                 transition={{
                   duration: 7,
-                  repeat: Infinity,
+                  repeat: heroActive ? Infinity : 0,
                   ease: "linear",
                 }}
                 className="mt-2 block bg-[linear-gradient(90deg,#fde047,#f472b6,#c084fc,#fde047)] bg-[length:220%_220%] bg-clip-text text-transparent"
@@ -296,7 +301,7 @@ export default function PlaygroundHome() {
                 whileTap={{
                   scale: 0.97,
                 }}
-                className="group inline-flex items-center gap-3 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#15152d] transition-colors hover:bg-white/90"
+                className="site-cta-light group"
               >
                 Explore games
                 <motion.span
@@ -306,7 +311,7 @@ export default function PlaygroundHome() {
                   }}
                   transition={{
                     duration: 1.8,
-                    repeat: Infinity,
+                    repeat: heroActive ? Infinity : 0,
                     ease: "easeInOut",
                   }}
                 >
@@ -327,7 +332,7 @@ export default function PlaygroundHome() {
                   }}
                   transition={{
                     duration: 3,
-                    repeat: Infinity,
+                    repeat: heroActive ? Infinity : 0,
                     ease: "easeInOut",
                   }}
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.05]"
@@ -351,7 +356,7 @@ export default function PlaygroundHome() {
               }}
               transition={{
                 duration: 5,
-                repeat: Infinity,
+                repeat: heroActive ? Infinity : 0,
                 ease: "easeInOut",
               }}
               className="absolute h-[380px] w-[380px] rounded-full bg-purple-500/20 blur-[110px]"
@@ -364,7 +369,7 @@ export default function PlaygroundHome() {
               }}
               transition={{
                 duration: 6,
-                repeat: Infinity,
+                repeat: heroActive ? Infinity : 0,
                 ease: "easeInOut",
               }}
               className="absolute h-[280px] w-[280px] rounded-full bg-blue-400/15 blur-[90px]"
@@ -378,7 +383,7 @@ export default function PlaygroundHome() {
               }}
               transition={{
                 duration: 2.8,
-                repeat: Infinity,
+                repeat: heroActive ? Infinity : 0,
                 ease: "easeInOut",
               }}
               className="absolute left-8 top-16 h-3 w-3 rounded-full bg-yellow-300 shadow-[0_0_18px_rgba(253,224,71,0.8)]"
@@ -392,7 +397,7 @@ export default function PlaygroundHome() {
               }}
               transition={{
                 duration: 3.4,
-                repeat: Infinity,
+                repeat: heroActive ? Infinity : 0,
                 ease: "easeInOut",
               }}
               className="absolute right-12 top-12 h-2 w-2 rounded-full bg-pink-400 shadow-[0_0_18px_rgba(244,114,182,0.8)]"
@@ -405,7 +410,7 @@ export default function PlaygroundHome() {
               }}
               transition={{
                 duration: 3,
-                repeat: Infinity,
+                repeat: heroActive ? Infinity : 0,
                 ease: "easeInOut",
               }}
               className="absolute bottom-16 left-20 h-2.5 w-2.5 rounded-full bg-blue-400 shadow-[0_0_18px_rgba(96,165,250,0.8)]"
@@ -418,7 +423,7 @@ export default function PlaygroundHome() {
               }}
               transition={{
                 duration: 5.5,
-                repeat: Infinity,
+                repeat: heroActive ? Infinity : 0,
                 ease: "easeInOut",
               }}
               whileHover={{
@@ -451,7 +456,7 @@ export default function PlaygroundHome() {
               }}
               transition={{
                 duration: 5,
-                repeat: Infinity,
+                repeat: heroActive ? Infinity : 0,
                 ease: "easeInOut",
               }}
               className="absolute h-64 w-64 rounded-full bg-purple-500/20 blur-[90px]"
@@ -464,7 +469,7 @@ export default function PlaygroundHome() {
               }}
               transition={{
                 duration: 5,
-                repeat: Infinity,
+                repeat: heroActive ? Infinity : 0,
                 ease: "easeInOut",
               }}
               className="relative z-10 w-full max-w-[340px]"
@@ -484,6 +489,7 @@ export default function PlaygroundHome() {
 
         {/* Games */}
         <motion.section
+          ref={gamesRef}
           id="all-games"
           initial={{
             opacity: 0,
@@ -626,7 +632,7 @@ export default function PlaygroundHome() {
                           }}
                           transition={{
                             duration: 3.2,
-                            repeat: Infinity,
+                            repeat: gamesActive ? Infinity : 0,
                             ease: "easeInOut",
                           }}
                           className="relative flex h-28 w-28 items-center justify-center rounded-[30px] border border-white/15 bg-white/[0.08] text-white/75 shadow-[0_24px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl"
@@ -696,7 +702,7 @@ export default function PlaygroundHome() {
                       }}
                       transition={{
                         duration: 2.5 + index * 0.3,
-                        repeat: Infinity,
+                        repeat: gamesActive ? Infinity : 0,
                         ease: "easeInOut",
                       }}
                       className="absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[10px] font-bold text-[#17172b] shadow-lg"
@@ -731,7 +737,7 @@ export default function PlaygroundHome() {
                           }}
                           transition={{
                             duration: 3.5 + index * 0.25,
-                            repeat: Infinity,
+                            repeat: gamesActive ? Infinity : 0,
                             ease: "easeInOut",
                           }}
                           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/10 text-white backdrop-blur-md"
@@ -764,7 +770,7 @@ export default function PlaygroundHome() {
                               }}
                               transition={{
                                 duration: 1.8,
-                                repeat: Infinity,
+                                repeat: gamesActive ? Infinity : 0,
                                 ease: "easeInOut",
                               }}
                               className={`absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#272747] ${
@@ -800,7 +806,7 @@ export default function PlaygroundHome() {
                               }}
                               transition={{
                                 duration: 1.5,
-                                repeat: Infinity,
+                                repeat: gamesActive ? Infinity : 0,
                                 ease: "easeInOut",
                               }}
                             >
@@ -814,7 +820,7 @@ export default function PlaygroundHome() {
                             }}
                             transition={{
                               duration: 2.5,
-                              repeat: Infinity,
+                              repeat: gamesActive ? Infinity : 0,
                               ease: "easeInOut",
                             }}
                             className="rounded-full border border-white/15 bg-white/10 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-white/70"

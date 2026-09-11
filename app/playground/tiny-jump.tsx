@@ -2870,7 +2870,22 @@ export default function TinyBuildifyJump() {
 
     if (!canvas || !context) return;
 
+    let disposed = false;
+    const shouldAnimate = status === "playing" || status === "bedroom";
+
+    const stopLoop = () => {
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+        frameRef.current = null;
+      }
+    };
+
     const loop = (time: number) => {
+      if (disposed || document.hidden) {
+        frameRef.current = null;
+        return;
+      }
+
       const previous = lastTimeRef.current || time;
       const delta = Math.min(time - previous, 33);
       lastTimeRef.current = time;
@@ -2886,15 +2901,44 @@ export default function TinyBuildifyJump() {
       frameRef.current = requestAnimationFrame(loop);
     };
 
-    frameRef.current = requestAnimationFrame(loop);
+    const startLoop = () => {
+      if (disposed || document.hidden || frameRef.current !== null) return;
 
-    return () => {
-      if (frameRef.current !== null) {
-        cancelAnimationFrame(frameRef.current);
+      lastTimeRef.current = performance.now();
+      frameRef.current = requestAnimationFrame(loop);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stopLoop();
+        clearInput();
+        setBedroomWalking(false);
+        return;
+      }
+
+      if (shouldAnimate) {
+        startLoop();
+      } else {
+        renderGame(context, gameTimeRef.current);
       }
     };
-  }, [renderGame, updateBedroom, updateGame]);
 
+    // Menu / paused / finished states do not need a continuous canvas loop.
+    // Draw one frame so the frozen scene stays visually identical.
+    if (shouldAnimate) {
+      startLoop();
+    } else {
+      renderGame(context, gameTimeRef.current);
+    }
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      disposed = true;
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      stopLoop();
+    };
+  }, [clearInput, renderGame, status, updateBedroom, updateGame]);
   const setControl = (control: "left" | "right" | "jump", active: boolean) => {
     const currentStatus = statusRef.current;
     const canMove = currentStatus === "playing" || currentStatus === "bedroom";

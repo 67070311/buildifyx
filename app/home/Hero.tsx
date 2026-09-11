@@ -102,21 +102,15 @@ function ButterflyIcon() {
   );
 }
 
-const mobileSparkles = [
-  "left-[7%] top-[29%]",
-  "right-[8%] top-[33%]",
-  "left-[10%] top-[49%]",
-  "right-[9%] top-[54%]",
-  "left-[15%] top-[68%]",
-  "right-[18%] top-[72%]",
-];
-
-const desktopSparkles = [
-  "left-[18%] top-[44%]",
-  "left-[37%] top-[58%]",
-  "right-[25%] top-[50%]",
-  "right-[16%] top-[72%]",
-  "left-[57%] top-[63%]",
+const heroParticles = [
+  "left-[18%] top-[46%]", "left-[23%] top-[58%]", "left-[28%] top-[67%]",
+  "left-[31%] top-[52%]", "left-[35%] top-[43%]", "left-[36%] top-[58%]",
+  "left-[40%] top-[69%]", "left-[41%] top-[48%]", "left-[46%] top-[62%]",
+  "left-[48%] top-[44%]", "left-[50%] top-[54%]", "left-[53%] top-[72%]",
+  "left-[55%] top-[60%]", "left-[58%] top-[41%]", "left-[60%] top-[49%]",
+  "left-[64%] top-[57%]", "left-[67%] top-[70%]", "left-[69%] top-[53%]",
+  "left-[73%] top-[63%]", "left-[77%] top-[47%]", "left-[80%] top-[59%]",
+  "left-[83%] top-[68%]",
 ];
 
 export default function Hero() {
@@ -145,42 +139,18 @@ export default function Hero() {
         }}
         className="pointer-events-none absolute bottom-0 left-1/2 h-[46%] w-[88%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(165,190,165,0.16)_0%,rgba(66,93,70,0.10)_46%,transparent_74%)] blur-2xl"
       />
-
-      <div className="pointer-events-none absolute inset-0 z-40 sm:hidden">
-        {mobileSparkles.map((pos, index) => (
-          <motion.span
-            key={pos}
-            className={`absolute ${pos} block h-4 w-4`}
-            initial={{ opacity: 0.8, scale: 1 }}
-            animate={{ opacity: [0.55, 0.95, 0.55], scale: [0.9, 1.15, 0.9] }}
-            transition={{
-              duration: 1.8 + index * 0.18,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: index * 0.08,
-            }}
-          >
-            <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_5px_rgba(255,255,255,0.9),0_0_10px_rgba(139,192,164,0.55)]" />
-          </motion.span>
-        ))}
-      </div>
-
-      <div className="pointer-events-none absolute inset-0 z-[15] hidden sm:block">
-        {desktopSparkles.map((pos, index) => (
-          <motion.span
-            key={pos}
-            className={`absolute ${pos} h-1.5 w-1.5 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.95),0_0_24px_rgba(169,214,186,0.55)]`}
-            animate={
-              isActive
-                ? { opacity: [0.35, 1, 0.35], scale: [0.75, 1.55, 0.75] }
-                : { opacity: 0.5, scale: 1 }
-            }
-            transition={{
-              duration: 2.2 + index * 0.35,
-              repeat: isActive ? Infinity : 0,
-              ease: "easeInOut",
-              delay: index * 0.12,
-            }}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[15] hidden sm:block">
+        {heroParticles.map((position, index) => (
+          <span
+            key={position}
+            className={`whyus-night-particle absolute ${position} ${
+              index % 5 === 0
+                ? "whyus-night-star h-3 w-3"
+                : index % 3 === 0
+                  ? "h-1.5 w-1.5 rounded-full bg-white/90 shadow-[0_0_12px_rgba(202,255,236,0.95)]"
+                  : "h-1 w-1 rounded-full bg-white/80 shadow-[0_0_10px_rgba(202,255,236,0.85)]"
+            }`}
+            style={{ animationDelay: `${index * 0.28}s` }}
           />
         ))}
       </div>
@@ -225,7 +195,7 @@ export default function Hero() {
         >
           <Link
             href="/Contact"
-            className="group inline-flex items-center gap-3 rounded-full bg-white px-7 py-4 text-sm font-semibold text-[#111813] transition duration-300 hover:-translate-y-1 hover:bg-[#eaf3ed]"
+            className="site-cta-light group"
           >
             Start a project
             <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

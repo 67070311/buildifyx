@@ -61,7 +61,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-2 md:flex">
           <Link
             href="/Contact"
-            className="rounded-full bg-white px-4 py-2 text-xs font-light text-black transition hover:bg-white/85"
+            className="site-cta-light site-cta-compact"
           >
             Get Started
           </Link>

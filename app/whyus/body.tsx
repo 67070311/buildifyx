@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Code2, Compass, Palette, Sparkles } from "lucide-react";
+import { ArrowUpRight, Code2, Compass, Palette } from "lucide-react";
 
 const discoverImage =
   "https://cdn.dribbble.com/userupload/7238553/file/original-35f83ba3560d384332a8b00c8a1ed614.jpg?resize=900x0";
@@ -12,6 +12,14 @@ const buildDeveloperImage =
 const buildReviewImage =
   "https://commons.wikimedia.org/wiki/Special:Redirect/file/Happy_Cartoon_Woman_Using_A_Laptop_At_The_Office.svg";
 
+function ButterflyIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5" fill="currentColor">
+      <path d="M11.2 11.3C8.4 4.7 3.2 4.5 2.4 6.7c-.8 2.2 1.4 5.1 5.8 6.2-3.6.3-5.7 2.4-4.7 4.3 1.2 2.1 5.6 1.3 7.7-2.6V21h1.6v-6.4c2.1 3.9 6.5 4.7 7.7 2.6 1-1.9-1.1-4-4.7-4.3 4.4-1.1 6.6-4 5.8-6.2-.8-2.2-6-2-8.8 4.6-.4-.5-1.2-.5-1.6 0Z" />
+    </svg>
+  );
+}
+
 export default function Body() {
   return (
     <section className="perf-section overflow-hidden bg-white text-[#151a17]">
@@ -19,7 +27,7 @@ export default function Body() {
         <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
           <div className="pt-2">
             <div className="inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.26em] text-[#5f6b63]">
-              <Sparkles className="h-3.5 w-3.5" />
+              <ButterflyIcon />
               How we work
             </div>
             <div className="mt-6 h-px w-24 bg-[#1b241e]/25" />
@@ -296,7 +304,7 @@ export default function Body() {
 
               <Link
                 href="/Contact"
-                className="group mt-9 inline-flex items-center gap-3 rounded-full bg-[#172019] px-5 py-3 text-sm font-medium text-white transition-transform duration-300 hover:-translate-y-1"
+                className="site-cta-dark group mt-9"
               >
                 Start a project
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

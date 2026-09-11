@@ -154,7 +154,7 @@ export default function NavbarMobile({
           <Link
             href="/Contact"
             onClick={() => setOpen(false)}
-            className="group flex min-h-12 w-full items-center justify-between rounded-full bg-white px-5 py-3 text-sm font-light text-black transition duration-300 hover:bg-white/85"
+            className="site-cta-light site-cta-full group justify-between"
           >
             <span>Get Started</span>
 

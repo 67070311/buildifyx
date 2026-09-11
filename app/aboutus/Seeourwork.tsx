@@ -100,7 +100,7 @@ export default function Seeourwork() {
 
             <Link
               href="/mywork"
-              className="group mt-7 inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-[#5552D9] to-[#7C5CFF] px-6 py-3.5 text-sm font-medium text-white shadow-[0_18px_45px_rgba(85,82,217,0.35)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(85,82,217,0.5)] sm:px-7"
+              className="site-cta-dark group mt-7"
             >
               <span>See more Projects</span>
 

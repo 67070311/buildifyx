@@ -604,10 +604,9 @@ export default function ImageSlider() {
   return (
     <section
       ref={sectionRef}
-      className="perf-section relative w-full overflow-hidden border-y border-[#151433]/10 bg-[#fffdf7] px-3 py-16 text-[#151433] min-[380px]:px-4 sm:px-8 sm:py-20 md:py-28 lg:px-12"
+      className="perf-section relative w-full overflow-hidden border-y border-[#d7e2da] bg-[#f3f1e7] px-3 py-16 text-[#172019] min-[380px]:px-4 sm:px-8 sm:py-20 md:py-28 lg:px-12"
     >
-      {/* Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#fffdf7_45%,#fbfcff_72%,#ffffff_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,#f5f2e8_0%,#eef3ef_48%,#f8f6ef_100%)]" />
 
       {/* Top left glow */}
       <motion.div
@@ -699,7 +698,7 @@ export default function ImageSlider() {
             >
               <Link
                 href="/mywork"
-                className="inline-flex w-full justify-center rounded-full bg-[#151433] px-7 py-3 text-sm font-semibold text-white shadow-[0_14px_35px_rgba(21,20,51,0.18)] transition-colors duration-300 hover:bg-[#6f8f7a] sm:w-auto"
+                className="site-cta-dark w-full sm:w-auto"
               >
                 See More Projects
               </Link>
@@ -717,7 +716,7 @@ export default function ImageSlider() {
             >
               <Link
                 href="/Contact"
-                className="inline-flex w-full justify-center rounded-full border border-[#151433]/10 bg-white/75 px-7 py-3 text-sm font-semibold text-[#151433]/75 shadow-[0_12px_30px_rgba(21,20,51,0.06)] backdrop-blur-xl transition-colors duration-300 hover:border-[#6f8f7a]/30 hover:bg-white hover:text-[#6f8f7a] sm:w-auto"
+                className="site-cta-outline w-full sm:w-auto"
               >
                 Contact Us
               </Link>

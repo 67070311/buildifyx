@@ -357,7 +357,7 @@ export default function Contact() {
                         }
                       : undefined
                   }
-                  className="relative inline-flex h-16 w-full items-center justify-center overflow-hidden rounded-[1.25rem] bg-slate-900 px-6 text-sm font-medium text-white shadow-[0_14px_40px_rgba(15,23,42,0.16)] transition duration-300 hover:-translate-y-0.5 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-90 sm:rounded-[1.45rem]"
+                  className="site-cta-dark site-cta-full relative overflow-hidden disabled:cursor-not-allowed disabled:opacity-90"
                 >
                   {status === "loading" && (
                     <>
@@ -595,7 +595,7 @@ function SuccessPopup({
           <button
             type="button"
             onClick={onClose}
-            className="mt-6 h-14 w-full rounded-full bg-slate-900 px-6 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(15,23,42,0.16)] transition hover:-translate-y-0.5 hover:bg-slate-800"
+            className="site-cta-dark site-cta-full mt-6"
           >
             Continue
           </button>
