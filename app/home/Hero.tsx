@@ -102,6 +102,23 @@ function ButterflyIcon() {
   );
 }
 
+const mobileSparkles = [
+  "left-[7%] top-[29%]",
+  "right-[8%] top-[33%]",
+  "left-[10%] top-[49%]",
+  "right-[9%] top-[54%]",
+  "left-[15%] top-[68%]",
+  "right-[18%] top-[72%]",
+];
+
+const desktopSparkles = [
+  "left-[18%] top-[44%]",
+  "left-[37%] top-[58%]",
+  "right-[25%] top-[50%]",
+  "right-[16%] top-[72%]",
+  "left-[57%] top-[63%]",
+];
+
 export default function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const isActive = useInView(sectionRef, { amount: 0.08 });
@@ -129,28 +146,44 @@ export default function Hero() {
         className="pointer-events-none absolute bottom-0 left-1/2 h-[46%] w-[88%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(165,190,165,0.16)_0%,rgba(66,93,70,0.10)_46%,transparent_74%)] blur-2xl"
       />
 
-      {[
-        "left-[18%] top-[44%]",
-        "left-[37%] top-[58%]",
-        "right-[25%] top-[50%]",
-        "right-[16%] top-[72%]",
-        "left-[57%] top-[63%]",
-      ].map((pos, index) => (
-        <motion.span
-          key={pos}
-          className={`pointer-events-none absolute ${pos} h-1.5 w-1.5 rounded-full bg-white/90 shadow-[0_0_16px_rgba(255,255,255,0.7)]`}
-          animate={
-            isActive
-              ? { opacity: [0.25, 1, 0.25], scale: [0.8, 1.35, 0.8] }
-              : { opacity: 0.4, scale: 1 }
-          }
-          transition={{
-            duration: isActive ? 2.8 + index * 0.45 : 0,
-            repeat: isActive ? Infinity : 0,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
+      <div className="pointer-events-none absolute inset-0 z-40 sm:hidden">
+        {mobileSparkles.map((pos, index) => (
+          <motion.span
+            key={pos}
+            className={`absolute ${pos} block h-4 w-4`}
+            initial={{ opacity: 0.8, scale: 1 }}
+            animate={{ opacity: [0.55, 0.95, 0.55], scale: [0.9, 1.15, 0.9] }}
+            transition={{
+              duration: 1.8 + index * 0.18,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: index * 0.08,
+            }}
+          >
+            <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_5px_rgba(255,255,255,0.9),0_0_10px_rgba(139,192,164,0.55)]" />
+          </motion.span>
+        ))}
+      </div>
+
+      <div className="pointer-events-none absolute inset-0 z-[15] hidden sm:block">
+        {desktopSparkles.map((pos, index) => (
+          <motion.span
+            key={pos}
+            className={`absolute ${pos} h-1.5 w-1.5 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.95),0_0_24px_rgba(169,214,186,0.55)]`}
+            animate={
+              isActive
+                ? { opacity: [0.35, 1, 0.35], scale: [0.75, 1.55, 0.75] }
+                : { opacity: 0.5, scale: 1 }
+            }
+            transition={{
+              duration: 2.2 + index * 0.35,
+              repeat: isActive ? Infinity : 0,
+              ease: "easeInOut",
+              delay: index * 0.12,
+            }}
+          />
+        ))}
+      </div>
 
       <div className="relative z-20 mx-auto flex max-w-6xl flex-col items-center text-center">
         <motion.div

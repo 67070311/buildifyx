@@ -62,37 +62,37 @@ export default function Comment() {
   const goNext = () => setActiveIndex(nextIndex);
 
   return (
-    <section className="bg-[#f2f5fb] px-4 py-16 text-[#161b24] sm:px-6 lg:px-10 lg:py-24">
-      <div className="mx-auto max-w-[1180px] overflow-hidden rounded-[32px] bg-white px-5 py-10 shadow-[0_18px_50px_rgba(37,54,84,0.05)] sm:px-8 sm:py-14 lg:px-14 lg:py-16">
+    <section className="bg-[#f2f5fb] px-3 py-12 text-[#161b24] sm:px-6 sm:py-16 lg:px-10 lg:py-24">
+      <div className="mx-auto max-w-[1180px] overflow-hidden rounded-[24px] bg-white px-3 py-8 shadow-[0_18px_50px_rgba(37,54,84,0.05)] sm:rounded-[32px] sm:px-8 sm:py-14 lg:px-14 lg:py-16">
         <div className="text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#8b94a3]">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#8b94a3] sm:text-[11px]">
             Client stories
           </p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#161b24] sm:text-4xl">
+          <h2 className="mx-auto mt-3 max-w-[320px] text-2xl font-semibold leading-tight tracking-[-0.04em] text-[#161b24] sm:max-w-none sm:text-4xl">
             What our clients say about us
           </h2>
         </div>
 
-        <div className="relative mx-auto mt-12 max-w-[930px] sm:mt-14">
+        <div className="relative mx-auto mt-8 max-w-[930px] sm:mt-14">
           <button
             type="button"
             onClick={goPrev}
             aria-label="Previous client story"
-            className="absolute left-0 top-1/2 z-30 grid h-12 w-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#e7ebf2] bg-white text-[#202633] shadow-[0_10px_28px_rgba(43,58,87,0.10)] transition hover:scale-105 hover:bg-[#f7f9fd] sm:left-2 lg:-left-2"
+            className="absolute left-0 top-1/2 z-30 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-[#e7ebf2] bg-white text-[#202633] shadow-[0_10px_28px_rgba(43,58,87,0.10)] transition hover:scale-105 hover:bg-[#f7f9fd] sm:left-2 sm:h-12 sm:w-12 sm:-translate-x-1/2 lg:-left-2"
           >
-            <ChevronLeft className="h-5 w-5" />
+            <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
 
           <button
             type="button"
             onClick={goNext}
             aria-label="Next client story"
-            className="absolute right-0 top-1/2 z-30 grid h-12 w-12 translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#e7ebf2] bg-white text-[#202633] shadow-[0_10px_28px_rgba(43,58,87,0.10)] transition hover:scale-105 hover:bg-[#f7f9fd] sm:right-2 lg:-right-2"
+            className="absolute right-0 top-1/2 z-30 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-[#e7ebf2] bg-white text-[#202633] shadow-[0_10px_28px_rgba(43,58,87,0.10)] transition hover:scale-105 hover:bg-[#f7f9fd] sm:right-2 sm:h-12 sm:w-12 sm:translate-x-1/2 lg:-right-2"
           >
-            <ChevronRight className="h-5 w-5" />
+            <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
 
-          <div className="relative flex min-h-[390px] items-center justify-center overflow-hidden px-10 sm:px-16">
+          <div className="relative flex items-center justify-center overflow-hidden px-7 sm:min-h-[390px] sm:px-16">
             <button
               type="button"
               onClick={goPrev}
@@ -122,36 +122,38 @@ export default function Comment() {
               </div>
             </button>
 
-            <article className="relative z-20 w-full max-w-[390px] rounded-[26px] bg-[#eef2ff] p-7 shadow-[0_20px_50px_rgba(56,76,125,0.10)] sm:p-8">
-              <div className="flex items-center gap-4">
+            <article className="relative z-20 w-full max-w-[310px] rounded-[22px] bg-[#eef2ff] p-5 shadow-[0_18px_42px_rgba(56,76,125,0.10)] min-[390px]:max-w-[325px] sm:max-w-[390px] sm:rounded-[26px] sm:p-8 sm:shadow-[0_20px_50px_rgba(56,76,125,0.10)]">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <img
                   src={active.avatar}
                   alt={active.name}
-                  className="h-20 w-20 shrink-0 rounded-full object-cover ring-4 ring-white/80"
+                  className="h-16 w-16 shrink-0 rounded-full object-cover ring-4 ring-white/80 sm:h-20 sm:w-20"
                   loading="eager"
                   decoding="async"
                 />
-                <div>
-                  <h3 className="text-xl font-semibold tracking-[-0.02em]">
+                <div className="min-w-0">
+                  <h3 className="text-lg font-semibold tracking-[-0.02em] sm:text-xl">
                     {active.name}
                   </h3>
-                  <p className="mt-1 text-sm text-[#929aaa]">{active.role}</p>
-                  <p className="mt-1 text-sm text-[#929aaa]">
+                  <p className="mt-0.5 text-xs text-[#929aaa] sm:mt-1 sm:text-sm">
+                    {active.role}
+                  </p>
+                  <p className="mt-0.5 text-xs text-[#929aaa] sm:mt-1 sm:text-sm">
                     {active.rating}/5 satisfaction
                   </p>
                 </div>
               </div>
 
-              <div className="mt-7">
-                <p className="text-sm text-[#a0a7b5]">Experience</p>
-                <p className="mt-2 text-[15px] leading-6 text-[#252b36]">
+              <div className="mt-5 sm:mt-7">
+                <p className="text-xs text-[#a0a7b5] sm:text-sm">Experience</p>
+                <p className="mt-2 text-sm leading-[1.55] text-[#252b36] sm:text-[15px] sm:leading-6">
                   {active.comment}
                 </p>
               </div>
 
-              <div className="mt-6">
-                <p className="text-sm text-[#a0a7b5]">What they valued</p>
-                <p className="mt-2 text-[15px] leading-6 text-[#252b36]">
+              <div className="mt-5 sm:mt-6">
+                <p className="text-xs text-[#a0a7b5] sm:text-sm">What they valued</p>
+                <p className="mt-2 text-sm leading-[1.55] text-[#252b36] sm:text-[15px] sm:leading-6">
                   Clear communication, thoughtful execution and a smooth process from idea to launch.
                 </p>
               </div>
@@ -188,14 +190,14 @@ export default function Comment() {
           </div>
         </div>
 
-        <div className="mt-5 flex items-center justify-center gap-2.5">
+        <div className="mt-6 flex items-center justify-center gap-1.5 sm:mt-5 sm:gap-2.5">
           {testimonials.map((item, index) => (
             <button
               key={item.avatar}
               type="button"
               onClick={() => setActiveIndex(index)}
               aria-label={`Show ${item.name}`}
-              className={`relative h-11 w-11 overflow-hidden rounded-full border-2 bg-white transition duration-200 ${
+              className={`relative h-9 w-9 overflow-hidden rounded-full border-2 bg-white transition duration-200 sm:h-11 sm:w-11 ${
                 index === activeIndex
                   ? "scale-105 border-[#4f75e8] shadow-[0_4px_14px_rgba(79,117,232,0.18)]"
                   : "border-white opacity-80 hover:opacity-100"
@@ -212,7 +214,7 @@ export default function Comment() {
           ))}
         </div>
 
-        <div className="mt-4 flex items-center justify-center gap-2">
+        <div className="mt-3 flex items-center justify-center gap-2 sm:mt-4">
           {testimonials.map((item, index) => (
             <button
               key={`${item.avatar}-dot`}
@@ -228,7 +230,7 @@ export default function Comment() {
           ))}
         </div>
 
-        <p className="mx-auto mt-9 max-w-[650px] text-center text-[15px] leading-6 text-[#333946] sm:text-base">
+        <p className="mx-auto mt-7 max-w-[620px] px-2 text-center text-[13px] leading-5 text-[#333946] sm:mt-9 sm:px-0 sm:text-base sm:leading-6">
           Every project starts with understanding the people behind it. These are real experiences from clients who trusted us to turn ideas into products that feel clear, useful and ready to grow.
         </p>
       </div>
