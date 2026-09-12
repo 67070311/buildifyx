@@ -167,7 +167,7 @@ export default function Contact() {
   }
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#fbfcfd] px-4 py-16 text-slate-950 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+    <section className="relative min-h-screen overflow-hidden bg-[#f7f5ed] px-4 py-16 text-[#172019] sm:px-6 sm:py-20 lg:px-8 lg:py-24">
       <style jsx global>{`
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
@@ -183,10 +183,10 @@ export default function Contact() {
 
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(56,189,248,0.16),transparent_34%),linear-gradient(to_bottom,#ffffff_0%,#f8fafc_52%,#ffffff_100%)]" />
-        <div className="absolute left-1/2 top-0 h-[420px] w-[760px] -translate-x-1/2 rounded-full bg-sky-100/70 blur-[140px]" />
-        <div className="absolute right-[-180px] top-[30%] h-[430px] w-[430px] rounded-full bg-emerald-100/60 blur-[160px]" />
-        <div className="absolute bottom-0 left-[-170px] h-[380px] w-[380px] rounded-full bg-blue-100/55 blur-[150px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(111,143,122,0.14),transparent_34%),linear-gradient(to_bottom,#ffffff_0%,#f3f1e7_52%,#ffffff_100%)]" />
+        <div className="absolute left-1/2 top-0 h-[420px] w-[760px] -translate-x-1/2 rounded-full bg-[#dbe8df]/70 blur-[140px]" />
+        <div className="absolute right-[-180px] top-[30%] h-[430px] w-[430px] rounded-full bg-[#cfded2]/55 blur-[160px]" />
+        <div className="absolute bottom-0 left-[-170px] h-[380px] w-[380px] rounded-full bg-[#d8d3bf]/45 blur-[150px]" />
         <CircuitLines />
       </div>
 
@@ -197,7 +197,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="pointer-events-none absolute left-1/2 top-4 hidden -translate-x-1/2 select-none text-[120px] font-black uppercase leading-none tracking-[-0.08em] text-slate-900/[0.035] md:block lg:text-[180px]"
+          className="pointer-events-none absolute left-1/2 top-4 hidden -translate-x-1/2 select-none text-[120px] font-black uppercase leading-none tracking-[-0.08em] text-[#172019]/[0.035] md:block lg:text-[180px]"
         >
           Contact
         </motion.div>
@@ -210,18 +210,18 @@ export default function Contact() {
             viewport={{ once: true, amount: 0.35 }}
             transition={{ duration: 0.75, ease: "easeOut" }}
           >
-            <div className="inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-normal text-slate-800 shadow-[0_16px_45px_rgba(15,23,42,0.08)] backdrop-blur-xl">
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-sky-50 text-sky-700">
+            <div className="inline-flex items-center gap-3 rounded-full border border-[#d7e2da] bg-white/82 px-4 py-2 text-sm font-normal text-[#26362b] shadow-[0_16px_45px_rgba(35,50,40,0.08)] backdrop-blur-xl">
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-[#eef3ef] text-[#52705f]">
                 <CircleHelp className="h-4 w-4" />
               </span>
               Contact
             </div>
 
-            <h1 className="mt-7 text-4xl font-normal leading-tight tracking-[-0.045em] text-slate-950 sm:text-5xl lg:text-6xl">
+            <h1 className="mt-7 text-4xl font-normal leading-tight tracking-[-0.045em] text-[#172019] sm:text-5xl lg:text-6xl">
               Get in touch
             </h1>
 
-            <p className="mt-5 max-w-md text-sm font-normal leading-7 text-slate-500 sm:text-base">
+            <p className="mt-5 max-w-md text-sm font-normal leading-7 text-[#657068] sm:text-base">
               Have questions or ready to build your next website? Send us a
               message and we’ll get back to you as soon as possible.
             </p>
@@ -245,22 +245,22 @@ export default function Contact() {
                     ease: "easeOut",
                     delay: index * 0.08,
                   }}
-                  className="group flex items-center gap-3 rounded-3xl border border-slate-200 bg-white/80 p-3.5 shadow-[0_18px_55px_rgba(15,23,42,0.08)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-sky-300 hover:bg-white sm:gap-4 sm:p-4"
+                  className="group flex items-center gap-3 rounded-3xl border border-[#d7e2da] bg-white/82 p-3.5 shadow-[0_18px_55px_rgba(35,50,40,0.08)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[#9fb6a5] hover:bg-white sm:gap-4 sm:p-4"
                 >
-                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-sky-100 bg-sky-50 text-sky-700 transition duration-300 group-hover:bg-sky-600 group-hover:text-white sm:h-14 sm:w-14">
+                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-[#d7e2da] bg-[#eef3ef] text-[#52705f] transition duration-300 group-hover:bg-[#52705f] group-hover:text-white sm:h-14 sm:w-14">
                     {item.icon}
                   </span>
 
                   <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-medium text-slate-900">
+                    <span className="block text-sm font-medium text-[#172019]">
                       {item.title}
                     </span>
-                    <span className="mt-1 block truncate text-xs font-normal text-slate-500 sm:text-sm">
+                    <span className="mt-1 block truncate text-xs font-normal text-[#657068] sm:text-sm">
                       {item.value}
                     </span>
                   </span>
 
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-sky-50 text-sky-700 transition duration-300 group-hover:bg-slate-900 group-hover:text-white sm:h-10 sm:w-10">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#eef3ef] text-[#52705f] transition duration-300 group-hover:bg-[#172019] group-hover:text-white sm:h-10 sm:w-10">
                     <ArrowUpRight className="h-4 w-4" />
                   </span>
                 </motion.a>
@@ -276,18 +276,18 @@ export default function Contact() {
             transition={{ duration: 0.75, ease: "easeOut" }}
             className="relative"
           >
-            <div className="absolute -inset-3 rounded-[2.35rem] bg-gradient-to-br from-sky-200/65 via-emerald-100/35 to-transparent blur-xl" />
+            <div className="absolute -inset-3 rounded-[2.35rem] bg-gradient-to-br from-[#c8d9cd]/70 via-[#e8eee9]/45 to-transparent blur-xl" />
 
             <form
               ref={formRef}
               onSubmit={handleSubmit}
               noValidate
-              className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white/85 p-3 shadow-[0_30px_90px_rgba(15,23,42,0.12)] backdrop-blur-2xl sm:rounded-[2.35rem] sm:p-4"
+              className="relative overflow-hidden rounded-[2rem] border border-[#d7e2da] bg-white/88 p-3 shadow-[0_30px_90px_rgba(35,50,40,0.12)] backdrop-blur-2xl sm:rounded-[2.35rem] sm:p-4"
             >
               <input type="checkbox" name="botcheck" className="hidden" />
 
-              <div className="pointer-events-none absolute left-0 top-0 h-44 w-44 rounded-full bg-sky-100/70 blur-3xl" />
-              <div className="pointer-events-none absolute right-0 bottom-0 h-44 w-44 rounded-full bg-emerald-100/60 blur-3xl" />
+              <div className="pointer-events-none absolute left-0 top-0 h-44 w-44 rounded-full bg-[#dbe8df]/70 blur-3xl" />
+              <div className="pointer-events-none absolute right-0 bottom-0 h-44 w-44 rounded-full bg-[#cfded2]/55 blur-3xl" />
 
               <div className="relative space-y-3">
                 <FormInput
@@ -310,7 +310,37 @@ export default function Contact() {
                   onChange={() => clearFieldError("email")}
                 />
 
-                <div>
+                <div className="relative isolate">
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -left-20 top-12 z-0 hidden h-[205px] w-[135px] overflow-hidden rounded-[5rem] sm:block"
+                  >
+                    <div
+                      className="absolute inset-0 bg-cover bg-[center_45%] opacity-90 saturate-[0.72]"
+                      style={{
+                        backgroundImage:
+                          "url('https://images.pexels.com/photos/17926227/pexels-photo-17926227.jpeg?auto=compress&cs=tinysrgb&w=700')",
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(247,245,237,0.08)_0%,rgba(247,245,237,0.18)_45%,rgba(247,245,237,0.98)_100%)]" />
+                    <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#f7f5ed] to-transparent" />
+                  </div>
+
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -bottom-16 -right-14 z-0 hidden h-[270px] w-[185px] overflow-hidden rounded-[5rem] sm:block"
+                  >
+                    <div
+                      className="absolute inset-0 scale-x-[-1] bg-cover bg-[center_52%] opacity-90 saturate-[0.72]"
+                      style={{
+                        backgroundImage:
+                          "url('https://images.pexels.com/photos/17926227/pexels-photo-17926227.jpeg?auto=compress&cs=tinysrgb&w=700')",
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(247,245,237,0.06)_0%,rgba(247,245,237,0.14)_46%,rgba(247,245,237,0.98)_100%)]" />
+                    <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#f7f5ed] to-transparent" />
+                  </div>
+
                   <label htmlFor="message" className="sr-only">
                     Message
                   </label>
@@ -321,18 +351,19 @@ export default function Contact() {
                     rows={10}
                     placeholder="Message"
                     onChange={() => clearFieldError("message")}
-                    className={`min-h-[240px] w-full resize-none rounded-[1.4rem] border px-5 py-5 text-sm font-normal text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_30px_rgba(15,23,42,0.06)] outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 sm:min-h-[300px] sm:rounded-[1.55rem] ${
+                    className={`relative z-10 min-h-[240px] w-full resize-none rounded-[1.4rem] border px-5 py-5 text-sm font-normal text-[#172019] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_30px_rgba(35,50,40,0.06)] outline-none transition placeholder:text-[#8a958d] focus:bg-white focus:ring-4 sm:min-h-[300px] sm:rounded-[1.55rem] ${
                       errors.message
                         ? "border-[#FB7185]/55 bg-[#FB7185]/10 focus:border-[#FB7185] focus:ring-[#FB7185]/10"
-                        : "border-slate-200 bg-white/80 focus:border-[#8D8BFF]/55 focus:ring-[#8D8BFF]/10"
+                        : "border-[#d7e2da] bg-white focus:border-[#6f8878]/55 focus:ring-[#6f8878]/10"
                     }`}
                   />
 
-                  <AnimatePresence>
-                    {errors.message && <FieldError message={errors.message} />}
-                  </AnimatePresence>
+                  <div className="relative z-20">
+                    <AnimatePresence>
+                      {errors.message && <FieldError message={errors.message} />}
+                    </AnimatePresence>
+                  </div>
                 </div>
-
                 <motion.button
                   type="submit"
                   disabled={status === "loading"}
@@ -397,7 +428,6 @@ export default function Contact() {
                     )}
                   </span>
                 </motion.button>
-
                 {status === "error" && (
                   <p className="rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-center text-xs leading-5 text-red-700">
                     Something went wrong. Please try again or email us directly.
@@ -462,10 +492,10 @@ function FormInput({
         placeholder={placeholder}
         autoComplete={autoComplete}
         onChange={onChange}
-        className={`h-16 w-full rounded-[1.25rem] border px-5 text-sm font-normal text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_30px_rgba(15,23,42,0.06)] outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 sm:rounded-[1.45rem] ${
+        className={`h-16 w-full rounded-[1.25rem] border px-5 text-sm font-normal text-[#172019] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_30px_rgba(35,50,40,0.06)] outline-none transition placeholder:text-[#8a958d] focus:bg-white focus:ring-4 sm:rounded-[1.45rem] ${
           error
             ? "border-[#FB7185]/55 bg-[#FB7185]/10 focus:border-[#FB7185] focus:ring-[#FB7185]/10"
-            : "border-slate-200 bg-white/80 focus:border-[#8D8BFF]/55 focus:ring-[#8D8BFF]/10"
+            : "border-[#d7e2da] bg-white/82 focus:border-[#6f8878]/55 focus:ring-[#6f8878]/10"
         }`}
       />
 
