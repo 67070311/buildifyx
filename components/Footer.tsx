@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
-import { SiInstagram, SiFacebook, SiTiktok, SiLine } from "react-icons/si";
-import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
+import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import { SiFacebook, SiInstagram, SiLine, SiTiktok } from "react-icons/si";
+import { useLanguage } from "./LanguageProvider";
 
 const socials = [
   { name: "Instagram", href: "https://www.instagram.com/buildifyx_studio?igsh=N3k3Ym1tcjRqYmRn", icon: SiInstagram },
@@ -9,66 +12,70 @@ const socials = [
   { name: "LINE OA", href: "https://line.me/R/ti/p/@722xuryu?oat_content=url&ts=06251804", icon: SiLine },
 ];
 
-const links = [
-  ["Home", "/"],
-  ["Why Us", "/whyus"],
-  ["Our Work", "/mywork"],
-  ["Playground", "/playground"],
-  ["Contact", "/Contact"],
-];
+const copy = {
+  th: {
+    title: "มาสร้างอะไรดี ๆ ด้วยกัน",
+    lead: "Software, AI, Data และ Digital Product สำหรับทีมที่อยากเปลี่ยนไอเดียให้ใช้งานได้จริง",
+    start: "เริ่มโปรเจกต์",
+    links: "เมนู",
+    contact: "ติดต่อ",
+    nav: [
+      ["หน้าหลัก", "/"],
+      ["ทำไมต้องเรา", "/whyus"],
+      ["ผลงาน", "/mywork"],
+      ["ทดลอง", "/playground"],
+      ["ติดต่อ", "/Contact"],
+    ],
+    location: "กรุงเทพฯ ประเทศไทย",
+  },
+  en: {
+    title: "Let's build something good together.",
+    lead: "Software, AI, Data, and digital products for teams ready to turn ideas into something real.",
+    start: "Start a project",
+    links: "Navigation",
+    contact: "Contact",
+    nav: [
+      ["Home", "/"],
+      ["Why Us", "/whyus"],
+      ["Our Work", "/mywork"],
+      ["Playground", "/playground"],
+      ["Contact", "/Contact"],
+    ],
+    location: "Bangkok, Thailand",
+  },
+} as const;
 
 export default function Footer() {
+  const { language } = useLanguage();
+  const t = copy[language];
+
   return (
-    <footer className="relative isolate overflow-hidden bg-white text-[#1d2a21]">
-      <div aria-hidden="true" className="absolute inset-0">
-        <div
-          className="absolute inset-x-0 bottom-0 h-[72%] bg-cover bg-[center_60%] opacity-[0.48] saturate-[0.9]"
-          style={{
-            backgroundImage:
-              "url('https://images.pexels.com/photos/33000454/pexels-photo-33000454.jpeg?auto=compress&cs=tinysrgb&w=2200')",
-          }}
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,rgba(255,255,255,0.99)_18%,rgba(255,255,255,0.88)_42%,rgba(255,255,255,0.38)_72%,rgba(255,255,255,0.92)_100%)]" />
-        <div className="absolute inset-x-0 top-0 h-48 bg-[radial-gradient(circle_at_18%_20%,rgba(255,255,255,0.78),transparent_30%),radial-gradient(circle_at_78%_4%,rgba(255,255,255,0.88),transparent_34%)]" />
-      </div>
-
-      <div aria-hidden="true" className="pointer-events-none absolute left-[-5%] top-[30%] h-52 w-52 rounded-full bg-white/55 blur-[90px]" />
-      <div aria-hidden="true" className="pointer-events-none absolute right-[-4%] top-[26%] h-64 w-64 rounded-full bg-white/45 blur-[100px]" />
-      <span aria-hidden="true" className="pointer-events-none absolute right-[12%] top-[34%] text-2xl text-[#d7b486]/60">✦</span>
-      <span aria-hidden="true" className="pointer-events-none absolute left-[13%] top-[46%] text-xl text-[#d7b486]/45">✦</span>
-
-      <div className="relative z-10 mx-auto max-w-7xl px-5 pb-8 pt-16 sm:px-8 sm:pt-20 lg:px-10 lg:pt-24">
-        <div className="grid gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
+    <footer className="border-t border-[#edf1f6] bg-white text-[#172033]">
+      <div className="mx-auto max-w-7xl px-5 pb-8 pt-16 sm:px-8 lg:px-10 lg:pt-20">
+        <div className="grid gap-12 border-b border-[#edf1f6] pb-14 lg:grid-cols-[1.15fr_.85fr]">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#6e8569]">Buildifyx</p>
-            <h2 className="mt-5 max-w-2xl text-[46px] font-light leading-[0.94] tracking-[-0.06em] sm:text-[62px] lg:text-[78px]">
-              Good ideas
-              <span className="block font-serif italic text-[#4f684f]">grow further.</span>
+            <p className="text-xs font-medium text-[#2f7fff]">Buildifyx Studio</p>
+            <h2 className="mt-4 max-w-2xl text-[38px] font-semibold leading-[1.04] tracking-[-.05em] sm:text-[50px]">
+              {t.title}
             </h2>
-            <p className="mt-6 max-w-lg text-sm leading-7 text-[#5a655d] sm:text-base">
-              Let’s build digital products that create a brighter tomorrow — together.
+            <p className="mt-5 max-w-lg text-sm leading-7 text-[#77849a] sm:text-base">
+              {t.lead}
             </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/Contact" className="site-cta-dark group">
-                Start a project
-                <span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
-              </Link>
-              <Link
-                href="/mywork"
-                className="inline-flex min-h-14 items-center justify-center rounded-full border border-[#26362b]/18 bg-white/68 px-7 text-sm font-medium text-[#26362b] shadow-[0_14px_35px_rgba(54,73,59,0.06)] backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white"
-              >
-                See our work
-              </Link>
-            </div>
+            <Link
+              href="/Contact"
+              className="group mt-7 inline-flex min-h-13 items-center gap-3 rounded-[13px] bg-[#2f7fff] px-5 text-sm font-semibold text-white shadow-[0_12px_26px_rgba(47,127,255,.18)] transition hover:-translate-y-0.5 hover:bg-[#438cff]"
+            >
+              {t.start}
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
           </div>
 
-          <div className="grid gap-10 sm:grid-cols-2 lg:pt-2">
+          <div className="grid gap-9 sm:grid-cols-2">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#6e8569]">Quick Links</p>
-              <nav className="mt-5 flex flex-col items-start gap-3.5">
-                {links.map(([label, href]) => (
-                  <Link key={href} href={href} className="text-sm text-[#4e5951] transition hover:translate-x-1 hover:text-[#274332]">
+              <p className="text-xs font-semibold text-[#42506a]">{t.links}</p>
+              <nav className="mt-4 flex flex-col items-start gap-3">
+                {t.nav.map(([label, href]) => (
+                  <Link key={href} href={href} className="text-sm text-[#7a879b] transition hover:text-[#2f7fff]">
                     {label}
                   </Link>
                 ))}
@@ -76,36 +83,23 @@ export default function Footer() {
             </div>
 
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#6e8569]">Contact</p>
-              <div className="mt-5 space-y-4 text-sm text-[#4e5951]">
-                <a href="mailto:buildifyX.th@gmail.com" className="flex items-center gap-3 transition hover:text-[#274332]">
-                  <span className="grid h-9 w-9 place-items-center rounded-full bg-white/72 shadow-[0_8px_22px_rgba(60,78,63,0.08)] backdrop-blur-sm">
-                    <MdEmail className="text-base text-[#506853]" />
-                  </span>
+              <p className="text-xs font-semibold text-[#42506a]">{t.contact}</p>
+              <div className="mt-4 space-y-4 text-sm text-[#7a879b]">
+                <a href="mailto:buildifyX.th@gmail.com" className="flex items-center gap-3 transition hover:text-[#2f7fff]">
+                  <Mail className="h-4 w-4 text-[#8db9f7]" />
                   <span className="break-all">buildifyX.th@gmail.com</span>
                 </a>
-
-                <div className="flex items-start gap-3">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/72 shadow-[0_8px_22px_rgba(60,78,63,0.08)] backdrop-blur-sm">
-                    <MdPhone className="text-base text-[#506853]" />
-                  </span>
-                  <div className="flex flex-wrap gap-x-1.5 pt-2">
-                    <a href="tel:0645809429" className="hover:text-[#274332]">0645809429</a>
-                    <span>·</span>
-                    <a href="tel:0638760067" className="hover:text-[#274332]">0638760067</a>
-                  </div>
-                </div>
-
+                <a href="tel:0645809429" className="flex items-center gap-3 transition hover:text-[#2f7fff]">
+                  <Phone className="h-4 w-4 text-[#8db9f7]" />
+                  <span>0645809429 · 0638760067</span>
+                </a>
                 <div className="flex items-center gap-3">
-                  <span className="grid h-9 w-9 place-items-center rounded-full bg-white/72 shadow-[0_8px_22px_rgba(60,78,63,0.08)] backdrop-blur-sm">
-                    <MdLocationOn className="text-base text-[#506853]" />
-                  </span>
-                  <span>Bangkok, Thailand</span>
+                  <MapPin className="h-4 w-4 text-[#8db9f7]" />
+                  <span>{t.location}</span>
                 </div>
               </div>
 
-              <p className="mt-8 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#6e8569]">Follow Us</p>
-              <div className="mt-4 flex flex-wrap gap-2.5">
+              <div className="mt-6 flex gap-2">
                 {socials.map((social) => {
                   const Icon = social.icon;
                   return (
@@ -115,7 +109,7 @@ export default function Footer() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.name}
-                      className="grid h-10 w-10 place-items-center rounded-full bg-white/74 text-base text-[#35463a] shadow-[0_8px_20px_rgba(60,78,63,0.07)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:bg-[#506853] hover:text-white"
+                      className="grid h-9 w-9 place-items-center rounded-[10px] border border-[#e6edf6] bg-[#f8fbff] text-sm text-[#607089] transition hover:border-[#cce0ff] hover:bg-[#edf5ff] hover:text-[#2f7fff]"
                     >
                       <Icon />
                     </a>
@@ -126,11 +120,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="relative mt-28 rounded-[26px] border border-white/55 bg-white/50 px-5 py-4 shadow-[0_14px_40px_rgba(53,73,57,0.06)] backdrop-blur-md sm:px-6">
-          <div className="flex flex-col gap-3 text-[9px] uppercase tracking-[0.22em] text-[#617064] sm:flex-row sm:items-center sm:justify-between sm:text-[10px]">
-            <span>© 2026 Buildifyx · All rights reserved</span>
-            <span>Think · Design · Build · Grow</span>
-          </div>
+        <div className="flex flex-col gap-2 pt-6 text-[11px] text-[#9aa6b8] sm:flex-row sm:items-center sm:justify-between">
+          <span>© 2026 Buildifyx. All rights reserved.</span>
+          <span>Bangkok · Thailand · Worldwide</span>
         </div>
       </div>
     </footer>

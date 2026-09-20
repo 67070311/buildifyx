@@ -1,5 +1,18 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowUpRight, Code2, Compass, Palette } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  ArrowUpRight,
+  Check,
+  ChevronRight,
+  Code2,
+  Compass,
+  Layers3,
+  Palette,
+  Sparkles,
+  Workflow,
+} from "lucide-react";
 
 const discoverImage =
   "https://cdn.dribbble.com/userupload/7238553/file/original-35f83ba3560d384332a8b00c8a1ed614.jpg?resize=900x0";
@@ -12,307 +25,355 @@ const buildDeveloperImage =
 const buildReviewImage =
   "https://commons.wikimedia.org/wiki/Special:Redirect/file/Happy_Cartoon_Woman_Using_A_Laptop_At_The_Office.svg";
 
-function ButterflyIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5" fill="currentColor">
-      <path d="M11.2 11.3C8.4 4.7 3.2 4.5 2.4 6.7c-.8 2.2 1.4 5.1 5.8 6.2-3.6.3-5.7 2.4-4.7 4.3 1.2 2.1 5.6 1.3 7.7-2.6V21h1.6v-6.4c2.1 3.9 6.5 4.7 7.7 2.6 1-1.9-1.1-4-4.7-4.3 4.4-1.1 6.6-4 5.8-6.2-.8-2.2-6-2-8.8 4.6-.4-.5-1.2-.5-1.6 0Z" />
-    </svg>
-  );
-}
+const steps = [
+  {
+    number: "01",
+    label: "Discover",
+    icon: Compass,
+    title: "Start with the reason, not the screen.",
+    text: "We clarify the business goal, audience, user journey, and constraints before deciding what the product should look like.",
+    chips: ["Goals", "Audience", "Journey"],
+  },
+  {
+    number: "02",
+    label: "Shape",
+    icon: Palette,
+    title: "Turn direction into a product people can feel.",
+    text: "We bring typography, motion, interaction, and visual rhythm together so the product feels clear, intentional, and recognizably yours.",
+    chips: ["UX", "Visual system", "Motion"],
+  },
+  {
+    number: "03",
+    label: "Build",
+    icon: Code2,
+    title: "Make the experience real — and ready to grow.",
+    text: "We turn the visual system into responsive, maintainable software with performance, structure, and future changes in mind.",
+    chips: ["Responsive", "Performance", "Scalable"],
+  },
+];
 
 export default function Body() {
   return (
-    <section className="perf-section overflow-hidden bg-white text-[#151a17]">
-      <div className="relative mx-auto max-w-7xl px-5 pb-8 pt-24 sm:px-8 sm:pt-28 lg:px-10 lg:pt-32">
-        <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-          <div className="pt-2">
-            <div className="inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.26em] text-[#5f6b63]">
-              <ButterflyIcon />
-              How we work
-            </div>
-            <div className="mt-6 h-px w-24 bg-[#1b241e]/25" />
-            <p className="mt-5 max-w-sm text-sm leading-7 text-[#69716c]">
-              One process, three different energies — clarity first, expression second, performance all the way through.
-            </p>
-          </div>
+    <section className="overflow-hidden bg-white text-[#1c1c1e]">
+      <div className="mx-auto max-w-7xl px-5 pb-10 pt-20 sm:px-8 sm:pt-24 lg:px-10 lg:pt-28">
+        <motion.div
+          initial={{ opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="mx-auto max-w-3xl text-center"
+        >
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#007aff]">
+            How we work
+          </p>
+          <h2 className="mt-3 text-[38px] font-semibold leading-[1.02] tracking-[-0.05em] sm:text-[52px]">
+            Clear thinking before
+            <span className="text-[#007aff]"> beautiful execution.</span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-[14px] leading-6 text-[#636366] sm:text-[15px]">
+            Strategy, design, and engineering stay in one product flow — so ideas move forward without losing the reason they started.
+          </p>
+        </motion.div>
 
-          <div className="relative">
-            <span className="pointer-events-none absolute -left-2 -top-10 font-serif text-[90px] italic leading-none text-[#7f8d83]/[0.08] sm:text-[130px] lg:text-[170px]">
-              01—03
-            </span>
-            <h2 className="relative max-w-5xl text-balance text-[46px] font-light leading-[0.94] tracking-[-0.06em] sm:text-[62px] lg:text-[82px]">
-              We do not hand ideas through a conveyor belt.
-              <span className="mt-2 block font-serif italic text-[#718074]">
-                We let each one find its own rhythm.
-              </span>
-            </h2>
-          </div>
+        <div className="mt-10 grid gap-3 sm:grid-cols-3">
+          {steps.map(({ number, label, icon: Icon }) => (
+            <motion.div
+              key={number}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ delay: Number(number) * 0.08, duration: 0.45 }}
+              whileHover={{ y: -5 }}
+              className="group rounded-[22px] border border-black/[0.06] bg-[#f2f7ff] p-4 transition duration-300 hover:-translate-y-1 hover:border-[#007aff]/20 hover:shadow-[0_16px_40px_rgba(0,122,255,.08)]"
+            >
+              <div className="flex items-center justify-between">
+                <div className="grid h-10 w-10 place-items-center rounded-[13px] bg-white text-[#007aff] shadow-[0_8px_20px_rgba(0,122,255,.10)]">
+                  <Icon className="h-4 w-4" />
+                </div>
+                <span className="text-[10px] font-semibold tracking-[0.14em] text-[#8e8e93]">
+                  {number}
+                </span>
+              </div>
+              <p className="mt-4 text-[15px] font-semibold">{label}</p>
+              <p className="mt-1 text-[12px] text-[#8e8e93]">
+                One connected product process
+              </p>
+            </motion.div>
+          ))}
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-[1500px] px-5 pb-24 pt-12 sm:px-8 sm:pb-28 lg:px-10 lg:pb-32">
-        <div className="relative grid min-h-[720px] items-center gap-12 lg:grid-cols-[0.86fr_1.14fr] lg:gap-16">
-          <div className="relative z-10 max-w-xl lg:pl-8">
-            <div className="pointer-events-none absolute -left-8 -top-24 select-none font-serif text-[190px] italic leading-none text-black/[0.035] sm:text-[250px] lg:-left-12 lg:text-[320px]">
-              01
-            </div>
-
-            <div className="relative">
-              <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#5e6d63]">
+      <div className="mx-auto max-w-7xl space-y-6 px-5 pb-20 sm:px-8 lg:px-10 lg:pb-24">
+        <motion.section initial={{ opacity: 0, y: 34 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.18 }} transition={{ duration: 0.65, ease: "easeOut" }} className="overflow-hidden rounded-[32px] border border-black/[0.06] bg-[#f2f7ff] shadow-[0_24px_70px_rgba(20,60,120,.07)]">
+          <div className="p-6 sm:p-8 lg:p-10">
+            <div className="mx-auto max-w-3xl text-center">
+              <div className="flex items-center justify-center gap-2 text-[10px] font-semibold uppercase tracking-[0.17em] text-[#007aff]">
                 <Compass className="h-4 w-4" />
-                Discover
+                01 · Discover
               </div>
-              <h3 className="mt-6 max-w-lg text-[42px] font-light leading-[0.98] tracking-[-0.05em] sm:text-[54px] lg:text-[64px]">
-                Before we draw anything,
-                <span className="font-serif italic text-[#708075]"> we listen for what matters.</span>
+
+              <h3 className="mt-4 text-[34px] font-semibold leading-[1.02] tracking-[-0.045em] sm:text-[44px]">
+                Start with the reason,
+                <span className="block text-[#007aff]">not the screen.</span>
               </h3>
-              <p className="mt-7 max-w-lg text-[15px] leading-8 text-[#667069]">
-                We start with the business, the audience, and the decisions that need to become easier. The visual direction comes after the reason to build is clear.
+
+              <p className="mx-auto mt-4 max-w-2xl text-[14px] leading-6 text-[#636366]">
+                We clarify the business goal, audience, user journey, and constraints before deciding what the product should become.
               </p>
 
-              <div className="mt-9 flex flex-wrap gap-x-8 gap-y-3 border-t border-black/10 pt-5 text-[10px] font-medium uppercase tracking-[0.16em] text-[#7b847e]">
-                <span>Goals & audience</span>
-                <span>User journey</span>
-                <span>Direction</span>
+              <div className="mt-6 flex flex-wrap justify-center gap-2">
+                {["Goals", "Audience", "Journey", "Scope"].map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-[#007aff]/10 bg-white px-3 py-1.5 text-[11px] font-medium text-[#49627f]"
+                  >
+                    {item}
+                  </span>
+                ))}
               </div>
             </div>
-          </div>
 
-          <div className="relative flex min-h-[560px] items-center sm:min-h-[650px] lg:min-h-[700px]">
-            <div className="grid w-full max-w-[720px] grid-cols-2 gap-2.5 sm:gap-5">
-              <article className="group relative overflow-hidden rounded-[20px] border border-[#dce5de] bg-[#edf3ef] p-2.5 shadow-[0_18px_50px_rgba(35,50,40,0.10)] sm:rounded-[32px] sm:p-5 sm:shadow-[0_24px_70px_rgba(35,50,40,0.10)]">
-                <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em] text-[#657268]">
-                  <span>Discovery board</span>
-                  <span className="font-serif text-sm italic text-[#839084]">01A</span>
+            <div className="mx-auto mt-9 grid max-w-[980px] gap-4 md:grid-cols-2">
+              <article className="group overflow-hidden rounded-[26px] border border-white bg-white p-3 shadow-[0_18px_45px_rgba(45,85,135,.09)]">
+                <div className="flex items-center justify-between px-2 py-2">
+                  <div>
+                    <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8e8e93]">
+                      Discovery board
+                    </p>
+                    <p className="mt-1 text-[15px] font-semibold text-[#1c1c1e]">
+                      Clarity before pixels.
+                    </p>
+                  </div>
+                  <div className="grid h-10 w-10 place-items-center rounded-[13px] bg-[#007aff] text-white">
+                    <Workflow className="h-4 w-4" />
+                  </div>
                 </div>
 
-                <div className="relative mt-4 overflow-hidden rounded-[24px] bg-[#fbfaf5]">
+                <div className="mt-2 overflow-hidden rounded-[20px] bg-[#f7f9fc]">
                   <img
                     src={discoverImage}
-                    alt="Cartoon developer working on a laptop"
+                    alt="Product discovery workshop"
                     loading="lazy"
                     decoding="async"
-                    className="h-[300px] w-full scale-[1.08] object-cover object-top transition-transform duration-700 group-hover:scale-[1.12] sm:h-[350px]"
+                    className="h-[290px] w-full object-cover object-top transition duration-500 group-hover:scale-[1.025]"
                   />
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-[linear-gradient(180deg,transparent,#fbfaf5)]" />
-                  <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
-                    {["Audience", "Flow"].map((item) => (
-                      <span key={item} className="rounded-full border border-[#d8e2da] bg-white/92 px-2.5 py-1 text-[8px] font-semibold uppercase tracking-[0.13em] text-[#526258]">
-                        {item}
-                      </span>
-                    ))}
-                  </div>
                 </div>
 
-                <div className="px-1 pb-1 pt-4">
-                  <p className="font-serif text-xl italic text-[#253129]">Clarity before pixels.</p>
-                  <p className="mt-1 text-xs leading-5 text-[#69736c]">
-                    Understand the problem before deciding what the screen should become.
-                  </p>
+                <div className="grid grid-cols-3 gap-2 pt-3">
+                  {[
+                    ["Goal", "Clear"],
+                    ["Flow", "Mapped"],
+                    ["Scope", "Focused"],
+                  ].map(([label, value]) => (
+                    <div key={label} className="rounded-[14px] bg-[#f2f7ff] px-3 py-3 text-center">
+                      <p className="text-[9px] uppercase tracking-[.11em] text-[#8e8e93]">{label}</p>
+                      <p className="mt-1 text-[11px] font-semibold text-[#007aff]">{value}</p>
+                    </div>
+                  ))}
                 </div>
               </article>
 
-              <article className="group relative overflow-hidden rounded-[20px] border border-[#e7dfd4] bg-[#f6f1e9] p-2.5 shadow-[0_18px_50px_rgba(64,49,35,0.09)] sm:translate-y-12 sm:rounded-[32px] sm:p-5 sm:shadow-[0_24px_70px_rgba(64,49,35,0.09)]">
-                <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em] text-[#74695f]">
-                  <span>Signal map</span>
-                  <span className="font-serif text-sm italic text-[#998d82]">01B</span>
+              <article className="group overflow-hidden rounded-[26px] border border-white bg-white p-3 shadow-[0_18px_45px_rgba(45,85,135,.09)]">
+                <div className="flex items-center justify-between px-2 py-2">
+                  <div>
+                    <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8e8e93]">
+                      Signal map
+                    </p>
+                    <p className="mt-1 text-[15px] font-semibold text-[#1c1c1e]">
+                      Turn signals into direction.
+                    </p>
+                  </div>
+                  <div className="grid h-10 w-10 place-items-center rounded-[13px] bg-white text-[#007aff] ring-1 ring-[#007aff]/10">
+                    <Compass className="h-4 w-4" />
+                  </div>
                 </div>
 
-                <div className="relative mt-4 overflow-hidden rounded-[24px] bg-[#fffaf2]">
+                <div className="mt-2 overflow-hidden rounded-[20px] bg-[linear-gradient(180deg,#f9fbff,#eef6ff)]">
                   <img
                     src={discoverThinkingImage}
-                    alt="Cartoon woman thinking while working on a laptop"
+                    alt="Person thinking while using a laptop"
                     loading="lazy"
                     decoding="async"
-                    className="h-[250px] w-full object-contain object-center p-3 transition-transform duration-700 group-hover:scale-[1.035] sm:h-[290px]"
+                    className="h-[290px] w-full object-contain p-4 transition duration-500 group-hover:scale-[1.025]"
                   />
-                  <div className="absolute bottom-3 left-3 right-3 grid grid-cols-3 gap-1.5">
-                    {["Goal", "Journey", "Scope"].map((item, index) => (
-                      <span key={item} className={`rounded-full px-2 py-1.5 text-center text-[7px] font-semibold uppercase tracking-[0.12em] ${index === 1 ? "bg-[#dceadf] text-[#294033]" : "bg-white/85 text-[#59665e]"}`}>
-                        {item}
-                      </span>
-                    ))}
-                  </div>
                 </div>
 
-                <div className="relative px-1 pb-1 pt-4">
-                  <div className="mb-3 flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#9fcab0]" />
-                    <span className="h-px flex-1 bg-[#cfc5b8]" />
-                    <span className="h-2.5 w-2.5 rounded-full border border-[#b79470]" />
-                  </div>
-                  <p className="font-serif text-xl italic text-[#2b332d]">Turn signals into direction.</p>
-                  <p className="mt-1 text-xs leading-5 text-[#716a63]">
-                    Connect goals, user needs, and constraints into one clear product path.
-                  </p>
+                <div className="grid grid-cols-3 gap-2 pt-3">
+                  {["Audience", "Journey", "Direction"].map((item) => (
+                    <div key={item} className="rounded-[14px] bg-[#f2f2f7] px-3 py-3 text-center">
+                      <p className="text-[11px] font-semibold text-[#1c1c1e]">{item}</p>
+                    </div>
+                  ))}
                 </div>
               </article>
             </div>
-
-            <div className="whyus-drift pointer-events-none absolute right-[7%] top-[6%] h-3 w-3 rounded-full bg-[#b9d3c2]" />
-            <div className="whyus-drift-alt pointer-events-none absolute left-[2%] bottom-[11%] h-2.5 w-2.5 rounded-full bg-[#d6ad82]" />
           </div>
-        </div>
-      </div>
+        </motion.section>
 
-      <section className="relative isolate min-h-[760px] overflow-hidden bg-[#070a08] text-white">
-        <img
-          src={shapeImage}
-          alt="Laptop showing a graphic design interface"
-          loading="lazy"
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover object-center opacity-68"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,8,6,0.96)_0%,rgba(5,8,6,0.8)_38%,rgba(5,8,6,0.24)_72%,rgba(5,8,6,0.7)_100%)]" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-[linear-gradient(180deg,#fff,transparent)]" />
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(0deg,#fff,transparent)] opacity-95" />
+        <motion.section initial={{ opacity: 0, y: 34 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.18 }} transition={{ duration: 0.65, ease: "easeOut" }} className="overflow-hidden rounded-[32px] border border-black/[0.06] bg-white shadow-[0_24px_70px_rgba(15,23,42,.06)]">
+          <div className="grid items-center gap-8 p-6 sm:p-8 lg:grid-cols-[1.08fr_.92fr] lg:p-10">
+            <div className="relative min-h-[360px] overflow-hidden rounded-[26px] bg-[#0a0d12]">
+              <img
+                src={shapeImage}
+                alt="Design interface on a laptop"
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover opacity-70"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,9,16,.08),rgba(5,9,16,.78))]" />
+              <div className="absolute bottom-5 left-5 right-5 rounded-[20px] border border-white/15 bg-black/35 p-4 backdrop-blur-md">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-10 w-10 place-items-center rounded-[13px] bg-white text-[#007aff]">
+                    <Palette className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[.13em] text-white/55">Visual system</p>
+                    <p className="mt-1 text-[15px] font-semibold text-white">Purpose becomes personality.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <div className="relative mx-auto flex min-h-[760px] max-w-7xl items-center px-5 py-28 sm:px-8 lg:px-10">
-          <div className="grid w-full items-end gap-12 lg:grid-cols-[0.86fr_1.14fr]">
-            <div className="max-w-xl">
-              <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-100/70">
+            <div>
+              <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.17em] text-[#007aff]">
                 <Palette className="h-4 w-4" />
-                Shape
+                02 · Shape
               </div>
-              <h3 className="mt-6 max-w-2xl text-[44px] font-light leading-[0.96] tracking-[-0.055em] sm:text-[58px] lg:text-[72px]">
-                Then we give it a visual language
-                <span className="font-serif italic text-emerald-100"> people can feel.</span>
+              <h3 className="mt-4 text-[34px] font-semibold leading-[1.02] tracking-[-0.045em] sm:text-[44px]">
+                A visual language
+                <span className="block text-[#007aff]">people can feel.</span>
               </h3>
-              <p className="mt-7 max-w-lg text-[15px] leading-8 text-white/62">
-                Typography, motion, interaction, and rhythm all work together. The point is not decoration — it is creating something unmistakably yours.
+              <p className="mt-4 text-[14px] leading-6 text-[#636366]">
+                Typography, motion, interaction, and rhythm work together to make the product feel distinct without getting in the way of clarity.
               </p>
-            </div>
 
-            <div className="relative min-h-[330px] self-stretch lg:min-h-[460px]">
-              <div className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 font-serif text-[170px] italic leading-none text-white/[0.07] sm:text-[240px] lg:text-[300px]">
-                02
+              <div className="mt-6 grid grid-cols-3 gap-2">
+                {["UX", "Motion", "Visual system"].map((item) => (
+                  <div key={item} className="rounded-[16px] bg-[#f2f2f7] px-3 py-3 text-center">
+                    <p className="text-[11px] font-semibold text-[#1c1c1e]">{item}</p>
+                  </div>
+                ))}
               </div>
-              <p className="absolute bottom-[12%] right-[4%] max-w-sm text-right font-serif text-2xl italic leading-snug text-white/88 sm:text-3xl">
-                Personality works best when it grows from purpose, not from trend.
-              </p>
             </div>
           </div>
-        </div>
-      </section>
+        </motion.section>
 
-      <section className="relative overflow-hidden bg-[#f5f8f4] text-[#151a17]">
-        <div className="pointer-events-none absolute -left-8 top-10 font-serif text-[220px] italic leading-none text-[#263129]/[0.035] sm:text-[300px] lg:text-[390px]">03</div>
-        <div className="whyus-drift pointer-events-none absolute right-[8%] top-[16%] h-3 w-3 rounded-full bg-[#a8ccb4]" />
-        <div className="whyus-drift-alt pointer-events-none absolute left-[46%] bottom-[14%] h-2.5 w-2.5 rounded-full bg-[#d9ad7b]" />
-
-        <div className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-28 lg:px-10 lg:py-32">
-          <div className="grid items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
-            <div className="relative flex min-h-[620px] items-center">
-              <div className="grid w-full max-w-[760px] grid-cols-2 gap-2.5 sm:gap-5">
-                <article className="group relative overflow-hidden rounded-[20px] border border-[#d8e4dc] bg-[#eaf2ed] p-2.5 shadow-[0_18px_50px_rgba(35,50,40,0.10)] sm:rounded-[32px] sm:p-5 sm:shadow-[0_24px_70px_rgba(35,50,40,0.10)]">
-                  <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em] text-[#657268]">
-                    <span>Build room</span>
-                    <span className="font-serif text-sm italic text-[#839084]">03A</span>
-                  </div>
-
-                  <div className="relative mt-4 overflow-hidden rounded-[24px] bg-[#f9fbf8]">
-                    <img
-                      src={buildDeveloperImage}
-                      alt="Cartoon developer working at a desktop computer"
-                      loading="lazy"
-                      decoding="async"
-                      className="h-[180px] w-full object-contain object-center p-2 transition-transform duration-700 group-hover:scale-[1.035] sm:h-[350px] sm:p-4"
-                    />
-                    <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
-                      {["Code", "Responsive"].map((item) => (
-                        <span key={item} className="rounded-full border border-[#d7e2da] bg-white/92 px-2.5 py-1 text-[8px] font-semibold uppercase tracking-[0.13em] text-[#526258]">
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="px-1 pb-1 pt-4">
-                    <p className="font-serif text-xl italic text-[#253129]">Structure before scale.</p>
-                    <p className="mt-1 text-xs leading-5 text-[#69736c]">
-                      Build clean foundations first, then make every screen adapt with confidence.
-                    </p>
-                  </div>
-                </article>
-
-                <article className="group relative overflow-hidden rounded-[20px] border border-[#e7dfd4] bg-[#f6f1e9] p-2.5 shadow-[0_18px_50px_rgba(64,49,35,0.09)] sm:translate-y-12 sm:rounded-[32px] sm:p-5 sm:shadow-[0_24px_70px_rgba(64,49,35,0.09)]">
-                  <div className="flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em] text-[#74695f]">
-                    <span>Review desk</span>
-                    <span className="font-serif text-sm italic text-[#998d82]">03B</span>
-                  </div>
-
-                  <div className="relative mt-4 overflow-hidden rounded-[24px] bg-[#fffaf2]">
-                    <img
-                      src={buildReviewImage}
-                      alt="Cartoon woman reviewing work on a laptop"
-                      loading="lazy"
-                      decoding="async"
-                      className="h-[250px] w-full object-contain object-center p-4 transition-transform duration-700 group-hover:scale-[1.035] sm:h-[290px]"
-                    />
-                    <div className="absolute bottom-3 left-3 right-3 grid grid-cols-3 gap-1.5">
-                      {["Test", "Tune", "Ship"].map((item, index) => (
-                        <span key={item} className={`rounded-full px-2 py-1.5 text-center text-[7px] font-semibold uppercase tracking-[0.12em] ${index === 1 ? "bg-[#dceadf] text-[#294033]" : "bg-white/88 text-[#59665e]"}`}>
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="relative px-1 pb-1 pt-4">
-                    <div className="mb-3 flex items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#9fcab0]" />
-                      <span className="h-px flex-1 bg-[#cfc5b8]" />
-                      <span className="h-2.5 w-2.5 rounded-full border border-[#b79470]" />
-                    </div>
-                    <p className="font-serif text-xl italic text-[#2b332d]">Polish without the weight.</p>
-                    <p className="mt-1 text-xs leading-5 text-[#716a63]">
-                      Test the details, tune performance, and ship something that stays easy to grow.
-                    </p>
-                  </div>
-                </article>
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#5e6d63]">
+        <motion.section initial={{ opacity: 0, y: 34 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.18 }} transition={{ duration: 0.65, ease: "easeOut" }} className="overflow-hidden rounded-[32px] border border-black/[0.06] bg-[#f2f2f7] shadow-[0_24px_70px_rgba(15,23,42,.05)]">
+          <div className="grid items-center gap-8 p-6 sm:p-8 lg:grid-cols-[.9fr_1.1fr] lg:p-10">
+            <div>
+              <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.17em] text-[#007aff]">
                 <Code2 className="h-4 w-4" />
-                Build
+                03 · Build
               </div>
-              <h3 className="mt-6 max-w-2xl text-[44px] font-light leading-[0.96] tracking-[-0.055em] sm:text-[58px] lg:text-[70px]">
+              <h3 className="mt-4 max-w-xl text-[34px] font-semibold leading-[1.02] tracking-[-0.045em] sm:text-[44px]">
                 Beautiful on the surface.
-                <span className="block font-serif italic text-[#708075]">Serious underneath.</span>
+                <span className="block text-[#007aff]">Serious underneath.</span>
               </h3>
-              <p className="mt-7 max-w-xl text-[15px] leading-8 text-[#667069]">
-                We turn the visual system into responsive, maintainable software without losing the personality that made the idea worth building in the first place.
+              <p className="mt-4 max-w-xl text-[14px] leading-6 text-[#636366]">
+                We turn the visual system into responsive, maintainable software without losing the personality that made the idea worth building.
               </p>
 
-              <div className="mt-10 space-y-0 border-y border-black/10">
+              <div className="mt-6 overflow-hidden rounded-[22px] border border-black/[0.05] bg-white">
                 {[
-                  ["01", "Responsive by default", "Layouts adapt cleanly from small screens to large ones."],
-                  ["02", "Performance aware", "Motion, media, and code stay intentional instead of becoming weight."],
-                  ["03", "Built to evolve", "The structure stays understandable when the next feature arrives."],
-                ].map(([number, title, description]) => (
-                  <div key={number} className="group flex gap-5 border-b border-black/10 py-5 last:border-b-0">
-                    <span className="pt-0.5 font-serif text-lg italic text-[#849087]">{number}</span>
-                    <div>
-                      <p className="text-sm font-semibold text-[#253028] transition-transform duration-300 group-hover:translate-x-1">{title}</p>
-                      <p className="mt-1 max-w-md text-xs leading-6 text-[#758078]">{description}</p>
+                  ["Responsive by default", "Layouts adapt cleanly across screen sizes."],
+                  ["Performance aware", "Media, motion, and code stay intentional."],
+                  ["Built to evolve", "The structure stays understandable as features grow."],
+                ].map(([title, text], index) => (
+                  <div
+                    key={title}
+                    className={`flex items-start gap-3 px-4 py-4 ${index ? "border-t border-black/[0.05]" : ""}`}
+                  >
+                    <div className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#34c759]/10 text-[#248a3d]">
+                      <Check className="h-3.5 w-3.5" />
                     </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[13px] font-semibold">{title}</p>
+                      <p className="mt-1 text-[12px] leading-5 text-[#8e8e93]">{text}</p>
+                    </div>
+                    <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-[#c7c7cc]" />
                   </div>
                 ))}
               </div>
 
               <Link
                 href="/Contact"
-                className="site-cta-dark group mt-9"
+                className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-[14px] bg-[#007aff] px-5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(0,122,255,.18)] transition hover:-translate-y-0.5 hover:bg-[#0a84ff]"
               >
                 Start a project
-                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
+
+            <div className="relative mx-auto w-full max-w-[680px]">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <article className="group overflow-hidden rounded-[24px] border border-white bg-white p-3 shadow-[0_18px_48px_rgba(45,85,135,.10)] sm:rounded-[28px] sm:p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-[9px] uppercase tracking-[.13em] text-[#8e8e93]">Build room</p>
+                      <p className="mt-1 text-[13px] font-semibold text-[#1c1c1e] sm:text-[15px]">Structure first.</p>
+                    </div>
+                    <div className="grid h-9 w-9 place-items-center rounded-[12px] bg-[#007aff] text-white">
+                      <Code2 className="h-4 w-4" />
+                    </div>
+                  </div>
+
+                  <div className="mt-3 overflow-hidden rounded-[18px] bg-[#f7f9fc]">
+                    <img
+                      src={buildDeveloperImage}
+                      alt="Developer working at a computer"
+                      loading="lazy"
+                      decoding="async"
+                      className="h-[230px] w-full object-contain p-3 transition duration-500 group-hover:scale-[1.025] sm:h-[300px]"
+                    />
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {["Code", "Responsive"].map((item) => (
+                      <span key={item} className="rounded-full bg-[#f2f7ff] px-2.5 py-1 text-[9px] font-semibold text-[#007aff]">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </article>
+
+                <article className="group translate-y-6 overflow-hidden rounded-[24px] border border-white bg-white p-3 shadow-[0_18px_48px_rgba(45,85,135,.10)] sm:translate-y-10 sm:rounded-[28px] sm:p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-[9px] uppercase tracking-[.13em] text-[#8e8e93]">Review desk</p>
+                      <p className="mt-1 text-[13px] font-semibold text-[#1c1c1e] sm:text-[15px]">Polish before ship.</p>
+                    </div>
+                    <div className="grid h-9 w-9 place-items-center rounded-[12px] bg-[#f2f7ff] text-[#007aff]">
+                      <Layers3 className="h-4 w-4" />
+                    </div>
+                  </div>
+
+                  <div className="mt-3 overflow-hidden rounded-[18px] bg-[linear-gradient(180deg,#f9fbff,#eef6ff)]">
+                    <img
+                      src={buildReviewImage}
+                      alt="Designer reviewing work on a laptop"
+                      loading="lazy"
+                      decoding="async"
+                      className="h-[230px] w-full object-contain p-3 transition duration-500 group-hover:scale-[1.025] sm:h-[300px]"
+                    />
+                  </div>
+
+                  <div className="mt-3 grid grid-cols-3 gap-1.5">
+                    {["Test", "Tune", "Ship"].map((item) => (
+                      <span key={item} className="rounded-[10px] bg-[#f2f2f7] px-2 py-2 text-center text-[9px] font-semibold text-[#636366]">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </article>
+              </div>
+
+              <div className="pointer-events-none absolute -right-5 -top-5 grid h-12 w-12 place-items-center rounded-[16px] bg-white text-[#007aff] shadow-[0_12px_30px_rgba(45,85,135,.12)]">
+                <Sparkles className="h-4 w-4" />
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </motion.section>
+      </div>
     </section>
   );
 }

@@ -1,25 +1,24 @@
 import type { Metadata } from "next";
-import Head from "./head";
-import Work from "./work";
-import Product from "./product";
+import BDXA from "./BDXA";
 import POS from "./POS";
 import Bigger from "./bigger";
+import Product from "./product";
 import { createPageMetadata } from "../seo";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Web, Software & Digital Product Portfolio",
+  title: "Our Work — Software, AI & Digital Products",
   description:
-    "Explore Buildifyx projects across corporate websites, e-commerce, dashboards, digital platforms, UI/UX design, and custom software development.",
+    "Explore Buildifyx products including bdxa, Simple POS, Bigger, and experimental digital products.",
   path: "/mywork",
 });
 
 export default function MyWork() {
   return (
-    <>
-      <Bigger />
+    <main className="overflow-hidden bg-white">
+      <BDXA />
       <POS />
+      <Bigger />
       <Product />
-      <Head />
-    </>
+    </main>
   );
 }

@@ -6,7 +6,8 @@
     "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "asset:test": "node scripts/dbxa-asset-test.mjs"
   },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^13.13.0",

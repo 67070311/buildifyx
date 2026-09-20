@@ -38,34 +38,31 @@ export default function Navbar() {
   const pathname = usePathname();
   const { language } = useLanguage();
   const t = labels[language];
-
   const navItems = navConfig.map((item) => ({
     name: t[item.key],
     href: item.href,
   }));
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-[#edf1f6] bg-white/94 backdrop-blur-xl">
-      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
-        <Link href="/" className="flex items-center gap-2.5 text-[#172033]">
-          <span className="grid h-9 w-9 place-items-center rounded-[11px] bg-[#eef5ff]">
+    <header className="fixed left-0 top-5 z-50 w-full px-4">
+      <div className="mx-auto flex h-[54px] max-w-7xl items-center justify-between rounded-full border border-white/10 bg-black/88 px-2 shadow-[0_16px_50px_rgba(0,0,0,0.28)] backdrop-blur-2xl">
+        <Link href="/" className="flex items-center gap-2.5 rounded-full px-3 text-white">
+          <span className="grid h-7 w-7 place-items-center rounded-full border border-white/12 bg-white/5">
             <Image
               src="/logo/logo.png"
               alt="Buildifyx logo"
-              width={21}
-              height={21}
-              className="object-contain"
+              width={18}
+              height={18}
+              className="object-contain invert"
             />
           </span>
-          <div className="leading-none">
-            <span className="block text-[15px] font-semibold tracking-[-0.035em]">Buildifyx</span>
-            <span className="mt-1 hidden text-[9px] font-medium uppercase tracking-[0.14em] text-[#9aa6b8] sm:block">
-              Product Studio
-            </span>
-          </div>
+          <span className="text-sm font-medium tracking-[-0.03em]">Buildifyx</span>
+          <span className="hidden font-mono text-[8px] tracking-[0.16em] text-white/25 sm:inline">
+            DIGITAL STUDIO
+          </span>
         </Link>
 
-        <nav className="hidden h-full items-center gap-7 lg:flex">
+        <nav className="hidden items-center gap-0.5 lg:flex">
           {navItems.map((item) => {
             const isActive =
               item.href === "/"
@@ -76,26 +73,23 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative flex h-full items-center text-[12px] font-medium transition ${
+                className={`rounded-full px-3.5 py-2 text-[11px] font-medium transition ${
                   isActive
-                    ? "text-[#172033]"
-                    : "text-[#7b879a] hover:text-[#172033]"
+                    ? "bg-white text-black"
+                    : "text-white/48 hover:bg-white/8 hover:text-white"
                 }`}
               >
                 {item.name}
-                {isActive && (
-                  <span className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full bg-[#2f7fff]" />
-                )}
               </Link>
             );
           })}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-2 md:flex">
           <LanguageToggle compact />
           <Link
             href="/Contact"
-            className="inline-flex h-10 items-center rounded-[11px] bg-[#2f7fff] px-4 text-[12px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#438cff]"
+            className="inline-flex h-10 items-center rounded-full bg-white px-4 text-[11px] font-semibold text-black transition hover:-translate-y-0.5"
           >
             {t.cta}
           </Link>

@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { Geist, Geist_Mono, Noto_Sans_Thai } from "next/font/google";
 
 import "./globals.css";
@@ -244,12 +243,6 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
           }}
-        />
-
-        <Script
-          src="https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-wc@latest/dist/dotlottie-wc.js"
-          type="module"
-          strategy="afterInteractive"
         />
 
         <LanguageProvider>

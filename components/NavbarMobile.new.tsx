@@ -55,30 +55,33 @@ export default function NavbarMobile({
         type="button"
         aria-label="Close menu"
         onClick={() => setOpen(false)}
-        className="absolute inset-0 h-full w-full bg-[#172033]/18 backdrop-blur-sm"
+        className="absolute inset-0 h-full w-full bg-black/70 backdrop-blur-sm"
       />
 
       <aside
         id="mobile-navigation"
-        className={`absolute right-0 top-0 z-10 flex h-dvh w-[90vw] max-w-[410px] flex-col border-l border-[#e7edf5] bg-white px-5 pb-6 pt-5 text-[#172033] shadow-[-25px_0_80px_rgba(45,73,115,.12)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] ${
+        className={`absolute right-0 top-0 z-10 flex h-dvh w-[90vw] max-w-[410px] flex-col border-l border-white/10 bg-[#080808] px-5 pb-6 pt-5 text-white shadow-[-25px_0_80px_rgba(0,0,0,.5)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between border-b border-[#edf1f6] pb-5">
+        <div className="flex items-center justify-between border-b border-white/10 pb-5">
           <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-[10px] bg-[#eef5ff]">
-              <Image src="/logo/logo.png" alt="Buildifyx logo" width={18} height={18} />
+            <span className="grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-white/5">
+              <Image src="/logo/logo.png" alt="Buildifyx logo" width={18} height={18} className="invert" />
             </span>
-            <p className="text-sm font-semibold">Buildifyx</p>
+            <div>
+              <p className="text-sm font-medium">Buildifyx</p>
+              <p className="font-mono text-[8px] tracking-[0.16em] text-white/25">DIGITAL STUDIO</p>
+            </div>
           </Link>
 
           <button
             type="button"
             onClick={() => setOpen(false)}
             aria-label="Close menu"
-            className="grid h-10 w-10 place-items-center rounded-[10px] border border-[#e6ecf4] bg-[#f8fafc] text-[#65738a]"
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-white/70"
           >
-            <X size={18} strokeWidth={1.6} />
+            <X size={18} strokeWidth={1.5} />
           </button>
         </div>
 
@@ -87,7 +90,7 @@ export default function NavbarMobile({
         </div>
 
         <nav className="mt-7 flex flex-col">
-          {navItems.map((item) => {
+          {navItems.map((item, index) => {
             const isActive =
               item.href === "/"
                 ? pathname === "/"
@@ -98,12 +101,17 @@ export default function NavbarMobile({
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className={`group flex items-center justify-between border-b border-[#edf1f6] px-1 py-5 ${
-                  isActive ? "text-[#2f7fff]" : "text-[#65738a]"
+                className={`group flex items-center justify-between border-b border-white/8 px-1 py-5 ${
+                  isActive ? "text-white" : "text-white/45"
                 }`}
               >
-                <span className="text-lg font-medium tracking-[-0.03em]">{item.name}</span>
-                <ArrowUpRight className="h-4 w-4 text-[#9aa6b8]" />
+                <span className="flex items-center gap-4">
+                  <span className="font-mono text-[9px] text-white/20">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-lg font-medium tracking-[-0.03em]">{item.name}</span>
+                </span>
+                <ArrowUpRight className="h-4 w-4 text-white/25 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Link>
             );
           })}
@@ -113,11 +121,14 @@ export default function NavbarMobile({
           <Link
             href="/Contact"
             onClick={() => setOpen(false)}
-            className="flex min-h-14 items-center justify-between rounded-[14px] bg-[#2f7fff] px-5 text-sm font-semibold text-white"
+            className="flex min-h-14 items-center justify-between rounded-full bg-white px-5 text-sm font-semibold text-black"
           >
             {ctaLabel}
             <ArrowUpRight className="h-4 w-4" />
           </Link>
+          <p className="mt-5 text-center font-mono text-[9px] tracking-[0.14em] text-white/20">
+            © {new Date().getFullYear()} BUILDIFYX
+          </p>
         </div>
       </aside>
     </div>
@@ -131,9 +142,9 @@ export default function NavbarMobile({
         aria-label="Open menu"
         aria-expanded={open}
         aria-controls="mobile-navigation"
-        className="grid h-9 w-9 place-items-center rounded-[10px] border border-[#e5ebf3] bg-[#f8fafc] text-[#4f5d72]"
+        className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/[0.06] text-white"
       >
-        <Menu size={18} strokeWidth={1.7} />
+        <Menu size={18} strokeWidth={1.6} />
       </button>
       {mounted ? createPortal(mobileMenu, document.body) : null}
     </>

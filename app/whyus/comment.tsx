@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 
 const testimonials = [
   {
@@ -52,187 +53,141 @@ const testimonials = [
 
 export default function Comment() {
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const prevIndex =
-    (activeIndex - 1 + testimonials.length) % testimonials.length;
-  const nextIndex = (activeIndex + 1) % testimonials.length;
   const active = testimonials[activeIndex];
 
-  const goPrev = () => setActiveIndex(prevIndex);
-  const goNext = () => setActiveIndex(nextIndex);
+  const goPrev = () =>
+    setActiveIndex((current) =>
+      current === 0 ? testimonials.length - 1 : current - 1
+    );
+
+  const goNext = () =>
+    setActiveIndex((current) => (current + 1) % testimonials.length);
 
   return (
-    <section className="bg-[#f2f5fb] px-3 py-12 text-[#161b24] sm:px-6 sm:py-16 lg:px-10 lg:py-24">
-      <div className="mx-auto max-w-[1180px] overflow-hidden rounded-[24px] bg-white px-3 py-8 shadow-[0_18px_50px_rgba(37,54,84,0.05)] sm:rounded-[32px] sm:px-8 sm:py-14 lg:px-14 lg:py-16">
-        <div className="text-center">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#8b94a3] sm:text-[11px]">
-            Client stories
-          </p>
-          <h2 className="mx-auto mt-3 max-w-[320px] text-2xl font-semibold leading-tight tracking-[-0.04em] text-[#161b24] sm:max-w-none sm:text-4xl">
-            What our clients say about us
-          </h2>
-        </div>
+    <section className="bg-[#f2f2f7] px-5 py-16 text-[#1c1c1e] sm:px-8 lg:px-10 lg:py-20">
+      <div className="mx-auto max-w-7xl">
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6 }} className="grid gap-8 lg:grid-cols-[.72fr_1.28fr] lg:items-end">
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#007aff]">
+              Client stories
+            </p>
+            <h2 className="mt-3 max-w-xl text-[38px] font-semibold leading-[1.02] tracking-[-0.05em] sm:text-[50px]">
+              What it feels like
+              <span className="block text-[#007aff]">to build with us.</span>
+            </h2>
+            <p className="mt-4 max-w-lg text-[14px] leading-6 text-[#636366]">
+              Clear communication, thoughtful execution, and a process that keeps people close to the product from idea to launch.
+            </p>
 
-        <div className="relative mx-auto mt-8 max-w-[930px] sm:mt-14">
-          <button
-            type="button"
-            onClick={goPrev}
-            aria-label="Previous client story"
-            className="absolute left-0 top-1/2 z-30 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-[#e7ebf2] bg-white text-[#202633] shadow-[0_10px_28px_rgba(43,58,87,0.10)] transition hover:scale-105 hover:bg-[#f7f9fd] sm:left-2 sm:h-12 sm:w-12 sm:-translate-x-1/2 lg:-left-2"
-          >
-            <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-          </button>
-
-          <button
-            type="button"
-            onClick={goNext}
-            aria-label="Next client story"
-            className="absolute right-0 top-1/2 z-30 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-[#e7ebf2] bg-white text-[#202633] shadow-[0_10px_28px_rgba(43,58,87,0.10)] transition hover:scale-105 hover:bg-[#f7f9fd] sm:right-2 sm:h-12 sm:w-12 sm:translate-x-1/2 lg:-right-2"
-          >
-            <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
-          </button>
-
-          <div className="relative flex items-center justify-center overflow-hidden px-7 sm:min-h-[390px] sm:px-16">
-            <button
-              type="button"
-              onClick={goPrev}
-              aria-label={`Show ${testimonials[prevIndex].name}`}
-              className="absolute left-[4%] top-1/2 z-10 hidden h-[300px] w-[330px] -translate-y-1/2 -rotate-2 overflow-hidden rounded-[24px] border border-[#edf1f7] bg-[#f7f9fd] text-left opacity-45 shadow-[0_14px_32px_rgba(64,82,119,0.06)] transition hover:opacity-65 md:block"
-            >
-              <div className="absolute inset-0 bg-white/35 backdrop-blur-[1px]" />
-              <div className="relative p-7">
-                <div className="flex items-center gap-4">
-                  <img
-                    src={testimonials[prevIndex].avatar}
-                    alt={testimonials[prevIndex].name}
-                    className="h-16 w-16 shrink-0 rounded-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div>
-                    <p className="font-semibold">{testimonials[prevIndex].name}</p>
-                    <p className="mt-1 text-xs text-[#8d95a4]">
-                      {testimonials[prevIndex].role}
-                    </p>
-                  </div>
-                </div>
-                <p className="mt-8 text-sm leading-6 text-[#6f7786]">
-                  {testimonials[prevIndex].comment}
-                </p>
-              </div>
-            </button>
-
-            <article className="relative z-20 w-full max-w-[310px] rounded-[22px] bg-[#eef2ff] p-5 shadow-[0_18px_42px_rgba(56,76,125,0.10)] min-[390px]:max-w-[325px] sm:max-w-[390px] sm:rounded-[26px] sm:p-8 sm:shadow-[0_20px_50px_rgba(56,76,125,0.10)]">
-              <div className="flex items-center gap-3 sm:gap-4">
-                <img
-                  src={active.avatar}
-                  alt={active.name}
-                  className="h-16 w-16 shrink-0 rounded-full object-cover ring-4 ring-white/80 sm:h-20 sm:w-20"
-                  loading="eager"
-                  decoding="async"
-                />
-                <div className="min-w-0">
-                  <h3 className="text-lg font-semibold tracking-[-0.02em] sm:text-xl">
-                    {active.name}
-                  </h3>
-                  <p className="mt-0.5 text-xs text-[#929aaa] sm:mt-1 sm:text-sm">
-                    {active.role}
-                  </p>
-                  <p className="mt-0.5 text-xs text-[#929aaa] sm:mt-1 sm:text-sm">
-                    {active.rating}/5 satisfaction
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-5 sm:mt-7">
-                <p className="text-xs text-[#a0a7b5] sm:text-sm">Experience</p>
-                <p className="mt-2 text-sm leading-[1.55] text-[#252b36] sm:text-[15px] sm:leading-6">
-                  {active.comment}
-                </p>
-              </div>
-
-              <div className="mt-5 sm:mt-6">
-                <p className="text-xs text-[#a0a7b5] sm:text-sm">What they valued</p>
-                <p className="mt-2 text-sm leading-[1.55] text-[#252b36] sm:text-[15px] sm:leading-6">
-                  Clear communication, thoughtful execution and a smooth process from idea to launch.
-                </p>
-              </div>
-            </article>
-
-            <button
-              type="button"
-              onClick={goNext}
-              aria-label={`Show ${testimonials[nextIndex].name}`}
-              className="absolute right-[4%] top-1/2 z-10 hidden h-[300px] w-[330px] -translate-y-1/2 rotate-2 overflow-hidden rounded-[24px] border border-[#edf1f7] bg-[#f7f9fd] text-left opacity-45 shadow-[0_14px_32px_rgba(64,82,119,0.06)] transition hover:opacity-65 md:block"
-            >
-              <div className="absolute inset-0 bg-white/35 backdrop-blur-[1px]" />
-              <div className="relative p-7">
-                <div className="flex items-center gap-4">
-                  <img
-                    src={testimonials[nextIndex].avatar}
-                    alt={testimonials[nextIndex].name}
-                    className="h-16 w-16 shrink-0 rounded-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div>
-                    <p className="font-semibold">{testimonials[nextIndex].name}</p>
-                    <p className="mt-1 text-xs text-[#8d95a4]">
-                      {testimonials[nextIndex].role}
-                    </p>
-                  </div>
-                </div>
-                <p className="mt-8 text-sm leading-6 text-[#6f7786]">
-                  {testimonials[nextIndex].comment}
-                </p>
-              </div>
-            </button>
+            <div className="mt-6 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={goPrev}
+                aria-label="Previous client story"
+                className="grid h-11 w-11 place-items-center rounded-full border border-black/[0.06] bg-white text-[#1c1c1e] shadow-[0_8px_22px_rgba(15,23,42,.06)] transition hover:-translate-y-0.5 hover:text-[#007aff]"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={goNext}
+                aria-label="Next client story"
+                className="grid h-11 w-11 place-items-center rounded-full border border-black/[0.06] bg-white text-[#1c1c1e] shadow-[0_8px_22px_rgba(15,23,42,.06)] transition hover:-translate-y-0.5 hover:text-[#007aff]"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+              <span className="ml-2 text-[11px] font-medium text-[#8e8e93]">
+                {String(activeIndex + 1).padStart(2, "0")} / {String(testimonials.length).padStart(2, "0")}
+              </span>
+            </div>
           </div>
-        </div>
 
-        <div className="mt-6 flex items-center justify-center gap-1.5 sm:mt-5 sm:gap-2.5">
-          {testimonials.map((item, index) => (
-            <button
-              key={item.avatar}
-              type="button"
-              onClick={() => setActiveIndex(index)}
-              aria-label={`Show ${item.name}`}
-              className={`relative h-9 w-9 overflow-hidden rounded-full border-2 bg-white transition duration-200 sm:h-11 sm:w-11 ${
-                index === activeIndex
-                  ? "scale-105 border-[#4f75e8] shadow-[0_4px_14px_rgba(79,117,232,0.18)]"
-                  : "border-white opacity-80 hover:opacity-100"
-              }`}
-            >
-              <img
-                src={item.avatar}
-                alt={item.name}
-                className="h-full w-full rounded-full object-cover"
-                loading="lazy"
-                decoding="async"
-              />
-            </button>
-          ))}
-        </div>
+          <div className="relative">
+            <AnimatePresence mode="wait">
+              <motion.article
+                key={activeIndex}
+                initial={{ opacity: 0, x: 18, scale: 0.985 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: -18, scale: 0.985 }}
+                transition={{ duration: 0.32, ease: "easeOut" }}
+                className="overflow-hidden rounded-[30px] border border-black/[0.06] bg-white shadow-[0_24px_70px_rgba(15,23,42,.08)]"
+              >
+              <div className="bg-[linear-gradient(135deg,#eaf4ff_0%,#f8fbff_100%)] p-5 sm:p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={active.avatar}
+                      alt={active.name}
+                      className="h-16 w-16 rounded-full object-cover ring-4 ring-white"
+                      loading="eager"
+                      decoding="async"
+                    />
+                    <div>
+                      <p className="text-[17px] font-semibold tracking-[-0.02em]">{active.name}</p>
+                      <p className="mt-1 text-[12px] text-[#8e8e93]">{active.role}</p>
+                    </div>
+                  </div>
 
-        <div className="mt-3 flex items-center justify-center gap-2 sm:mt-4">
-          {testimonials.map((item, index) => (
-            <button
-              key={`${item.avatar}-dot`}
-              type="button"
-              onClick={() => setActiveIndex(index)}
-              aria-label={`Go to slide ${index + 1}`}
-              className={`h-2 rounded-full transition-all ${
-                index === activeIndex
-                  ? "w-6 bg-[#4f75e8]"
-                  : "w-2 bg-[#dfe4ee] hover:bg-[#cbd3df]"
-              }`}
-            />
-          ))}
-        </div>
+                  <div className="grid h-11 w-11 place-items-center rounded-[14px] bg-[#007aff] text-white shadow-[0_10px_24px_rgba(0,122,255,.18)]">
+                    <Quote className="h-4 w-4" />
+                  </div>
+                </div>
+              </div>
 
-        <p className="mx-auto mt-7 max-w-[620px] px-2 text-center text-[13px] leading-5 text-[#333946] sm:mt-9 sm:px-0 sm:text-base sm:leading-6">
-          Every project starts with understanding the people behind it. These are real experiences from clients who trusted us to turn ideas into products that feel clear, useful and ready to grow.
-        </p>
+              <div className="p-5 sm:p-6">
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <Star
+                      key={index}
+                      className={`h-4 w-4 ${index < active.rating ? "fill-[#ffb340] text-[#ffb340]" : "text-[#d1d1d6]"}`}
+                    />
+                  ))}
+                </div>
+
+                <p className="mt-5 max-w-3xl text-[18px] leading-8 tracking-[-0.015em] text-[#2c2c2e] sm:text-[20px]">
+                  “{active.comment}”
+                </p>
+
+                <div className="mt-6 grid gap-2 sm:grid-cols-3">
+                  {[
+                    ["Communication", "Clear"],
+                    ["Process", "Smooth"],
+                    ["Delivery", "Reliable"],
+                  ].map(([label, value]) => (
+                    <div key={label} className="rounded-[16px] bg-[#f2f2f7] px-4 py-3">
+                      <p className="text-[9px] uppercase tracking-[.12em] text-[#8e8e93]">{label}</p>
+                      <p className="mt-1 text-[12px] font-semibold text-[#1c1c1e]">{value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              </motion.article>
+            </AnimatePresence>
+
+            <div className="mt-4 flex items-center gap-2 overflow-x-auto pb-1">
+              {testimonials.map((item, index) => (
+                <button
+                  key={item.name}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  aria-label={`Show ${item.name}`}
+                  className={`flex shrink-0 items-center gap-2 rounded-full border px-2 py-2 pr-3 transition ${index === activeIndex ? "border-[#007aff]/20 bg-white shadow-[0_8px_22px_rgba(0,122,255,.08)]" : "border-transparent bg-white/55 hover:bg-white"}`}
+                >
+                  <img
+                    src={item.avatar}
+                    alt={item.name}
+                    className="h-8 w-8 rounded-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className={`text-[11px] font-medium ${index === activeIndex ? "text-[#007aff]" : "text-[#636366]"}`}>
+                    {item.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

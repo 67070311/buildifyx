@@ -2,121 +2,114 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import {
+  ArrowUpRight,
+  BookOpen,
+  Compass,
+  MapPin,
+  Sparkles,
+} from "lucide-react";
+
+const features = [
+  [BookOpen, "Story-first", "Content feels personal, readable, and easy to explore."],
+  [MapPin, "Local identity", "A digital archive built around real people and real places."],
+  [Compass, "Easy discovery", "Move naturally between stories, people, and places."],
+  [Sparkles, "Living archive", "A modern web experience that keeps local voices visible."],
+];
 
 export default function Product() {
   return (
-    <section className="relative overflow-hidden bg-[#f7fbf8] px-4 py-12 text-slate-900 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
-      {/* Background */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-[-180px] h-[420px] w-[620px] -translate-x-1/2 rounded-full bg-emerald-100/70 blur-[120px]" />
+    <section className="relative overflow-hidden bg-white px-4 pb-16 pt-10 sm:px-6 sm:pb-20 lg:px-8">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[860px] bg-[radial-gradient(circle_at_50%_8%,rgba(52,199,89,.12),transparent_58%)]" />
 
-        <div className="absolute -left-32 bottom-[-120px] h-[320px] w-[320px] rounded-full bg-green-100/50 blur-[100px]" />
-
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(22,101,52,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(22,101,52,0.05) 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
-          }}
-        />
-      </div>
-
-      <div className="relative z-10 mx-auto w-full max-w-6xl">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.55, ease: "easeOut" }}
-          className="mx-auto max-w-2xl text-center"
-        >
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-emerald-700">
-            Our Product
-          </p>
-
-          <h1 className="text-6xl font-semibold tracking-[-0.03em] text-slate-950">
-            Fun Product
-          </h1>
-
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-slate-600">
-            <span className="font-semibold text-slate-800">Chatlok</span> is a
-            storytelling platform for people, places, and memories, designed as
-            a warm and simple space where local stories can be explored through
-            a modern web experience.
-          </p>
-        </motion.div>
-
-        {/* Product Card */}
-        <motion.a
-          href="https://humansofbangmod.buildifyx.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          initial={{ opacity: 0, y: 36 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.65, ease: "easeOut" }}
-          className="group relative mx-auto mt-8 block w-full max-w-5xl overflow-hidden rounded-[24px] border border-emerald-950/10 bg-white p-2 shadow-[0_20px_60px_rgba(22,101,52,0.10)] sm:mt-10 sm:p-2.5"
-        >
-          <div className="overflow-hidden rounded-[18px] bg-white">
-            {/* Image */}
-            <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[16/10] lg:aspect-[16/8.5]">
-              <Image
-                src="/work/product.png"
-                alt="Humans of Bangmod"
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 980px"
-                className="object-cover transition duration-700 group-hover:scale-[1.02]"
-                priority
-              />
-
-              <div className="absolute inset-0 hidden bg-gradient-to-t from-slate-950/70 via-slate-950/15 to-transparent sm:block" />
-
-              {/* Desktop / Tablet Overlay */}
-              <div className="absolute inset-x-0 bottom-0 hidden items-end justify-between gap-5 p-5 text-left sm:flex md:p-6">
-                <div>
-                  <p className="mb-2 text-[9px] font-semibold uppercase tracking-[0.24em] text-emerald-200">
-                    Live Project
-                  </p>
-
-                  <h2 className="text-xl font-semibold tracking-[-0.025em] text-white sm:text-2xl">
-                    Humans of Bangmod
-                  </h2>
-
-                  <p className="mt-2 max-w-xl text-xs leading-6 text-white/70 sm:text-sm">
-                    A digital space for stories, people, and memories from
-                    Bangmod.
-                  </p>
-                </div>
-
-                <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#eef7ef] px-4 py-2.5 text-xs font-semibold text-emerald-900 transition duration-300 group-hover:-translate-y-1 group-hover:bg-white">
-                  View Project
-                  <span aria-hidden="true">→</span>
-                </span>
-              </div>
+      <div className="relative mx-auto max-w-[1440px] overflow-hidden rounded-[38px] border border-[#dfe9e3] bg-[radial-gradient(circle_at_78%_18%,rgba(114,217,154,.13),transparent_31%),linear-gradient(180deg,#fbfdfb_0%,#f2f8f4_58%,#ffffff_100%)] shadow-[0_26px_76px_rgba(38,92,62,.08)]">
+        <div className="relative px-6 py-14 sm:px-10 sm:py-16 lg:px-14 lg:py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: .25 }}
+            transition={{ duration: .62 }}
+            className="relative z-20 mx-auto flex max-w-[900px] flex-col items-center text-center"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#34c759]/14 bg-white/86 px-3.5 py-2 text-[9px] font-semibold uppercase tracking-[.18em] text-[#248a3d] shadow-sm">
+              <Sparkles className="h-3.5 w-3.5" />
+              Our Work · 04
             </div>
 
-            {/* Mobile Content */}
-            <div className="p-4 text-left sm:hidden">
-              <p className="mb-2 text-[9px] font-semibold uppercase tracking-[0.24em] text-emerald-700">
-                Live Project
-              </p>
+            <h2 className="mt-6 text-[54px] font-semibold leading-[.92] tracking-[-.07em] text-[#1c1c1e] sm:text-[72px] lg:text-[86px]">
+              Fun Product
+            </h2>
 
-              <h2 className="text-xl font-semibold tracking-[-0.025em] text-slate-950">
-                Humans of Bangmod
-              </h2>
+            <p className="mt-5 max-w-[760px] text-[21px] font-medium leading-[1.08] tracking-[-.035em] text-[#4f5f70] sm:text-[28px]">
+              Chatlok — a warm digital space for stories, people, places, and memories.
+            </p>
 
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                A digital space for stories, people, and memories from Bangmod.
-              </p>
+            <p className="mt-4 max-w-[760px] text-sm leading-7 text-[#7d8997] sm:text-[15px]">
+              Built as a lighter, more human side of Buildifyx: a storytelling experience
+              that makes local voices easy to discover through a simple modern web product.
+            </p>
+          </motion.div>
 
-              <span className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#e8f3e9] px-4 py-2.5 text-xs font-semibold text-emerald-900 transition duration-300 group-hover:bg-[#dcebdd]">
-                View Project
-                <span aria-hidden="true">→</span>
-              </span>
+          <motion.div
+            initial={{ opacity: 0, y: 34, scale: .98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: .2 }}
+            transition={{ duration: .7, ease: [0.22, 1, 0.36, 1] }}
+            className="relative mx-auto mt-10 max-w-[1120px] sm:mt-12"
+          >
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-[330px] w-[880px] max-w-[94%] -translate-x-1/2 -translate-y-1/2 rounded-[50%] bg-[#72d99a]/16 blur-[90px]" />
+            <div className="relative overflow-hidden rounded-[22px] border border-white bg-white p-2.5 shadow-[0_30px_80px_rgba(45,74,101,.14)] sm:rounded-[30px]">
+              <motion.div
+                whileHover={{ scale: 1.008 }}
+                transition={{ duration: .35 }}
+                className="relative aspect-[16/9] overflow-hidden rounded-[16px] bg-[#eef4ef] sm:rounded-[22px]"
+              >
+                <Image
+                  src="/work/product.png"
+                  alt="Humans of Bangmod storytelling website"
+                  fill
+                  sizes="(max-width: 1024px) 92vw, 70vw"
+                  className="object-cover object-top"
+                />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent" />
+              </motion.div>
             </div>
+          </motion.div>
+
+          <div className="relative z-20 mx-auto mt-8 grid max-w-[1120px] gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {features.map(([Icon, title, desc], index) => {
+              const I = Icon as typeof BookOpen;
+              return (
+                <motion.div
+                  key={String(title)}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: .06 + index * .06 }}
+                  className="group rounded-[20px] border border-[#e1e9e4] bg-white/84 p-5 text-left shadow-[0_12px_30px_rgba(49,90,65,.045)] transition hover:-translate-y-1 hover:bg-white"
+                >
+                  <div className="grid h-11 w-11 place-items-center rounded-[14px] bg-[#34c759]/10 text-[#248a3d]">
+                    <I className="h-[19px] w-[19px]" />
+                  </div>
+                  <p className="mt-4 text-[13px] font-semibold text-[#1c1c1e]">{String(title)}</p>
+                  <p className="mt-1.5 text-[11px] leading-5 text-[#8e8e93]">{String(desc)}</p>
+                </motion.div>
+              );
+            })}
           </div>
-        </motion.a>
+
+          <div className="relative z-20 mt-7 flex justify-center">
+            <a
+              href="https://humansofbangmod.buildifyx.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-12 items-center gap-2 rounded-[15px] bg-[#248a3d] px-5 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(36,138,61,.20)] transition hover:-translate-y-0.5 hover:bg-[#2f9b48]"
+            >
+              View project
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
