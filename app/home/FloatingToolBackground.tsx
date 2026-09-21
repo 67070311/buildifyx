@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ComponentProps } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -30,6 +30,8 @@ function GmailClassicIcon(props: ComponentProps<"img">) {
       {...props}
       src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg"
       alt=""
+      loading="lazy"
+      decoding="async"
       draggable={false}
     />
   );
@@ -41,6 +43,8 @@ function InstagramClassicIcon(props: ComponentProps<"img">) {
       {...props}
       src="/home/instagram-classic.svg"
       alt=""
+      loading="lazy"
+      decoding="async"
       draggable={false}
     />
   );
@@ -200,7 +204,7 @@ export default function FloatingToolBackground({
 }: {
   variant?: "hero" | "cta";
 }) {
-  const slots = variant === "cta" ? ctaSlots : heroSlots;
+  const slots = useMemo(() => (variant === "cta" ? ctaSlots : heroSlots), [variant]);
   const [activeLogos, setActiveLogos] = useState(() =>
     slots.map((_, index) => index),
   );
@@ -227,7 +231,7 @@ export default function FloatingToolBackground({
     return () => {
       window.clearInterval(logoTimer);
     };
-  }, []);
+  }, [slots]);
 
   return (
     <div className={`pointer-events-none absolute inset-0 z-0 overflow-hidden ${variant === "cta" ? "rounded-[44px]" : "rounded-[30px]"}`}>
@@ -264,13 +268,14 @@ export default function FloatingToolBackground({
           <motion.div
             key={index}
             className={`group pointer-events-auto absolute z-30 cursor-pointer ${slot.className}`}
-            animate={{
+            whileInView={{
               x: xPath,
               y: yPath,
               rotate: rotatePath,
               opacity: [0.58, 0.72, 0.9, 1, 0.76, 0.92, 0.58],
               scale: scalePath,
             }}
+            viewport={{ amount: 0.05 }}
             transition={{
               duration: slot.duration,
               repeat: Infinity,

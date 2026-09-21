@@ -486,7 +486,10 @@ export default function TinyBuildifyJump() {
     return clamp(logicalWidth, GAME_WIDTH, 1800);
   }, [isTouch, viewportSize.height, viewportSize.width]);
 
-  gameViewWidthRef.current = gameViewWidth;
+  useEffect(() => {
+    gameViewWidthRef.current = gameViewWidth;
+  }, [gameViewWidth]);
+
   const bedroomPlayerXRef = useRef(9);
   const bedroomPlayerElementRef = useRef<HTMLDivElement | null>(null);
   const [bedroomPlayerX, setBedroomPlayerX] = useState(9);
@@ -909,9 +912,10 @@ export default function TinyBuildifyJump() {
         respawnAtCheckpoint();
       }
 
-      for (const monster of monstersRef.current) {
-        if (!monster.alive) continue;
+      const nextMonsters = monstersRef.current.map((currentMonster) => {
+        if (!currentMonster.alive) return currentMonster;
 
+        const monster = { ...currentMonster };
         monster.x += monster.speed * monster.direction * scale;
 
         if (monster.x <= monster.startX) {
@@ -924,7 +928,7 @@ export default function TinyBuildifyJump() {
           monster.direction = -1;
         }
 
-        if (!intersects(player, monster)) continue;
+        if (!intersects(player, monster)) return monster;
 
         const previousBottom = oldY + player.height;
         const stomped =
@@ -938,7 +942,10 @@ export default function TinyBuildifyJump() {
         } else {
           hurtPlayer();
         }
-      }
+
+        return monster;
+      });
+      monstersRef.current = nextMonsters;
 
       if (player.x >= WORLD_WIDTH - 370) {
         clearInput();
@@ -960,7 +967,7 @@ export default function TinyBuildifyJump() {
         Math.min(100, Math.floor((player.x / (WORLD_WIDTH - 400)) * 100)),
       );
     },
-    [clearInput, hurtPlayer, platforms, setGameStatus, updateCheckpoint],
+    [clearInput, hurtPlayer, platforms, respawnAtCheckpoint, setGameStatus, updateCheckpoint],
   );
 
   const rect = (

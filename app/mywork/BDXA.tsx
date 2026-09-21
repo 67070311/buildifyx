@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   TerminalSquare,
 } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const features = [
   [FileCode2, "Project files", "Read and edit the code that already lives in your workspace."],
@@ -23,6 +24,20 @@ const flow = [
 ];
 
 export default function BDXA() {
+  const { language } = useLanguage();
+  const th = language === "th";
+  const localizedFeatures = th ? [
+    [FileCode2, "ไฟล์โปรเจกต์", "อ่านและแก้ไขโค้ดที่อยู่ใน workspace ของคุณได้โดยตรง"],
+    [TerminalSquare, "เครื่องมือนักพัฒนา", "รันคำสั่งที่อนุญาตผ่าน permission layer เดียวกัน"],
+    [Laptop, "เครื่องของคุณ", "ทำงานต่อบนคอมพิวเตอร์และโปรเจกต์ที่คุณใช้อยู่แล้ว"],
+    [ShieldCheck, "ควบคุมในเครื่อง", "คำสั่งสำคัญยังอยู่ภายใต้สิทธิ์และกฎของอุปกรณ์คุณ"],
+  ] : features;
+  const localizedFlow = th ? [
+    ["01", "เชื่อมต่อ", "เชื่อมอุปกรณ์และเลือก workspace"],
+    ["02", "สั่งงาน", "คุยกับ ChatGPT ได้ตามปกติ"],
+    ["03", "ลงมือทำ", "bdxa ทำงานกับไฟล์และคำสั่งที่ได้รับอนุญาต"],
+  ] : flow;
+
   return (
     <section className="relative overflow-hidden bg-white px-4 pb-12 pt-[118px] sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[940px] bg-[radial-gradient(circle_at_50%_0%,rgba(56,148,255,.16),transparent_56%)]" />
@@ -54,11 +69,12 @@ export default function BDXA() {
               transition={{ duration: .45 }}
               src="/work/bdxa-logo.svg"
               alt="bdxa logo"
+              decoding="async"
               className="h-[68px] w-[68px] object-contain drop-shadow-[0_14px_24px_rgba(0,122,255,.16)] sm:h-[82px] sm:w-[82px]"
             />
 
             <div className="mt-4 inline-flex items-center rounded-full border border-[#007aff]/12 bg-white/80 px-3.5 py-2 text-[9px] font-semibold uppercase tracking-[.18em] text-[#007aff] shadow-sm backdrop-blur-xl">
-              Our Work · 01
+              {th ? "ผลงาน · 01" : "Our Work · 01"}
             </div>
 
             <h1 className="mt-6 text-[58px] font-semibold leading-[.9] tracking-[-.075em] text-[#14243b] sm:text-[78px] lg:text-[92px]">
@@ -66,12 +82,11 @@ export default function BDXA() {
             </h1>
 
             <p className="mt-5 max-w-[760px] text-[22px] font-medium leading-[1.08] tracking-[-.04em] text-[#31506f] sm:text-[29px]">
-              Give ChatGPT a safe bridge into your real workspace.
+              {th ? "เชื่อม ChatGPT เข้ากับ workspace จริงของคุณอย่างปลอดภัย" : "Give ChatGPT a safe bridge into your real workspace."}
             </p>
 
             <p className="mt-4 max-w-[760px] text-sm leading-7 text-[#718397] sm:text-[15px]">
-              bdxa connects Buildifyx Cloud to your computer so AI can work with approved
-              files and developer tools while local permission rules stay in control.
+              {th ? "bdxa เชื่อม Buildifyx Cloud เข้ากับคอมพิวเตอร์ เพื่อให้ AI ทำงานกับไฟล์และเครื่องมือนักพัฒนาที่ได้รับอนุญาต โดยสิทธิ์การควบคุมยังอยู่บนเครื่องของคุณ" : <>bdxa connects Buildifyx Cloud to your computer so AI can work with approved files and developer tools while local permission rules stay in control.</>}
             </p>
           </motion.div>
 
@@ -87,14 +102,15 @@ export default function BDXA() {
               <img
                 src="/work/bdxa/1.png"
                 alt="bdxa device management dashboard"
+                decoding="async"
                 className="block h-auto w-full select-none object-contain"
                 draggable={false}
               />
             </div>
           </motion.div>
 
-          <div className="relative z-20 mx-auto mt-8 grid max-w-[1120px] gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map(([Icon, title, desc], index) => {
+          <div className="relative z-20 mx-auto mt-8 grid max-w-[1120px] grid-cols-2 gap-3 lg:grid-cols-4">
+            {localizedFeatures.map(([Icon, title, desc], index) => {
               const I = Icon as typeof FileCode2;
               return (
                 <motion.div
@@ -103,7 +119,7 @@ export default function BDXA() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: .06 + index * .06 }}
-                  className="group rounded-[20px] border border-[#dce7f2] bg-white/82 p-5 text-left shadow-[0_12px_30px_rgba(44,83,126,.055)] backdrop-blur-xl transition hover:-translate-y-1 hover:bg-white"
+                  className="group rounded-[18px] border border-[#dce7f2] bg-white/82 p-3.5 text-left shadow-[0_12px_30px_rgba(44,83,126,.055)] backdrop-blur-xl sm:rounded-[20px] sm:p-5 transition hover:-translate-y-1 hover:bg-white"
                 >
                   <div className="grid h-11 w-11 place-items-center rounded-[14px] bg-[#007aff]/10 text-[#007aff]">
                     <I className="h-[19px] w-[19px]" />
@@ -116,7 +132,7 @@ export default function BDXA() {
           </div>
 
           <div className="relative z-20 mx-auto mt-5 grid max-w-[900px] gap-2 sm:grid-cols-3">
-            {flow.map(([num, title, desc], index) => (
+            {localizedFlow.map(([num, title, desc], index) => (
               <motion.div
                 key={num}
                 initial={{ opacity: 0, y: 10 }}
@@ -140,17 +156,17 @@ export default function BDXA() {
 
           <div className="relative z-20 mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
-              href="https://www.npmjs.com/package/@buildifyx/desktop-agent"
+              href="https://bdxa.buildifyx.com/"
               target="_blank"
               rel="noreferrer"
               className="inline-flex min-h-12 items-center gap-2 rounded-[15px] bg-[#007aff] px-5 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(0,122,255,.22)] transition hover:-translate-y-0.5 hover:bg-[#0a84ff]"
             >
-              View desktop agent
+              {th ? "ดู Desktop Agent" : "View desktop agent"}
               <ArrowUpRight className="h-4 w-4" />
             </a>
             <div className="inline-flex min-h-12 items-center gap-2 rounded-[15px] border border-[#dce7f2] bg-white/78 px-4 text-[11px] font-medium text-[#5f7185] backdrop-blur-xl">
               <ShieldCheck className="h-4 w-4 text-[#34c759]" />
-              Local permission control
+              {th ? "ควบคุมสิทธิ์จากเครื่องของคุณ" : "Local permission control"}
             </div>
           </div>
         </div>

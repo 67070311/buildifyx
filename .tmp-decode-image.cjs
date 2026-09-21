@@ -1,1 +1,0 @@
-const fs=require('fs'); const base='/Users/pimmaneenimitraporn/company/buildifyx'; const chunks=[1,2,3,4].map(i=>fs.readFileSync(`${base}/.tmp-img1-${i}`,'utf8')).join(''); fs.writeFileSync(`${base}/public/whyus/nature-birds.webp`, Buffer.from(chunks,'base64')); console.log(chunks.length, fs.statSync(`${base}/public/whyus/nature-birds.webp`).size);

@@ -7,17 +7,26 @@ import {
   BookOpen,
   Compass,
   MapPin,
-  Sparkles,
 } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const features = [
   [BookOpen, "Story-first", "Content feels personal, readable, and easy to explore."],
   [MapPin, "Local identity", "A digital archive built around real people and real places."],
   [Compass, "Easy discovery", "Move naturally between stories, people, and places."],
-  [Sparkles, "Living archive", "A modern web experience that keeps local voices visible."],
+  [Compass, "Living archive", "A modern web experience that keeps local voices visible."],
 ];
 
 export default function Product() {
+  const { language } = useLanguage();
+  const th = language === "th";
+  const localizedFeatures = th ? [
+    [BookOpen, "เล่าเรื่องเป็นหลัก", "เนื้อหาให้ความรู้สึกเป็นส่วนตัว อ่านง่าย และสำรวจต่อได้ง่าย"],
+    [MapPin, "ตัวตนของพื้นที่", "คลังดิจิทัลที่สร้างจากผู้คนและสถานที่จริง"],
+    [Compass, "ค้นพบได้ง่าย", "เชื่อมโยงระหว่างเรื่องราว ผู้คน และสถานที่ได้อย่างเป็นธรรมชาติ"],
+    [Compass, "คลังที่มีชีวิต", "ประสบการณ์เว็บสมัยใหม่ที่ช่วยให้เสียงของชุมชนยังถูกมองเห็น"],
+  ] : features;
+
   return (
     <section className="relative overflow-hidden bg-white px-4 pb-16 pt-10 sm:px-6 sm:pb-20 lg:px-8">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[860px] bg-[radial-gradient(circle_at_50%_8%,rgba(52,199,89,.12),transparent_58%)]" />
@@ -32,21 +41,19 @@ export default function Product() {
             className="relative z-20 mx-auto flex max-w-[900px] flex-col items-center text-center"
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-[#34c759]/14 bg-white/86 px-3.5 py-2 text-[9px] font-semibold uppercase tracking-[.18em] text-[#248a3d] shadow-sm">
-              <Sparkles className="h-3.5 w-3.5" />
-              Our Work · 04
+              {th ? "ผลงาน · 04" : "Our Work · 04"}
             </div>
 
             <h2 className="mt-6 text-[54px] font-semibold leading-[.92] tracking-[-.07em] text-[#1c1c1e] sm:text-[72px] lg:text-[86px]">
-              Fun Product
+              {th ? "โปรเจกต์สนุก ๆ" : "Fun Product"}
             </h2>
 
             <p className="mt-5 max-w-[760px] text-[21px] font-medium leading-[1.08] tracking-[-.035em] text-[#4f5f70] sm:text-[28px]">
-              Chatlok — a warm digital space for stories, people, places, and memories.
+              {th ? "Chatlok — พื้นที่ดิจิทัลสำหรับเรื่องราว ผู้คน สถานที่ และความทรงจำ" : "Chatlok — a warm digital space for stories, people, places, and memories."}
             </p>
 
             <p className="mt-4 max-w-[760px] text-sm leading-7 text-[#7d8997] sm:text-[15px]">
-              Built as a lighter, more human side of Buildifyx: a storytelling experience
-              that makes local voices easy to discover through a simple modern web product.
+              {th ? "อีกด้านที่เป็นกันเองของ Buildifyx ถ่ายทอดเรื่องราวของชุมชนผ่านเว็บสมัยใหม่ที่เรียบง่ายและค้นพบเรื่องราวได้สะดวก" : <>Built as a lighter, more human side of Buildifyx: a storytelling experience that makes local voices easy to discover through a simple modern web product.</>}
             </p>
           </motion.div>
 
@@ -76,8 +83,8 @@ export default function Product() {
             </div>
           </motion.div>
 
-          <div className="relative z-20 mx-auto mt-8 grid max-w-[1120px] gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map(([Icon, title, desc], index) => {
+          <div className="relative z-20 mx-auto mt-8 grid max-w-[1120px] grid-cols-2 gap-3 lg:grid-cols-4">
+            {localizedFeatures.map(([Icon, title, desc], index) => {
               const I = Icon as typeof BookOpen;
               return (
                 <motion.div
@@ -86,7 +93,7 @@ export default function Product() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: .06 + index * .06 }}
-                  className="group rounded-[20px] border border-[#e1e9e4] bg-white/84 p-5 text-left shadow-[0_12px_30px_rgba(49,90,65,.045)] transition hover:-translate-y-1 hover:bg-white"
+                  className="group rounded-[18px] border border-[#e1e9e4] bg-white/84 p-3.5 text-left shadow-[0_12px_30px_rgba(49,90,65,.045)] sm:rounded-[20px] sm:p-5 transition hover:-translate-y-1 hover:bg-white"
                 >
                   <div className="grid h-11 w-11 place-items-center rounded-[14px] bg-[#34c759]/10 text-[#248a3d]">
                     <I className="h-[19px] w-[19px]" />
@@ -105,7 +112,7 @@ export default function Product() {
               rel="noreferrer"
               className="inline-flex min-h-12 items-center gap-2 rounded-[15px] bg-[#248a3d] px-5 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(36,138,61,.20)] transition hover:-translate-y-0.5 hover:bg-[#2f9b48]"
             >
-              View project
+              {th ? "ดูโปรเจกต์" : "View project"}
               <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>

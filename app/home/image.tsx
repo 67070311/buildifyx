@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { motion, useInView, useMotionValue, useTransform, type MotionValue } from "framer-motion";
 import Link from "next/link";
 
@@ -114,13 +114,13 @@ function CartoonFace({
   time: MotionValue<number>;
   active: boolean;
 }) {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const isFemale = person.gender === "female";
   const { x, y, scale, rotate } = useSmoothOrbit(index, time);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!mounted) return null;
 

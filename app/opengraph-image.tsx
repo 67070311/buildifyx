@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Buildifyx software development, web, AI and data studio";
+export const alt = "Buildifyx software development, AI, web and data studio in Bangkok";
 export const size = {
   width: 1200,
   height: 630,
@@ -12,7 +12,7 @@ export default function OpenGraphImage() {
     (
       <div
         style={{
-          background: "#f7f7ff",
+          background: "linear-gradient(135deg, #f7fbff 0%, #eef6ff 48%, #f8fbff 100%)",
           color: "#111111",
           width: "100%",
           height: "100%",
@@ -36,7 +36,7 @@ export default function OpenGraphImage() {
               width: 54,
               height: 54,
               borderRadius: 16,
-              background: "#5552D9",
+              background: "#2f7fff",
               display: "flex",
             }}
           />
@@ -54,17 +54,17 @@ export default function OpenGraphImage() {
               fontWeight: 800,
             }}
           >
-            Software built for real business impact.
+            Software, AI & digital products built for real use.
           </div>
           <div
             style={{
               display: "flex",
-              color: "#5552D9",
+              color: "#2f7fff",
               fontSize: 31,
               fontWeight: 600,
             }}
           >
-            Web Development · AI Systems · Data · UI/UX · SaaS
+            Web · App · AI · Data · UI/UX · SaaS
           </div>
         </div>
 

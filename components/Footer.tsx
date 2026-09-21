@@ -23,7 +23,7 @@ const copy = {
       ["หน้าหลัก", "/"],
       ["ทำไมต้องเรา", "/whyus"],
       ["ผลงาน", "/mywork"],
-      ["ทดลอง", "/playground"],
+      ["สนามเด็กเล่น", "/playground"],
       ["ติดต่อ", "/Contact"],
     ],
     location: "กรุงเทพฯ ประเทศไทย",
@@ -121,8 +121,8 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col gap-2 pt-6 text-[11px] text-[#9aa6b8] sm:flex-row sm:items-center sm:justify-between">
-          <span>© 2026 Buildifyx. All rights reserved.</span>
-          <span>Bangkok · Thailand · Worldwide</span>
+          <span>{language === "th" ? "© 2026 Buildifyx สงวนลิขสิทธิ์" : "© 2026 Buildifyx. All rights reserved."}</span>
+          <span>{language === "th" ? "กรุงเทพฯ · ประเทศไทย · ทั่วโลก" : "Bangkok · Thailand · Worldwide"}</span>
         </div>
       </div>
     </footer>

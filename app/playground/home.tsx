@@ -3,21 +3,22 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowLeft,
   ArrowRight,
   Brain,
+  ChevronLeft,
+  ChevronRight,
   Clock3,
   Compass,
   Gamepad2,
+  LockKeyhole,
   MapPin,
   Play,
-  LockKeyhole,
   Shirt,
-  Sparkles,
   Star,
 } from "lucide-react";
-import { motion, useInView, type Variants } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const games = [
   {
@@ -32,8 +33,8 @@ const games = [
     imageAlt: "Cute jumping arcade game",
     status: "Ready",
     time: "3 min",
-    gradient: "from-[#d88725] via-[#f4a73d] to-[#ffc65c]",
-    glow: "shadow-[0_24px_70px_rgba(244,167,61,0.22)]",
+    accent: "#f59e0b",
+    soft: "#fff7df",
     available: true,
     isNew: true,
   },
@@ -44,13 +45,13 @@ const games = [
     href: "/playground?game=dress",
     category: "Fashion",
     icon: Shirt,
-    accentIcon: Sparkles,
+    accentIcon: Shirt,
     image: "/playgroud/game-dress.png",
     imageAlt: "Cute character dress-up game",
     status: "Ready",
     time: "5 min",
-    gradient: "from-[#dc4d91] via-[#ee67a4] to-[#ff82b8]",
-    glow: "shadow-[0_24px_70px_rgba(238,103,164,0.22)]",
+    accent: "#ec4899",
+    soft: "#fff0f7",
     available: true,
     isNew: false,
   },
@@ -66,8 +67,8 @@ const games = [
     imageAlt: "Travel destination spinner game",
     status: "Ready",
     time: "2 min",
-    gradient: "from-[#3f43dd] via-[#595cef] to-[#6e75ff]",
-    glow: "shadow-[0_24px_70px_rgba(85,88,239,0.24)]",
+    accent: "#6366f1",
+    soft: "#f1f2ff",
     available: true,
     isNew: false,
   },
@@ -78,786 +79,310 @@ const games = [
     href: "",
     category: "Puzzle",
     icon: Brain,
-    accentIcon: Sparkles,
-    image: "/playground/memory-match.png",
+    accentIcon: Brain,
+    image: "",
     imageAlt: "Memory card matching game",
     status: "Coming soon",
     time: "4 min",
-    gradient: "from-[#29966f] via-[#43b489] to-[#6dcba4]",
-    glow: "shadow-[0_24px_70px_rgba(67,180,137,0.2)]",
+    accent: "#10b981",
+    soft: "#ecfdf5",
     available: false,
     isNew: false,
   },
 ];
 
-const containerVariants: Variants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.08,
-    },
-  },
-};
-
-const fadeUpVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 32,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
-
-const cardVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 45,
-    scale: 0.96,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.65,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
-
 export default function PlaygroundHome() {
-  const sliderRef = useRef<HTMLDivElement>(null);
+  const { language } = useLanguage();
+  const th = language === "th";
+  const t = {
+    badge: th ? "สนามเด็กเล่น Buildifyx" : "Buildifyx Playground",
+    titleA: th ? "เกมเล็ก ๆ" : "Small games.",
+    titleB: th ? "พักสมองสั้น ๆ" : "Big little breaks.",
+    lead: th ? "พักจากงานสักครู่ เลือกมินิเกม แล้วสนุกกับมุมเล็ก ๆ ที่สร้างมาเพื่อความอยากรู้อยากลอง ความคิดสร้างสรรค์ และความสนุก" : "Take a quick break, choose a mini game, and enjoy a playful corner made for curiosity, creativity, and fun.",
+    explore: th ? "ดูเกมทั้งหมด" : "Explore games",
+    count: th ? "มี 4 มินิเกมให้ลอง" : "4 mini games to explore",
+    pick: th ? "เลือกเกมต่อไปของคุณ" : "Pick your next game",
+    all: th ? "เกมทั้งหมด" : "All Games",
+    sub: th ? "มินิเกมเบา ๆ สำหรับพักสั้น ๆ ระหว่างทำงาน" : "Quick, lightweight games made for short breaks between work.",
+    ready: th ? "พร้อมเล่น" : "Ready",
+    play: th ? "เล่น" : "Play",
+    soon: th ? "เร็ว ๆ นี้" : "Soon",
+    mini: th ? "มินิเกม" : "Mini game",
+  };
   const heroRef = useRef<HTMLDivElement>(null);
-  const gamesRef = useRef<HTMLElement>(null);
+  const gamesRowRef = useRef<HTMLDivElement>(null);
   const heroActive = useInView(heroRef, { amount: 0.05 });
-  const gamesActive = useInView(gamesRef, { amount: 0.05 });
+
+  const scrollToGames = () => {
+    document.getElementById("all-games")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const scrollGames = (direction: "left" | "right") => {
-    const slider = sliderRef.current;
+    const row = gamesRowRef.current;
+    if (!row) return;
 
-    if (!slider) return;
-
-    const cardWidth =
-      slider.querySelector<HTMLElement>("[data-game-card]")?.offsetWidth ?? 300;
-
-    slider.scrollBy({
-      left: direction === "left" ? -(cardWidth + 24) : cardWidth + 24,
+    const amount = Math.max(260, row.clientWidth * 0.82);
+    row.scrollBy({
+      left: direction === "left" ? -amount : amount,
       behavior: "smooth",
     });
   };
 
-  const scrollToGames = () => {
-    document
-      .getElementById("all-games")
-      ?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#09091d] px-5 pb-24 pt-32 text-white sm:px-8 lg:px-12">
-      {/* Background */}
-      <div className="pointer-events-none absolute inset-0">
-        <motion.div
-          animate={{
-            x: [0, 28, 0],
-            y: [0, 20, 0],
-            scale: [1, 1.08, 1],
-          }}
-          transition={{
-            duration: 12,
-            repeat: heroActive ? Infinity : 0,
-            ease: "easeInOut",
-          }}
-          className="absolute -left-44 top-20 h-[430px] w-[430px] rounded-full bg-purple-600/20 blur-[150px]"
-        />
+    <main className="relative min-h-screen overflow-hidden bg-white px-4 pb-20 pt-[118px] sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[920px] bg-[radial-gradient(circle_at_50%_15%,rgba(99,102,241,.12),transparent_55%)]" />
 
-        <motion.div
-          animate={{
-            x: [0, -30, 0],
-            y: [0, 24, 0],
-            scale: [1, 1.07, 1],
-          }}
-          transition={{
-            duration: 13,
-            repeat: heroActive ? Infinity : 0,
-            ease: "easeInOut",
-          }}
-          className="absolute -right-40 top-24 h-[450px] w-[450px] rounded-full bg-blue-500/20 blur-[160px]"
-        />
-
-        <motion.div
-          animate={{
-            scale: [1, 1.12, 1],
-            opacity: [0.45, 0.8, 0.45],
-          }}
-          transition={{
-            duration: 8,
-            repeat: heroActive ? Infinity : 0,
-            ease: "easeInOut",
-          }}
-          className="absolute bottom-0 left-1/2 h-[360px] w-[540px] -translate-x-1/2 rounded-full bg-pink-500/10 blur-[160px]"
-        />
-
-        <motion.div
-          animate={{
-            backgroundPosition: ["0px 0px", "30px 30px"],
-          }}
-          transition={{
-            duration: 14,
-            repeat: heroActive ? Infinity : 0,
-            ease: "linear",
-          }}
-          className="absolute inset-0 opacity-[0.15]"
+      <section
+        ref={heroRef}
+        className="relative mx-auto max-w-[1440px] overflow-hidden rounded-[38px] border border-[#e3e4fb] bg-[radial-gradient(circle_at_18%_12%,rgba(244,114,182,.13),transparent_28%),radial-gradient(circle_at_82%_16%,rgba(96,165,250,.14),transparent_30%),linear-gradient(180deg,#fbfbff_0%,#f5f4ff_55%,#ffffff_100%)] shadow-[0_34px_100px_rgba(77,69,150,.10)]"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[.18]"
           style={{
             backgroundImage:
-              "radial-gradient(circle, rgba(255,255,255,0.65) 1px, transparent 1px)",
+              "radial-gradient(circle, rgba(99,102,241,.28) 1px, transparent 1px)",
             backgroundSize: "30px 30px",
+            maskImage: "linear-gradient(to bottom, black, transparent 78%)",
           }}
         />
-      </div>
 
-      <section className="relative z-10 mx-auto max-w-7xl">
-        {/* Hero */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          ref={heroRef}
-          className="mb-20 grid min-h-[430px] items-center gap-12 lg:grid-cols-[1.08fr_0.92fr]"
-        >
-          {/* Hero content */}
-          <div className="max-w-3xl">
+        <div className="relative px-5 py-8 sm:px-10 sm:py-16 lg:px-14 lg:py-20">
+          <div className="grid items-center gap-2 sm:gap-8 lg:grid-cols-[1.05fr_.95fr] lg:gap-12">
             <motion.div
-              variants={fadeUpVariants}
-              whileHover={{
-                y: -3,
-                scale: 1.02,
-              }}
-              className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/65 backdrop-blur-md"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: .65, ease: [0.22, 1, 0.36, 1] }}
+              className="mx-auto flex max-w-[720px] flex-col items-center text-center lg:mx-0 lg:items-start lg:text-left"
             >
-              <motion.span
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#6366f1]/12 bg-white/80 px-3.5 py-2 text-[9px] font-semibold uppercase tracking-[.18em] text-[#6366f1] shadow-sm backdrop-blur-xl">
+                <Gamepad2 className="h-4 w-4" />
+                {t.badge}
+              </div>
+
+              <h1 className={`mt-6 font-semibold text-[#17172b] ${th ? "text-[38px] leading-[1.18] tracking-[-.015em] sm:text-[54px] lg:text-[64px]" : "text-[50px] leading-[.92] tracking-[-.07em] sm:text-[68px] lg:text-[78px] xl:text-[86px]"}`}>
+                {t.titleA}
+                <span className={`mt-1 block bg-[linear-gradient(90deg,#6366f1,#ec4899,#f59e0b)] bg-clip-text text-transparent ${th ? "whitespace-nowrap" : ""}`}>
+                  {t.titleB}
+                </span>
+              </h1>
+
+              <p className="mt-5 max-w-[650px] text-sm leading-7 text-[#6f7088] sm:text-[16px]">
+                {t.lead}
+              </p>
+
+              <div className="mt-7 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+                <button
+                  type="button"
+                  onClick={scrollToGames}
+                  className="inline-flex min-h-12 items-center gap-2 rounded-[15px] bg-[#17172b] px-5 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(23,23,43,.20)] transition hover:-translate-y-0.5 hover:bg-[#2a2a45]"
+                >
+                  {t.explore}
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+
+                <div className="inline-flex min-h-12 items-center gap-2 rounded-[15px] border border-[#dedff3] bg-white/72 px-4 text-[11px] font-medium text-[#71728a] backdrop-blur-xl">
+                  {t.count}
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30, scale: .96 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: .78, delay: .08, ease: [0.22, 1, 0.36, 1] }}
+              className="relative mx-auto flex min-h-[220px] w-full max-w-[560px] items-center justify-center sm:min-h-[380px] lg:min-h-[470px]"
+            >
+              <motion.div
                 animate={{
-                  rotate: [0, -8, 8, 0],
+                  scale: [1, 1.08, 1],
+                  opacity: [0.5, 0.85, 0.5],
                 }}
                 transition={{
-                  duration: 3,
+                  duration: 6,
                   repeat: heroActive ? Infinity : 0,
                   ease: "easeInOut",
                 }}
-              >
-                <Gamepad2 size={15} />
-              </motion.span>
-              Buildifyx Playground
-            </motion.div>
-
-            <motion.h1
-              variants={fadeUpVariants}
-              className="text-5xl font-black leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl xl:text-[82px]"
-            >
-              Small games.
-              <motion.span
-                animate={{
-                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                }}
-                transition={{
-                  duration: 7,
-                  repeat: heroActive ? Infinity : 0,
-                  ease: "linear",
-                }}
-                className="mt-2 block bg-[linear-gradient(90deg,#fde047,#f472b6,#c084fc,#fde047)] bg-[length:220%_220%] bg-clip-text text-transparent"
-              >
-                Big little breaks.
-              </motion.span>
-            </motion.h1>
-
-            <motion.p
-              variants={fadeUpVariants}
-              className="mt-7 max-w-2xl text-sm leading-7 text-white/55 sm:text-base lg:text-lg lg:leading-8"
-            >
-              Take a quick break, choose a game, and enjoy a playful space
-              designed for curiosity, creativity, and fun.
-            </motion.p>
-
-            <motion.div
-              variants={fadeUpVariants}
-              className="mt-8 flex flex-wrap items-center gap-4"
-            >
-              <motion.button
-                type="button"
-                onClick={scrollToGames}
-                whileHover={{
-                  y: -4,
-                  scale: 1.04,
-                }}
-                whileTap={{
-                  scale: 0.97,
-                }}
-                className="site-cta-light group"
-              >
-                Explore games
-                <motion.span
-                  className="inline-flex"
-                  animate={{
-                    x: [0, 4, 0],
-                  }}
-                  transition={{
-                    duration: 1.8,
-                    repeat: heroActive ? Infinity : 0,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <ArrowRight size={17} />
-                </motion.span>
-              </motion.button>
+                className="absolute h-[70%] w-[70%] rounded-full bg-[#8b5cf6]/16 blur-[90px]"
+              />
 
               <motion.div
-                whileHover={{
-                  x: 4,
+                animate={{ y: [0, -8, 0] }}
+                transition={{
+                  duration: 5.5,
+                  repeat: heroActive ? Infinity : 0,
+                  ease: "easeInOut",
                 }}
-                className="flex items-center gap-2 text-sm text-white/45"
+                className="relative z-10 -mt-10 w-[112%] max-w-[500px] sm:mt-0 sm:w-full"
               >
-                <motion.span
-                  animate={{
-                    rotate: [0, 12, -12, 0],
-                    scale: [1, 1.08, 1],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: heroActive ? Infinity : 0,
-                    ease: "easeInOut",
-                  }}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.05]"
-                >
-                  <Sparkles size={16} />
-                </motion.span>
-                Four mini games to explore
+                <Image
+                  src="/playgroud/Game (1).gif"
+                  alt="Buildifyx Playground illustration"
+                  width={720}
+                  height={720}
+                  priority
+                  unoptimized
+                  className="h-auto w-full object-contain drop-shadow-[0_28px_50px_rgba(63,48,125,.20)]"
+                />
               </motion.div>
             </motion.div>
           </div>
 
-          {/* Desktop hero image */}
-          <motion.div
-            variants={fadeUpVariants}
-            className="relative hidden min-h-[420px] items-center justify-center lg:flex"
-          >
-            <motion.div
-              animate={{
-                scale: [1, 1.12, 1],
-                opacity: [0.5, 0.85, 0.5],
-              }}
-              transition={{
-                duration: 5,
-                repeat: heroActive ? Infinity : 0,
-                ease: "easeInOut",
-              }}
-              className="absolute h-[380px] w-[380px] rounded-full bg-purple-500/20 blur-[110px]"
-            />
+          <section id="all-games" className="relative z-10 mx-auto mt-6 max-w-[1180px] scroll-mt-28 sm:mt-10">
+            <div className="mb-6 flex flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-left">
+              <div>
+                <p className="text-[9px] font-semibold uppercase tracking-[.18em] text-[#8a8ba6]">
+                  {t.pick}
+                </p>
+                <h2 className="mt-1 text-3xl font-semibold tracking-[-.04em] text-[#17172b] sm:text-4xl">
+                  {t.all}
+                </h2>
+              </div>
 
-            <motion.div
-              animate={{
-                scale: [1.08, 1, 1.08],
-                opacity: [0.4, 0.7, 0.4],
-              }}
-              transition={{
-                duration: 6,
-                repeat: heroActive ? Infinity : 0,
-                ease: "easeInOut",
-              }}
-              className="absolute h-[280px] w-[280px] rounded-full bg-blue-400/15 blur-[90px]"
-            />
+              <div className="flex flex-col items-center gap-3 sm:items-end">
+                <p className="max-w-[360px] text-xs leading-5 text-[#8b8ca4] sm:text-right">
+                  {t.sub}
+                </p>
 
-            <motion.div
-              animate={{
-                y: [0, -12, 0],
-                opacity: [0.6, 1, 0.6],
-                scale: [1, 1.25, 1],
-              }}
-              transition={{
-                duration: 2.8,
-                repeat: heroActive ? Infinity : 0,
-                ease: "easeInOut",
-              }}
-              className="absolute left-8 top-16 h-3 w-3 rounded-full bg-yellow-300 shadow-[0_0_18px_rgba(253,224,71,0.8)]"
-            />
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => scrollGames("left")}
+                    aria-label="Previous games"
+                    className="grid h-10 w-10 place-items-center rounded-full border border-[#dedff0] bg-white text-[#303045] shadow-[0_8px_22px_rgba(54,52,102,.08)] transition hover:-translate-y-0.5 hover:border-[#cfd0e8] hover:bg-[#f8f8fd] active:scale-95"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
 
-            <motion.div
-              animate={{
-                y: [0, 10, 0],
-                opacity: [0.5, 1, 0.5],
-                scale: [1, 1.3, 1],
-              }}
-              transition={{
-                duration: 3.4,
-                repeat: heroActive ? Infinity : 0,
-                ease: "easeInOut",
-              }}
-              className="absolute right-12 top-12 h-2 w-2 rounded-full bg-pink-400 shadow-[0_0_18px_rgba(244,114,182,0.8)]"
-            />
+                  <button
+                    type="button"
+                    onClick={() => scrollGames("right")}
+                    aria-label="Next games"
+                    className="grid h-10 w-10 place-items-center rounded-full bg-[#17172b] text-white shadow-[0_10px_24px_rgba(23,23,43,.16)] transition hover:-translate-y-0.5 hover:bg-[#2a2a45] active:scale-95"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
 
-            <motion.div
-              animate={{
-                x: [0, 10, 0],
-                opacity: [0.6, 1, 0.6],
-              }}
-              transition={{
-                duration: 3,
-                repeat: heroActive ? Infinity : 0,
-                ease: "easeInOut",
-              }}
-              className="absolute bottom-16 left-20 h-2.5 w-2.5 rounded-full bg-blue-400 shadow-[0_0_18px_rgba(96,165,250,0.8)]"
-            />
-
-            <motion.div
-              animate={{
-                y: [0, -12, 0],
-                rotate: [-1.5, 1.5, -1.5],
-              }}
-              transition={{
-                duration: 5.5,
-                repeat: heroActive ? Infinity : 0,
-                ease: "easeInOut",
-              }}
-              whileHover={{
-                scale: 1.04,
-                rotate: 1,
-              }}
-              className="relative z-10 w-full max-w-[520px]"
+            <div
+              ref={gamesRowRef}
+              className="flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-3 pr-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
-              <Image
-                src="/playgroud/Game (1).gif"
-                alt="Buildifyx Playground illustration"
-                width={520}
-                height={520}
-                priority
-                unoptimized
-                className="h-auto w-full object-contain drop-shadow-[0_35px_70px_rgba(0,0,0,0.35)]"
-              />
-            </motion.div>
-          </motion.div>
+              {games.map((game, index) => {
+                const GameIcon = game.icon;
+                const AccentIcon = game.accentIcon;
 
-          {/* Mobile hero image */}
-          <motion.div
-            variants={fadeUpVariants}
-            className="relative flex min-h-[280px] items-center justify-center lg:hidden"
-          >
-            <motion.div
-              animate={{
-                scale: [1, 1.12, 1],
-                opacity: [0.5, 0.8, 0.5],
-              }}
-              transition={{
-                duration: 5,
-                repeat: heroActive ? Infinity : 0,
-                ease: "easeInOut",
-              }}
-              className="absolute h-64 w-64 rounded-full bg-purple-500/20 blur-[90px]"
-            />
-
-            <motion.div
-              animate={{
-                y: [0, -10, 0],
-                rotate: [-1, 1, -1],
-              }}
-              transition={{
-                duration: 5,
-                repeat: heroActive ? Infinity : 0,
-                ease: "easeInOut",
-              }}
-              className="relative z-10 w-full max-w-[340px]"
-            >
-              <Image
-                src="/playgroud/Game (1).gif"
-                alt="Buildifyx Playground illustration"
-                width={380}
-                height={380}
-                priority
-                unoptimized
-                className="h-auto w-full object-contain"
-              />
-            </motion.div>
-          </motion.div>
-        </motion.div>
-
-        {/* Games */}
-        <motion.section
-          ref={gamesRef}
-          id="all-games"
-          initial={{
-            opacity: 0,
-            y: 50,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-            margin: "-100px",
-          }}
-          transition={{
-            duration: 0.75,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="scroll-mt-28"
-        >
-          <div className="mb-7 flex items-end justify-between gap-5">
-            <motion.div
-              initial={{
-                opacity: 0,
-                x: -25,
-              }}
-              whileInView={{
-                opacity: 1,
-                x: 0,
-              }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.6,
-              }}
-            >
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/40">
-                Pick your next game
-              </p>
-
-              <h2 className="text-3xl font-black tracking-tight sm:text-4xl">
-                All Games
-              </h2>
-            </motion.div>
-
-            <motion.div
-              initial={{
-                opacity: 0,
-                x: 25,
-              }}
-              whileInView={{
-                opacity: 1,
-                x: 0,
-              }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.6,
-              }}
-              className="flex items-center gap-3"
-            >
-              <motion.button
-                type="button"
-                onClick={() => scrollGames("left")}
-                aria-label="Scroll games left"
-                whileHover={{
-                  scale: 1.08,
-                  x: -3,
-                }}
-                whileTap={{
-                  scale: 0.94,
-                }}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white transition-colors hover:bg-white hover:text-[#141428]"
-              >
-                <ArrowLeft size={18} />
-              </motion.button>
-
-              <motion.button
-                type="button"
-                onClick={() => scrollGames("right")}
-                aria-label="Scroll games right"
-                whileHover={{
-                  scale: 1.08,
-                  x: 3,
-                }}
-                whileTap={{
-                  scale: 0.94,
-                }}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#141428] transition-colors hover:bg-white/85"
-              >
-                <ArrowRight size={18} />
-              </motion.button>
-            </motion.div>
-          </div>
-
-          {/* Horizontal slider */}
-          <motion.div
-            ref={sliderRef}
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{
-              once: true,
-              margin: "-60px",
-            }}
-            className="scrollbar-hide flex snap-x snap-mandatory gap-6 overflow-x-auto pb-12"
-          >
-            {games.map((game, index) => {
-              const GameIcon = game.icon;
-              const AccentIcon = game.accentIcon;
-
-              const card = (
-                <motion.article
-                  data-game-card
-                  variants={cardVariants}
-                  whileHover={
-                    game.available
-                      ? {
-                          y: -10,
-                          scale: 1.02,
-                        }
-                      : undefined
-                  }
-                  transition={{
-                    type: "spring",
-                    stiffness: 250,
-                    damping: 20,
-                    delay: index * 0.04,
-                  }}
-                  className={`group relative w-[78vw] max-w-[310px] overflow-hidden rounded-[22px] border border-white/10 bg-[#15152c] ${game.glow} sm:w-[290px] ${
-                    game.available ? "hover:border-white/20" : ""
-                  }`}
-                >
-                  {/* Cover image */}
-                  <div className="relative aspect-[1.05/1] w-full overflow-hidden bg-[#202044]">
-                    {game.id === 4 ? (
-                      <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,#34345d_0%,#222244_48%,#15152d_100%)]">
-                        <motion.div
-                          animate={{
-                            y: [0, -7, 0],
-                            rotate: [0, -2, 2, 0],
-                            scale: [1, 1.04, 1],
-                          }}
-                          transition={{
-                            duration: 3.2,
-                            repeat: gamesActive ? Infinity : 0,
-                            ease: "easeInOut",
-                          }}
-                          className="relative flex h-28 w-28 items-center justify-center rounded-[30px] border border-white/15 bg-white/[0.08] text-white/75 shadow-[0_24px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl"
-                        >
-                          <div className="absolute inset-3 rounded-[22px] border border-white/10" />
-                          <LockKeyhole size={50} strokeWidth={1.8} />
-                        </motion.div>
-
-                        <div className="absolute bottom-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-bold uppercase tracking-[0.22em] text-white/35">
-                          Locked game
-                        </div>
-                      </div>
-                    ) : (
-                      <motion.div
-                        whileHover={
-                          game.available
-                            ? {
-                                scale: 1.1,
-                              }
-                            : undefined
-                        }
-                        transition={{
-                          duration: 0.7,
-                          ease: [0.22, 1, 0.36, 1],
-                        }}
-                        className="absolute inset-0"
-                      >
+                const card = (
+                  <motion.article
+                    initial={{ opacity: 0, y: 24, scale: .97 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true, amount: .2 }}
+                    transition={{ duration: .52, delay: index * .06 }}
+                    whileHover={game.available ? { y: -8, scale: 1.012 } : undefined}
+                    className="group h-full overflow-hidden rounded-[24px] border border-[#e7e7f2] bg-white shadow-[0_18px_45px_rgba(54,52,102,.08)] transition hover:border-[#d9d9ea]"
+                  >
+                    <div
+                      className="relative aspect-[1.12/1] overflow-hidden"
+                      style={{ backgroundColor: game.soft }}
+                    >
+                      {game.available ? (
                         <Image
                           src={game.image}
                           alt={game.imageAlt}
                           fill
-                          sizes="(max-width: 640px) 78vw, 290px"
-                          className="object-cover"
+                          sizes="(max-width: 640px) 92vw, (max-width: 1280px) 45vw, 25vw"
+                          className="object-cover transition duration-500 group-hover:scale-[1.04]"
                         />
-                      </motion.div>
-                    )}
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div
+                            className="grid h-24 w-24 place-items-center rounded-[28px] border border-white bg-white/70 shadow-[0_18px_40px_rgba(38,80,60,.10)] backdrop-blur"
+                            style={{ color: game.accent }}
+                          >
+                            <LockKeyhole className="h-10 w-10" strokeWidth={1.8} />
+                          </div>
+                        </div>
+                      )}
 
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#15152c] via-transparent to-black/5" />
+                      <div className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-white/70 bg-white/82 px-2.5 py-1.5 text-[9px] font-semibold uppercase tracking-[.13em] text-[#303045] shadow-sm backdrop-blur">
+                        <GameIcon className="h-3 w-3" />
+                        {th ? ({ 1: "อาร์เคด", 2: "แฟชั่น", 3: "ท่องเที่ยว", 4: "พัซเซิล" } as Record<number, string>)[game.id] : game.category}
+                      </div>
 
-                    {/* Category */}
-                    <motion.div
-                      whileHover={{
-                        scale: 1.04,
-                      }}
-                      className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/30 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.18em] text-white backdrop-blur-md"
-                    >
-                      <GameIcon size={12} />
-                      {game.category}
-                    </motion.div>
+                      {game.isNew && (
+                        <div className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-[#17172b] px-2.5 py-1.5 text-[8px] font-bold uppercase tracking-[.12em] text-white">
+                          New
+                        </div>
+                      )}
 
-                    {game.isNew && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.8, y: -8 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        transition={{ duration: 0.45, delay: 0.25 }}
-                        className="absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-[#fde047] px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.16em] text-[#17172b] shadow-[0_10px_25px_rgba(253,224,71,0.28)]"
-                      >
-                        <Sparkles size={11} />
-                        New Game
-                      </motion.div>
-                    )}
+                      <div className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1.5 text-[9px] font-semibold text-[#303045] shadow-sm backdrop-blur">
+                        <Clock3 className="h-3 w-3" />
+                        {game.time}
+                      </div>
+                    </div>
 
-                    {/* Duration */}
-                    <motion.div
-                      animate={{
-                        y: [0, -3, 0],
-                      }}
-                      transition={{
-                        duration: 2.5 + index * 0.3,
-                        repeat: gamesActive ? Infinity : 0,
-                        ease: "easeInOut",
-                      }}
-                      className="absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[10px] font-bold text-[#17172b] shadow-lg"
-                    >
-                      <Clock3 size={12} />
-                      {game.time}
-                    </motion.div>
-                  </div>
-
-                  {/* Card information */}
-                  <div
-                    className={`relative bg-gradient-to-br px-5 pb-5 pt-4 ${game.gradient}`}
-                  >
-                    <div className="pointer-events-none absolute inset-0 bg-[#121229]/55" />
-
-                    <div className="relative z-10">
-                      <div className="mb-3 flex items-start justify-between gap-4">
+                    <div className="p-4 sm:p-5">
+                      <div className="flex items-start justify-between gap-4">
                         <div>
-                          <p className="mb-1 text-[10px] font-medium uppercase tracking-[0.16em] text-white/45">
-                            Mini game #{String(game.id).padStart(2, "0")}
+                          <p className="text-[9px] font-semibold uppercase tracking-[.15em] text-[#a0a1b3]">
+                            {t.mini} #{String(game.id).padStart(2, "0")}
                           </p>
-
-                          <h3 className="text-xl font-black tracking-tight text-white">
+                          <h3 className="mt-1 text-[19px] font-semibold tracking-[-.03em] text-[#17172b]">
                             {game.title}
                           </h3>
                         </div>
 
-                        <motion.span
-                          animate={{
-                            rotate: [0, 8, -8, 0],
-                            y: [0, -3, 0],
-                          }}
-                          transition={{
-                            duration: 3.5 + index * 0.25,
-                            repeat: gamesActive ? Infinity : 0,
-                            ease: "easeInOut",
-                          }}
-                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/10 text-white backdrop-blur-md"
+                        <div
+                          className="grid h-9 w-9 shrink-0 place-items-center rounded-[12px]"
+                          style={{ backgroundColor: game.soft, color: game.accent }}
                         >
-                          <AccentIcon size={17} />
-                        </motion.span>
+                          <AccentIcon className="h-4 w-4" />
+                        </div>
                       </div>
 
-                      <p className="line-clamp-2 min-h-[40px] text-xs leading-5 text-white/60">
-                        {game.description}
+                      <p className="mt-3 min-h-[42px] text-xs leading-5 text-[#85869a]">
+                        {th ? ({ 1: "กระโดด หลบสิ่งกีดขวาง และเก็บดาวให้ครบ", 2: "ลองจับคู่เสื้อผ้าและสร้างลุคที่ชอบ", 3: "หมุนวงล้อให้ช่วยเลือกจุดหมายถัดไป", 4: "จำตำแหน่งการ์ดแล้วจับคู่ให้ครบ" } as Record<number, string>)[game.id] : game.description}
                       </p>
 
-                      <div className="my-4 h-px bg-white/10" />
-
-                      <div className="flex items-center justify-between">
+                      <div className="mt-4 flex items-center justify-between border-t border-[#eeeeF5] pt-4">
                         <div className="flex items-center gap-2">
-                          <motion.span
-                            whileHover={{
-                              rotate: -8,
-                              scale: 1.06,
-                            }}
-                            className="relative flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/10"
-                          >
-                            <Gamepad2 size={15} />
-
-                            <motion.span
-                              animate={{
-                                scale: [1, 1.3, 1],
-                                opacity: [0.7, 1, 0.7],
-                              }}
-                              transition={{
-                                duration: 1.8,
-                                repeat: gamesActive ? Infinity : 0,
-                                ease: "easeInOut",
-                              }}
-                              className={`absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#272747] ${
-                                game.available
-                                  ? "bg-green-400"
-                                  : "bg-orange-300"
-                              }`}
-                            />
-                          </motion.span>
-
-                          <div>
-                            <p className="text-[9px] uppercase tracking-[0.14em] text-white/35">
-                              Status
-                            </p>
-
-                            <p className="text-xs font-semibold text-white/80">
-                              {game.status}
-                            </p>
-                          </div>
+                          <span
+                            className="h-2.5 w-2.5 rounded-full"
+                            style={{ backgroundColor: game.available ? "#22c55e" : "#f59e0b" }}
+                          />
+                          <span className="text-[10px] font-semibold text-[#74758b]">{game.available ? t.ready : t.soon}</span>
                         </div>
 
                         {game.available ? (
-                          <motion.span
-                            whileHover={{
-                              scale: 1.04,
-                            }}
-                            className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-[11px] font-bold text-[#17172b]"
-                          >
-                            Play
-                            <motion.span
-                              animate={{
-                                x: [0, 3, 0],
-                              }}
-                              transition={{
-                                duration: 1.5,
-                                repeat: gamesActive ? Infinity : 0,
-                                ease: "easeInOut",
-                              }}
-                            >
-                              <Play size={12} fill="currentColor" />
-                            </motion.span>
-                          </motion.span>
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#17172b] px-3 py-2 text-[10px] font-semibold text-white">
+                            {t.play}
+                            <Play className="h-3 w-3" fill="currentColor" />
+                          </span>
                         ) : (
-                          <motion.span
-                            animate={{
-                              opacity: [0.65, 1, 0.65],
-                            }}
-                            transition={{
-                              duration: 2.5,
-                              repeat: gamesActive ? Infinity : 0,
-                              ease: "easeInOut",
-                            }}
-                            className="rounded-full border border-white/15 bg-white/10 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-white/70"
-                          >
-                            Coming soon
-                          </motion.span>
+                          <span className="rounded-full bg-[#f3f3f7] px-3 py-2 text-[9px] font-semibold uppercase tracking-[.08em] text-[#9a9aab]">
+                            {t.soon}
+                          </span>
                         )}
                       </div>
                     </div>
-                  </div>
-                </motion.article>
-              );
+                  </motion.article>
+                );
 
-              if (game.available) {
-                return (
-                  <Link
-                    key={game.id}
-                    href={game.href}
-                    className="block shrink-0 snap-start"
-                  >
+                return game.available ? (
+                  <Link key={game.id} href={game.href} className="block h-full min-w-[78%] snap-start sm:min-w-[46%] md:min-w-[36%] lg:min-w-[28%] xl:min-w-[24%]">
                     {card}
                   </Link>
+                ) : (
+                  <div key={game.id} className="h-full min-w-[78%] snap-start sm:min-w-[46%] md:min-w-[36%] lg:min-w-[28%] xl:min-w-[24%]" aria-label={game.title + " is coming soon"}>
+                    {card}
+                  </div>
                 );
-              }
-
-              return (
-                <div
-                  key={game.id}
-                  className="block shrink-0 snap-start"
-                  aria-label={`${game.title} is coming soon`}
-                >
-                  {card}
-                </div>
-              );
-            })}
-          </motion.div>
-        </motion.section>
+              })}
+            </div>
+          </section>
+        </div>
       </section>
     </main>
   );

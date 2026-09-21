@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
-import { Geist, Geist_Mono, Noto_Sans_Thai } from "next/font/google";
+import { Geist, Noto_Sans_Thai } from "next/font/google";
 
 import "./globals.css";
 
@@ -15,12 +14,6 @@ import { siteConfig } from "./seo";
 
 const geist = Geist({
   variable: "--font-geist",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -40,28 +33,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
 
   title: {
-    default: "Buildifyx | Software Development, Web, AI & Data Studio",
+    default: siteConfig.defaultTitle,
     template: "%s | Buildifyx",
   },
 
   description: siteConfig.description,
 
   applicationName: siteConfig.name,
-
-  keywords: [
-    "Buildifyx",
-    "software development company Thailand",
-    "web development Bangkok",
-    "web application development",
-    "AI development company",
-    "data engineering",
-    "dashboard development",
-    "UI UX design",
-    "SaaS development",
-    "บริษัทพัฒนาซอฟต์แวร์",
-    "รับทำเว็บไซต์",
-    "พัฒนาระบบ AI",
-  ],
+  keywords: [...siteConfig.keywords],
+  manifest: "/manifest.webmanifest",
 
   authors: [
     {
@@ -82,12 +62,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: siteConfig.locale,
+    alternateLocale: [siteConfig.alternateLocale],
     url: "/",
-
     siteName: siteConfig.name,
-
-    title: "Buildifyx | Software Development, Web, AI & Data Studio",
-
+    title: siteConfig.defaultTitle,
     description: siteConfig.description,
 
     images: [
@@ -103,8 +81,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
 
-    title: "Buildifyx | Software Development, Web, AI & Data Studio",
-
+    title: siteConfig.defaultTitle,
     description: siteConfig.description,
 
     images: ["/opengraph-image"],
@@ -125,8 +102,8 @@ export const metadata: Metadata = {
   },
 
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
+    icon: "/logo/logo.png",
+    shortcut: "/logo/logo.png",
     apple: "/logo/logo.png",
   },
 };
@@ -175,6 +152,7 @@ export default function RootLayout({
         foundingDate: "2025",
 
         email: siteConfig.email,
+        telephone: siteConfig.phone,
 
         address: {
           "@type": "PostalAddress",
@@ -183,16 +161,22 @@ export default function RootLayout({
         },
 
         areaServed: ["Thailand", "Worldwide"],
-
-        knowsAbout: [
-          "Software Development",
-          "Web Development",
-          "Web Applications",
-          "Artificial Intelligence",
-          "Data Engineering",
-          "UI/UX Design",
-          "SaaS Development",
-        ],
+        knowsAbout: [...siteConfig.services],
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Buildifyx software and digital product services",
+          itemListElement: siteConfig.services.map((service) => ({
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: service,
+              provider: {
+                "@id": `${siteConfig.url}/#organization`,
+              },
+              areaServed: ["Thailand", "Worldwide"],
+            },
+          })),
+        },
 
         sameAs: siteConfig.socialLinks,
 
@@ -200,7 +184,7 @@ export default function RootLayout({
           "@type": "ContactPoint",
 
           email: siteConfig.email,
-
+          telephone: siteConfig.phone,
           contactType: "sales",
 
           availableLanguage: ["English", "Thai"],
@@ -217,12 +201,12 @@ export default function RootLayout({
         name: siteConfig.name,
 
         description: siteConfig.description,
+        inLanguage: ["th", "en"],
 
         publisher: {
           "@id": `${siteConfig.url}/#organization`,
         },
 
-        inLanguage: ["en", "th"],
       },
     ],
   };
@@ -233,9 +217,9 @@ export default function RootLayout({
 
   return (
     <html
-      lang="en"
+      lang="th"
       suppressHydrationWarning
-      className={`${geist.variable} ${geistMono.variable} ${notoSansThai.variable}`}
+      className={`${geist.variable} ${notoSansThai.variable}`}
     >
       <body className="min-h-screen bg-white text-black antialiased">
         {/* Structured Data */}
@@ -244,12 +228,6 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
           }}
-        />
-
-        <Script
-          src="https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-wc@latest/dist/dotlottie-wc.js"
-          type="module"
-          strategy="afterInteractive"
         />
 
         <LanguageProvider>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   ArrowUpRight,
   Check,
@@ -10,7 +11,6 @@ import {
   Compass,
   Layers3,
   Palette,
-  Sparkles,
   Workflow,
 } from "lucide-react";
 
@@ -53,6 +53,9 @@ const steps = [
 ];
 
 export default function Body() {
+  const { language } = useLanguage();
+  const th = language === "th";
+
   return (
     <section className="overflow-hidden bg-white text-[#1c1c1e]">
       <div className="mx-auto max-w-7xl px-5 pb-10 pt-20 sm:px-8 sm:pt-24 lg:px-10 lg:pt-28">
@@ -64,19 +67,25 @@ export default function Body() {
           className="mx-auto max-w-3xl text-center"
         >
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#007aff]">
-            How we work
+            {th ? "วิธีการทำงานของเรา" : "How we work"}
           </p>
-          <h2 className="mt-3 text-[38px] font-semibold leading-[1.02] tracking-[-0.05em] sm:text-[52px]">
-            Clear thinking before
-            <span className="text-[#007aff]"> beautiful execution.</span>
+          <h2 className={`mt-3 font-semibold ${th ? "text-[30px] leading-[1.24] tracking-[-.015em] sm:text-[42px]" : "text-[38px] leading-[1.02] tracking-[-0.05em] sm:text-[52px]"}`}>
+            {th ? (
+              <>
+                <span className="block">คิดให้ชัดก่อนลงมือสร้าง</span>
+                <span className="block text-[#007aff]">ทั้งสวยและใช้ได้จริง</span>
+              </>
+            ) : (
+              <>Clear thinking before<span className="text-[#007aff]"> beautiful execution.</span></>
+            )}
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-[14px] leading-6 text-[#636366] sm:text-[15px]">
-            Strategy, design, and engineering stay in one product flow — so ideas move forward without losing the reason they started.
+            {th ? "Strategy, Design และ Engineering อยู่ใน flow เดียวกัน เพื่อให้ไอเดียเดินหน้าโดยไม่หลุดจากปัญหาที่ต้องการแก้ตั้งแต่แรก" : "Strategy, design, and engineering stay in one product flow — so ideas move forward without losing the reason they started."}
           </p>
         </motion.div>
 
         <div className="mt-10 grid gap-3 sm:grid-cols-3">
-          {steps.map(({ number, label, icon: Icon }) => (
+          {steps.map(({ number, label, icon: Icon }, index) => (
             <motion.div
               key={number}
               initial={{ opacity: 0, y: 18 }}
@@ -94,9 +103,17 @@ export default function Body() {
                   {number}
                 </span>
               </div>
-              <p className="mt-4 text-[15px] font-semibold">{label}</p>
-              <p className="mt-1 text-[12px] text-[#8e8e93]">
-                One connected product process
+              <p className="mt-4 text-[15px] font-semibold">
+                {th ? ["ทำความเข้าใจ", "ออกแบบ", "พัฒนา"][index] : label}
+              </p>
+              <p className="mt-1 text-[12px] leading-5 text-[#8e8e93]">
+                {th
+                  ? [
+                      "เข้าใจเป้าหมาย ผู้ใช้ และข้อจำกัด",
+                      "วางประสบการณ์และภาพลักษณ์",
+                      "พัฒนาเป็นระบบที่ใช้งานได้จริง",
+                    ][index]
+                  : "One connected product process"}
               </p>
             </motion.div>
           ))}
@@ -109,20 +126,20 @@ export default function Body() {
             <div className="mx-auto max-w-3xl text-center">
               <div className="flex items-center justify-center gap-2 text-[10px] font-semibold uppercase tracking-[0.17em] text-[#007aff]">
                 <Compass className="h-4 w-4" />
-                01 · Discover
+                {th ? "01 · ทำความเข้าใจ" : "01 · Discover"}
               </div>
 
-              <h3 className="mt-4 text-[34px] font-semibold leading-[1.02] tracking-[-0.045em] sm:text-[44px]">
-                Start with the reason,
-                <span className="block text-[#007aff]">not the screen.</span>
+              <h3 className={`mt-4 font-semibold ${th ? "text-[29px] leading-[1.24] tracking-[-.015em] sm:text-[40px]" : "text-[34px] leading-[1.02] tracking-[-0.045em] sm:text-[44px]"}`}>
+                {th ? "เริ่มจากเหตุผล" : "Start with the reason,"}
+                <span className="block text-[#007aff]">{th ? "ก่อนคิดเรื่องหน้าจอ" : "not the screen."}</span>
               </h3>
 
               <p className="mx-auto mt-4 max-w-2xl text-[14px] leading-6 text-[#636366]">
-                We clarify the business goal, audience, user journey, and constraints before deciding what the product should become.
+                {th ? "เราเริ่มจากเป้าหมายธุรกิจ ผู้ใช้ เส้นทางการใช้งาน และข้อจำกัด ก่อนตัดสินใจว่าควรสร้างผลิตภัณฑ์แบบไหน" : "We clarify the business goal, audience, user journey, and constraints before deciding what the product should become."}
               </p>
 
               <div className="mt-6 flex flex-wrap justify-center gap-2">
-                {["Goals", "Audience", "Journey", "Scope"].map((item) => (
+                {(th ? ["เป้าหมาย", "ผู้ใช้", "เส้นทาง", "ขอบเขต"] : ["Goals", "Audience", "Journey", "Scope"]).map((item) => (
                   <span
                     key={item}
                     className="rounded-full border border-[#007aff]/10 bg-white px-3 py-1.5 text-[11px] font-medium text-[#49627f]"
@@ -133,78 +150,59 @@ export default function Body() {
               </div>
             </div>
 
-            <div className="mx-auto mt-9 grid max-w-[980px] gap-4 md:grid-cols-2">
-              <article className="group overflow-hidden rounded-[26px] border border-white bg-white p-3 shadow-[0_18px_45px_rgba(45,85,135,.09)]">
-                <div className="flex items-center justify-between px-2 py-2">
-                  <div>
-                    <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8e8e93]">
-                      Discovery board
+            <div className="mx-auto mt-7 grid max-w-[980px] grid-cols-2 gap-3 sm:mt-9 sm:gap-4">
+              <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-[20px] border border-white bg-white p-2.5 shadow-[0_16px_38px_rgba(45,85,135,.08)] sm:rounded-[26px] sm:p-3">
+                <div className="relative min-h-[68px] px-2 py-2 pr-10 sm:flex sm:min-h-0 sm:items-center sm:justify-between sm:pr-2">
+                  <div className="min-w-0">
+                    <p className="text-[8px] font-semibold uppercase tracking-[0.11em] text-[#8e8e93] sm:text-[9px] sm:tracking-[0.14em]">
+                      {th ? "Discovery board" : "Discovery board"}
                     </p>
-                    <p className="mt-1 text-[15px] font-semibold text-[#1c1c1e]">
-                      Clarity before pixels.
+                    <p className="mt-1 text-[12px] font-semibold leading-4 text-[#1c1c1e] sm:text-[15px]">
+                      {th ? "ชัดเจนก่อนลงดีไซน์" : "Clarity before pixels."}
                     </p>
                   </div>
-                  <div className="grid h-10 w-10 place-items-center rounded-[13px] bg-[#007aff] text-white">
-                    <Workflow className="h-4 w-4" />
+                  <div className="absolute right-1 top-2 grid h-8 w-8 shrink-0 place-items-center rounded-[11px] bg-[#007aff] text-white sm:static sm:h-10 sm:w-10 sm:rounded-[13px]">
+                    <Workflow className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </div>
                 </div>
 
-                <div className="mt-2 overflow-hidden rounded-[20px] bg-[#f7f9fc]">
+                <div className="mt-1 overflow-hidden rounded-[16px] bg-[#f7f9fc] sm:mt-2 sm:rounded-[20px]">
                   <img
                     src={discoverImage}
                     alt="Product discovery workshop"
                     loading="lazy"
                     decoding="async"
-                    className="h-[290px] w-full object-cover object-top transition duration-500 group-hover:scale-[1.025]"
+                    className="h-[145px] w-full object-cover object-top transition duration-500 group-hover:scale-[1.025] sm:h-[240px] md:h-[290px]"
                   />
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 pt-3">
-                  {[
-                    ["Goal", "Clear"],
-                    ["Flow", "Mapped"],
-                    ["Scope", "Focused"],
-                  ].map(([label, value]) => (
-                    <div key={label} className="rounded-[14px] bg-[#f2f7ff] px-3 py-3 text-center">
-                      <p className="text-[9px] uppercase tracking-[.11em] text-[#8e8e93]">{label}</p>
-                      <p className="mt-1 text-[11px] font-semibold text-[#007aff]">{value}</p>
-                    </div>
-                  ))}
-                </div>
               </article>
 
-              <article className="group overflow-hidden rounded-[26px] border border-white bg-white p-3 shadow-[0_18px_45px_rgba(45,85,135,.09)]">
-                <div className="flex items-center justify-between px-2 py-2">
-                  <div>
-                    <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8e8e93]">
-                      Signal map
+              <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-[20px] border border-white bg-white p-2.5 shadow-[0_16px_38px_rgba(45,85,135,.08)] sm:rounded-[26px] sm:p-3">
+                <div className="relative min-h-[68px] px-2 py-2 pr-10 sm:flex sm:min-h-0 sm:items-center sm:justify-between sm:pr-2">
+                  <div className="min-w-0">
+                    <p className="text-[8px] font-semibold uppercase tracking-[0.11em] text-[#8e8e93] sm:text-[9px] sm:tracking-[0.14em]">
+                      {th ? "แผนที่สัญญาณ" : "Signal map"}
                     </p>
-                    <p className="mt-1 text-[15px] font-semibold text-[#1c1c1e]">
-                      Turn signals into direction.
+                    <p className="mt-1 text-[12px] font-semibold leading-4 text-[#1c1c1e] sm:text-[15px]">
+                      {th ? "เปลี่ยนข้อมูลให้เป็นทิศทาง" : "Turn signals into direction."}
                     </p>
                   </div>
-                  <div className="grid h-10 w-10 place-items-center rounded-[13px] bg-white text-[#007aff] ring-1 ring-[#007aff]/10">
-                    <Compass className="h-4 w-4" />
+                  <div className="absolute right-1 top-2 grid h-8 w-8 shrink-0 place-items-center rounded-[11px] bg-white text-[#007aff] ring-1 ring-[#007aff]/10 sm:static sm:h-10 sm:w-10 sm:rounded-[13px]">
+                    <Compass className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </div>
                 </div>
 
-                <div className="mt-2 overflow-hidden rounded-[20px] bg-[linear-gradient(180deg,#f9fbff,#eef6ff)]">
+                <div className="mt-1 overflow-hidden rounded-[16px] bg-[linear-gradient(180deg,#f9fbff,#eef6ff)] sm:mt-2 sm:rounded-[20px]">
                   <img
                     src={discoverThinkingImage}
                     alt="Person thinking while using a laptop"
                     loading="lazy"
                     decoding="async"
-                    className="h-[290px] w-full object-contain p-4 transition duration-500 group-hover:scale-[1.025]"
+                    className="h-[145px] w-full object-contain p-2.5 transition duration-500 group-hover:scale-[1.025] sm:h-[240px] sm:p-4 md:h-[290px]"
                   />
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 pt-3">
-                  {["Audience", "Journey", "Direction"].map((item) => (
-                    <div key={item} className="rounded-[14px] bg-[#f2f2f7] px-3 py-3 text-center">
-                      <p className="text-[11px] font-semibold text-[#1c1c1e]">{item}</p>
-                    </div>
-                  ))}
-                </div>
               </article>
             </div>
           </div>
@@ -227,8 +225,8 @@ export default function Body() {
                     <Palette className="h-4 w-4" />
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-[.13em] text-white/55">Visual system</p>
-                    <p className="mt-1 text-[15px] font-semibold text-white">Purpose becomes personality.</p>
+                    <p className="text-[10px] uppercase tracking-[.13em] text-white/55">{th ? "ระบบภาพ" : "Visual system"}</p>
+                    <p className="mt-1 text-[15px] font-semibold text-white">{th ? "เป้าหมายกลายเป็นบุคลิกของผลิตภัณฑ์" : "Purpose becomes personality."}</p>
                   </div>
                 </div>
               </div>
@@ -237,20 +235,20 @@ export default function Body() {
             <div>
               <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.17em] text-[#007aff]">
                 <Palette className="h-4 w-4" />
-                02 · Shape
+                {th ? "02 · ออกแบบ" : "02 · Shape"}
               </div>
-              <h3 className="mt-4 text-[34px] font-semibold leading-[1.02] tracking-[-0.045em] sm:text-[44px]">
-                A visual language
-                <span className="block text-[#007aff]">people can feel.</span>
+              <h3 className={`mt-4 font-semibold ${th ? "text-[30px] leading-[1.25] tracking-[-.02em] sm:text-[40px]" : "text-[34px] leading-[1.02] tracking-[-0.045em] sm:text-[44px]"}`}>
+                {th ? "ออกแบบภาษาภาพ" : "A visual language"}
+                <span className="block text-[#007aff]">{th ? "ให้ผู้ใช้สัมผัสได้" : "people can feel."}</span>
               </h3>
               <p className="mt-4 text-[14px] leading-6 text-[#636366]">
-                Typography, motion, interaction, and rhythm work together to make the product feel distinct without getting in the way of clarity.
+                {th ? "Typography, Motion, Interaction และจังหวะของ UI ทำงานร่วมกันเพื่อให้ผลิตภัณฑ์มีเอกลักษณ์ แต่ยังคงใช้งานและเข้าใจได้ง่าย" : "Typography, motion, interaction, and rhythm work together to make the product feel distinct without getting in the way of clarity."}
               </p>
 
               <div className="mt-6 grid grid-cols-3 gap-2">
-                {["UX", "Motion", "Visual system"].map((item) => (
+                {(th ? ["UX", "Motion", "ระบบภาพ"] : ["UX", "Motion", "Visual system"]).map((item) => (
                   <div key={item} className="rounded-[16px] bg-[#f2f2f7] px-3 py-3 text-center">
-                    <p className="text-[11px] font-semibold text-[#1c1c1e]">{item}</p>
+                    <p className="text-[9px] font-semibold leading-3 text-[#1c1c1e] sm:text-[11px]">{item}</p>
                   </div>
                 ))}
               </div>
@@ -263,21 +261,21 @@ export default function Body() {
             <div>
               <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.17em] text-[#007aff]">
                 <Code2 className="h-4 w-4" />
-                03 · Build
+                {th ? "03 · พัฒนา" : "03 · Build"}
               </div>
-              <h3 className="mt-4 max-w-xl text-[34px] font-semibold leading-[1.02] tracking-[-0.045em] sm:text-[44px]">
-                Beautiful on the surface.
-                <span className="block text-[#007aff]">Serious underneath.</span>
+              <h3 className={`mt-4 max-w-xl font-semibold ${th ? "text-[28px] leading-[1.28] tracking-[-.015em] sm:text-[40px]" : "text-[34px] leading-[1.02] tracking-[-0.045em] sm:text-[44px]"}`}>
+                {th ? "สวยในสิ่งที่ผู้ใช้เห็น" : "Beautiful on the surface."}
+                <span className="block text-[#007aff]">{th ? "แข็งแรงในระบบเบื้องหลัง" : "Serious underneath."}</span>
               </h3>
               <p className="mt-4 max-w-xl text-[14px] leading-6 text-[#636366]">
-                We turn the visual system into responsive, maintainable software without losing the personality that made the idea worth building.
+                {th ? "เราเปลี่ยนงานออกแบบให้เป็นซอฟต์แวร์ที่รองรับทุกหน้าจอ ดูแลต่อได้ และยังคงเอกลักษณ์ของไอเดียไว้" : "We turn the visual system into responsive, maintainable software without losing the personality that made the idea worth building."}
               </p>
 
               <div className="mt-6 overflow-hidden rounded-[22px] border border-black/[0.05] bg-white">
                 {[
-                  ["Responsive by default", "Layouts adapt cleanly across screen sizes."],
-                  ["Performance aware", "Media, motion, and code stay intentional."],
-                  ["Built to evolve", "The structure stays understandable as features grow."],
+                  [th ? "รองรับทุกหน้าจอ" : "Responsive by default", th ? "Layout ปรับตามขนาดหน้าจอได้อย่างเป็นธรรมชาติ" : "Layouts adapt cleanly across screen sizes."],
+                  [th ? "ใส่ใจประสิทธิภาพ" : "Performance aware", th ? "Media, Motion และ Code ถูกใช้เท่าที่จำเป็น" : "Media, motion, and code stay intentional."],
+                  [th ? "พร้อมต่อยอด" : "Built to evolve", th ? "โครงสร้างยังเข้าใจและพัฒนาต่อได้เมื่อฟีเจอร์เพิ่มขึ้น" : "The structure stays understandable as features grow."],
                 ].map(([title, text], index) => (
                   <div
                     key={title}
@@ -299,20 +297,20 @@ export default function Body() {
                 href="/Contact"
                 className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-[14px] bg-[#007aff] px-5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(0,122,255,.18)] transition hover:-translate-y-0.5 hover:bg-[#0a84ff]"
               >
-                Start a project
+                {th ? "เริ่มโปรเจกต์" : "Start a project"}
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
 
             <div className="relative mx-auto w-full max-w-[680px]">
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                <article className="group overflow-hidden rounded-[24px] border border-white bg-white p-3 shadow-[0_18px_48px_rgba(45,85,135,.10)] sm:rounded-[28px] sm:p-4">
+              <div className="grid grid-cols-2 items-stretch gap-3 sm:gap-4">
+                <article className="group flex h-full flex-col overflow-hidden rounded-[22px] border border-white bg-white p-3 shadow-[0_16px_42px_rgba(45,85,135,.09)] sm:rounded-[28px] sm:p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-[9px] uppercase tracking-[.13em] text-[#8e8e93]">Build room</p>
-                      <p className="mt-1 text-[13px] font-semibold text-[#1c1c1e] sm:text-[15px]">Structure first.</p>
+                      <p className="text-[8px] uppercase tracking-[.1em] text-[#8e8e93] sm:text-[9px] sm:tracking-[.13em]">{th ? "พื้นที่พัฒนา" : "Build room"}</p>
+                      <p className="mt-1 text-[12px] font-semibold leading-4 text-[#1c1c1e] sm:text-[15px]">{th ? "วางโครงให้ดีก่อน" : "Structure first."}</p>
                     </div>
-                    <div className="grid h-9 w-9 place-items-center rounded-[12px] bg-[#007aff] text-white">
+                    <div className="grid h-8 w-8 shrink-0 place-items-center rounded-[11px] sm:h-9 sm:w-9 sm:rounded-[12px] bg-[#007aff] text-white">
                       <Code2 className="h-4 w-4" />
                     </div>
                   </div>
@@ -323,26 +321,19 @@ export default function Body() {
                       alt="Developer working at a computer"
                       loading="lazy"
                       decoding="async"
-                      className="h-[230px] w-full object-contain p-3 transition duration-500 group-hover:scale-[1.025] sm:h-[300px]"
+                      className="h-[170px] w-full object-contain p-2.5 transition duration-500 group-hover:scale-[1.025] sm:h-[300px] sm:p-3"
                     />
                   </div>
 
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {["Code", "Responsive"].map((item) => (
-                      <span key={item} className="rounded-full bg-[#f2f7ff] px-2.5 py-1 text-[9px] font-semibold text-[#007aff]">
-                        {item}
-                      </span>
-                    ))}
-                  </div>
                 </article>
 
-                <article className="group translate-y-6 overflow-hidden rounded-[24px] border border-white bg-white p-3 shadow-[0_18px_48px_rgba(45,85,135,.10)] sm:translate-y-10 sm:rounded-[28px] sm:p-4">
+                <article className="group flex h-full flex-col overflow-hidden rounded-[22px] border border-white bg-white p-3 shadow-[0_16px_42px_rgba(45,85,135,.09)] sm:translate-y-6 sm:rounded-[28px] sm:p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-[9px] uppercase tracking-[.13em] text-[#8e8e93]">Review desk</p>
-                      <p className="mt-1 text-[13px] font-semibold text-[#1c1c1e] sm:text-[15px]">Polish before ship.</p>
+                      <p className="text-[8px] uppercase tracking-[.1em] text-[#8e8e93] sm:text-[9px] sm:tracking-[.13em]">{th ? "พื้นที่ตรวจงาน" : "Review desk"}</p>
+                      <p className="mt-1 text-[12px] font-semibold leading-4 text-[#1c1c1e] sm:text-[15px]">{th ? "เก็บรายละเอียดก่อนส่ง" : "Polish before ship."}</p>
                     </div>
-                    <div className="grid h-9 w-9 place-items-center rounded-[12px] bg-[#f2f7ff] text-[#007aff]">
+                    <div className="grid h-8 w-8 shrink-0 place-items-center rounded-[11px] sm:h-9 sm:w-9 sm:rounded-[12px] bg-[#f2f7ff] text-[#007aff]">
                       <Layers3 className="h-4 w-4" />
                     </div>
                   </div>
@@ -353,23 +344,13 @@ export default function Body() {
                       alt="Designer reviewing work on a laptop"
                       loading="lazy"
                       decoding="async"
-                      className="h-[230px] w-full object-contain p-3 transition duration-500 group-hover:scale-[1.025] sm:h-[300px]"
+                      className="h-[170px] w-full object-contain p-2.5 transition duration-500 group-hover:scale-[1.025] sm:h-[300px] sm:p-3"
                     />
                   </div>
 
-                  <div className="mt-3 grid grid-cols-3 gap-1.5">
-                    {["Test", "Tune", "Ship"].map((item) => (
-                      <span key={item} className="rounded-[10px] bg-[#f2f2f7] px-2 py-2 text-center text-[9px] font-semibold text-[#636366]">
-                        {item}
-                      </span>
-                    ))}
-                  </div>
                 </article>
               </div>
 
-              <div className="pointer-events-none absolute -right-5 -top-5 grid h-12 w-12 place-items-center rounded-[16px] bg-white text-[#007aff] shadow-[0_12px_30px_rgba(45,85,135,.12)]">
-                <Sparkles className="h-4 w-4" />
-              </div>
             </div>
           </div>
         </motion.section>

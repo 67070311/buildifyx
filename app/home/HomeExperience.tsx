@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -19,7 +20,7 @@ const copy = {
   th: {
     overline: "Product & Software Studio — Bangkok",
     titleA: "เราสร้างดิจิทัลโปรดักต์",
-    titleB: "ที่ใช้งานจริงและเติบโตต่อได้",
+    titleB: "ที่คนใช้ได้จริง และธุรกิจเติบโตต่อได้",
     lead:
       "ตั้งแต่ Web, App, AI, Data ไปจนถึง Automation — เราช่วยคิด ออกแบบ และพัฒนาระบบให้กลายเป็นของที่คนใช้ได้จริง",
     primary: "เริ่มโปรเจกต์",
@@ -34,7 +35,7 @@ const copy = {
       ["Product Design", "UX/UI, product flow และ prototype ที่พร้อมพัฒนาต่อ"],
       ["Automation", "API, integration และ workflow ลดงาน manual"],
     ],
-    teamOverline: "Meet the core team",
+    teamOverline: "ทีมหลักของเรา",
     teamSubtitle: "สามคน สามความถนัด แต่คิดและสร้างโปรดักต์ไปในทิศทางเดียวกัน",
     teamTitle: "คนเบื้องหลัง Buildifyx",
     teamText:
@@ -43,10 +44,10 @@ const copy = {
       "ต่างคนต่างเก่งคนละด้าน แต่มีมาตรฐานเดียวกัน — ทำของที่มีประโยชน์ คิดมาดี และใช้งานได้จริง",
     processTitle: "วิธีที่เราพาไอเดียไปถึงของจริง",
     steps: [
-      ["01", "Understand", "เข้าใจปัญหา ผู้ใช้ เป้าหมาย และข้อจำกัด"],
-      ["02", "Design", "วาง flow, UX, data และ architecture ให้ชัด"],
-      ["03", "Build", "พัฒนา software, AI และ integration เป็นระบบเดียวกัน"],
-      ["04", "Launch", "นำขึ้นใช้งาน เก็บ feedback และพัฒนาต่อ"],
+      ["01", "ทำความเข้าใจ", "เข้าใจปัญหา ผู้ใช้ เป้าหมาย และข้อจำกัด"],
+      ["02", "ออกแบบ", "วาง flow, UX, data และ architecture ให้ชัด"],
+      ["03", "พัฒนา", "พัฒนา software, AI และ integration เป็นระบบเดียวกัน"],
+      ["04", "นำขึ้นใช้งาน", "เปิดใช้งาน เก็บ feedback และพัฒนาต่อ"],
     ],
     ctaTitle: "มีไอเดียอยู่ในหัว?",
     ctaText: "เอามาคุยกันก่อนก็ได้ เราช่วยเปลี่ยนจากแนวคิดให้เป็นระบบที่จับต้องได้",
@@ -90,29 +91,6 @@ const copy = {
   },
 } as const;
 
-const avatars = [
-  {
-    src: "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=500",
-    label: "Design",
-    x: "left-[2%] top-[20%]",
-  },
-  {
-    src: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=500",
-    label: "Build",
-    x: "right-[0%] top-[18%]",
-  },
-  {
-    src: "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=500",
-    label: "Data",
-    x: "left-[8%] bottom-[5%]",
-  },
-  {
-    src: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=500",
-    label: "Product",
-    x: "right-[5%] bottom-[3%]",
-  },
-];
-
 const ctaAvatars = [
   {
     src: "/home/cta-avatar-1.svg",
@@ -130,129 +108,149 @@ const ctaAvatars = [
 
 const serviceIcons = [Code2, Bot, Layers3, Workflow];
 
-function HeroProductPreview({
-  side,
-  delay,
+function ButterflyMark() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className="h-4 w-4 shrink-0 text-[#2f7fff]"
+      fill="none"
+    >
+      <path
+        d="M11.7 12.2C9.8 7.9 7.8 5.7 5.9 5.3c-1.6-.3-2.7.7-2.5 2.2.2 2.1 2.3 4.4 6.4 5.4m2.5-.7c1.9-4.3 3.9-6.5 5.8-6.9 1.6-.3 2.7.7 2.5 2.2-.2 2.1-2.3 4.4-6.4 5.4M11.9 12.4c-1.7 2.1-2 4.1-.9 5.6.8 1.1 2.3 1 3.1-.1 1-1.4.6-3.3-1.1-5.5M12 8.8v7.5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+const productShowcase = [
+  {
+    name: "bdxa",
+    logo: "/work/bdxa-logo.svg",
+    image: "/work/bdxa/1.png",
+    href: "https://bdxa.buildifyx.com/",
+    accent: "#1688ff",
+    soft: "#eaf5ff",
+    description: {
+      th: "AI workspace agent ที่ช่วยอ่านโปรเจกต์ ค้นหาโค้ด และแก้ไขงานได้จากแชต",
+      en: "An AI workspace agent for reading projects, finding code, and making changes from chat.",
+    },
+  },
+  {
+    name: "Simple POS",
+    logo: "/work/pos/pos-logo.png",
+    image: "/work/pos/new/3.png",
+    href: "/mywork",
+    accent: "#f47a2f",
+    soft: "#fff2e8",
+    description: {
+      th: "ระบบ POS สำหรับจัดการเมนู ออร์เดอร์ โต๊ะ และร้านใน flow เดียว",
+      en: "A POS system for menus, orders, tables, and store management in one flow.",
+    },
+  },
+  {
+    name: "Bigger",
+    logo: "/work/bigger/logo.png",
+    image: "/work/bigger/1.png",
+    href: "https://biggerx.app",
+    accent: "#0f9fb5",
+    soft: "#e9fbfd",
+    description: {
+      th: "แพลตฟอร์มแลกของแบบ trade-up ที่รวม offer, chat และ progress ไว้ด้วยกัน",
+      en: "A trade-up exchange platform built around offers, chat, and visible progress.",
+    },
+  },
+] as const;
+
+function HeroProductDeck({
+  language,
 }: {
-  side: "left" | "center" | "right";
-  delay: number;
+  language: "th" | "en";
 }) {
-  const isCenter = side === "center";
-  const isLeft = side === "left";
+  const deck = [
+    productShowcase[1],
+    productShowcase[0],
+    productShowcase[2],
+  ];
 
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-        y: 150,
-        scale: 0.86,
-        rotate: isCenter ? 0 : isLeft ? -8 : 8,
-      }}
-      animate={{
-        opacity: 1,
-        y: 0,
-        scale: isCenter ? 1 : 0.92,
-        rotate: isCenter ? 0 : isLeft ? -7 : 7,
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 92,
-        damping: 15,
-        mass: 0.9,
-        delay,
-      }}
-      className={`absolute bottom-[-92px] overflow-hidden rounded-[28px] border border-white/80 bg-white/72 shadow-[0_34px_80px_rgba(31,83,143,.18)] backdrop-blur-2xl ${
-        isCenter
-          ? "left-1/2 z-20 h-[300px] w-[330px] -translate-x-1/2 sm:h-[320px] sm:w-[360px]"
-          : isLeft
-            ? "left-[10%] z-10 hidden h-[276px] w-[300px] lg:block"
-            : "right-[10%] z-10 hidden h-[276px] w-[300px] lg:block"
-      }`}
+      initial={{ opacity: 0, y: 34 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.68, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
+      className="relative z-30 mx-auto mb-5 mt-12 max-w-[1260px] overflow-hidden rounded-[34px] bg-white shadow-[0_30px_80px_rgba(35,91,150,.14)] sm:mb-6 sm:mt-14 sm:rounded-[38px] lg:mt-16"
     >
-      <div className="flex h-9 items-center gap-1.5 border-b border-[#dce9f7]/70 bg-white/76 px-4">
-        <span className="h-2.5 w-2.5 rounded-full bg-[#ff6b68]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#ffc84a]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#34c759]" />
-        <div className="ml-3 h-4 flex-1 rounded-full bg-[#eff5fb]" />
-      </div>
+      <div className="overflow-x-auto overscroll-x-contain px-4 py-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:px-5 sm:py-6 md:overflow-visible md:px-6 lg:px-7 lg:py-7 xl:px-9 xl:py-8">
+        <div className="flex snap-x snap-mandatory gap-4 md:grid md:grid-cols-3 md:gap-4 lg:grid-cols-[0.86fr_1.28fr_0.86fr] lg:items-end lg:gap-5 xl:gap-7">
+          {deck.map((product, index) => {
+            const isCenter = index === 1;
+            const isExternal = product.href.startsWith("http");
 
-      {isCenter ? (
-        <div className="p-4">
-          <div className="rounded-[20px] bg-[linear-gradient(135deg,#ecf6ff,#dcecff)] p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="h-2.5 w-20 rounded-full bg-[#9fc9f8]" />
-                <div className="mt-2 h-5 w-36 rounded-full bg-[#10233f]" />
-              </div>
-              <div className="grid h-9 w-9 place-items-center rounded-[12px] bg-[#2f7fff] text-white">
-                <Bot className="h-4 w-4" />
-              </div>
-            </div>
-            <div className="mt-5 grid grid-cols-3 gap-2">
-              {["Product", "AI", "Data"].map((item, index) => (
-                <div key={item} className="rounded-[14px] border border-white bg-white/82 p-3 text-left">
-                  <div className={`h-7 w-7 rounded-[9px] ${
-                    index === 0 ? "bg-[#e8f2ff]" : index === 1 ? "bg-[#ecf8ff]" : "bg-[#edf7f4]"
-                  }`} />
-                  <p className="mt-3 text-[9px] font-semibold text-[#29445f]">{item}</p>
-                  <div className="mt-1 h-1.5 w-10 rounded-full bg-[#d6e2ef]" />
+            return (
+              <motion.a
+                key={product.name}
+                href={product.href}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noreferrer" : undefined}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.22 + index * 0.07,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                whileHover={{ y: isCenter ? -6 : -3 }}
+                className={`group flex min-w-[82%] snap-center flex-col text-left sm:min-w-[56%] md:min-w-0 ${isCenter ? "lg:-translate-y-3" : "lg:pb-3"}`}
+              >
+                <div className={`flex items-center gap-2.5 ${isCenter ? "lg:gap-3" : ""}`}>
+                  <span
+                    className={`grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-[12px] sm:h-10 sm:w-10 ${isCenter ? "lg:h-11 lg:w-11 lg:rounded-[14px]" : ""}`}
+                    style={{ backgroundColor: product.soft }}
+                  >
+                    <Image
+                      src={product.logo}
+                      alt={`${product.name} logo`}
+                      width={26}
+                      height={26}
+                      loading={isCenter ? "eager" : "lazy"}
+                      className={`h-[23px] w-[23px] object-contain sm:h-[25px] sm:w-[25px] ${isCenter ? "lg:h-[28px] lg:w-[28px]" : ""}`}
+                    />
+                  </span>
+
+                  <span className={`truncate text-[17px] font-semibold tracking-[-0.035em] text-[#12243d] sm:text-[19px] ${isCenter ? "lg:text-[22px]" : "lg:text-[18px]"}`}>
+                    {product.name}
+                  </span>
                 </div>
-              ))}
-            </div>
-          </div>
-          <div className="mt-3 grid grid-cols-[1.35fr_.65fr] gap-3">
-            <div className="rounded-[16px] bg-[#f6f9fc] p-3">
-              <div className="h-2 w-20 rounded-full bg-[#c8d7e6]" />
-              <div className="mt-4 flex h-16 items-end gap-1.5">
-                {[34, 48, 40, 62, 52, 72].map((height, index) => (
-                  <div
-                    key={index}
-                    className="flex-1 rounded-t-[5px] bg-[#62a6ff]"
-                    style={{ height: `${height}%` }}
+
+                <div
+                  className={`relative mt-4 h-[205px] overflow-hidden rounded-[22px] sm:h-[225px] md:h-[180px] ${isCenter ? "lg:h-[300px] xl:h-[330px] lg:rounded-[26px]" : "lg:h-[230px] xl:h-[250px]"}`}
+                  style={{ backgroundColor: product.soft }}
+                >
+                  <Image
+                    src={product.image}
+                    alt={`${product.name} product preview`}
+                    fill
+                    sizes="(max-width: 639px) 82vw, (max-width: 767px) 56vw, (max-width: 1023px) 30vw, (max-width: 1279px) 36vw, 470px"
+                    loading={isCenter ? "eager" : "lazy"}
+                    className="object-cover object-top transition duration-500 group-hover:scale-[1.012]"
                   />
-                ))}
-              </div>
-            </div>
-            <div className="rounded-[16px] bg-[#eef6ff] p-3">
-              <div className="text-[9px] font-semibold uppercase tracking-[.12em] text-[#6b86a4]">Live</div>
-              <div className="mt-2 text-xl font-semibold text-[#2f7fff]">+84%</div>
-              <div className="mt-3 h-1.5 w-full rounded-full bg-white">
-                <div className="h-full w-[84%] rounded-full bg-[#2f7fff]" />
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="p-4">
-          <div className={`rounded-[20px] p-4 ${
-            isLeft
-              ? "bg-[linear-gradient(145deg,#161d2b,#283a62)]"
-              : "bg-[linear-gradient(145deg,#edf4ff,#dcecff)]"
-          }`}>
-            <div className="flex items-center justify-between">
-              <div className={`h-3 w-24 rounded-full ${isLeft ? "bg-white/72" : "bg-[#10233f]"}`} />
-              <div className={`h-8 w-8 rounded-[10px] ${isLeft ? "bg-[#7088ff]" : "bg-white"}`} />
-            </div>
-            <div className={`mt-4 h-20 rounded-[14px] ${
-              isLeft
-                ? "bg-[radial-gradient(circle_at_50%_40%,#6d8cff_0%,#344b8e_34%,#171d2c_72%)]"
-                : "bg-white/76"
-            }`} />
-          </div>
-
-          <div className="mt-3 space-y-2">
-            {[0, 1, 2].map((item) => (
-              <div key={item} className="flex items-center gap-3 rounded-[13px] bg-[#f6f9fc] px-3 py-2.5">
-                <div className={`h-7 w-7 rounded-[9px] ${isLeft ? "bg-[#e9edff]" : "bg-[#e8f2ff]"}`} />
-                <div className="flex-1">
-                  <div className="h-2 w-[58%] rounded-full bg-[#c9d7e6]" />
-                  <div className="mt-1.5 h-1.5 w-[38%] rounded-full bg-[#e0e9f2]" />
                 </div>
-              </div>
-            ))}
-          </div>
+
+                <p className={`mt-4 line-clamp-2 min-h-[38px] text-[11px] leading-[1.6] text-[#6f7c8f] sm:text-[12px] md:text-[11px] ${isCenter ? "lg:text-[13px] lg:leading-5" : "lg:text-[11px]"}`}>
+                  <span className="font-semibold text-[#17263d]">
+                    {product.name}
+                  </span>{" "}
+                  {product.description[language]}
+                </p>
+              </motion.a>
+            );
+          })}
         </div>
-      )}
+      </div>
     </motion.div>
   );
 }
@@ -275,13 +273,13 @@ function ServiceCard({
       viewport={{ once: true, amount: 0.2 }}
       transition={{ delay: index * 0.07, duration: 0.5 }}
       whileHover={{ y: -6 }}
-      className="rounded-[24px] border border-[#e8eef7] bg-white p-6 shadow-[0_18px_50px_rgba(33,73,128,.06)]"
+      className="rounded-[20px] border border-[#e8eef7] bg-white p-4 shadow-[0_18px_50px_rgba(33,73,128,.06)] sm:rounded-[24px] sm:p-6"
     >
-      <div className="grid h-11 w-11 place-items-center rounded-[14px] bg-[#edf5ff] text-[#2f7fff]">
-        <Icon className="h-5 w-5" />
+      <div className="grid h-10 w-10 place-items-center rounded-[13px] bg-[#edf5ff] text-[#2f7fff] sm:h-11 sm:w-11 sm:rounded-[14px]">
+        <Icon className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
       </div>
-      <h3 className="mt-6 text-xl font-semibold tracking-[-0.03em] text-[#172033]">{title}</h3>
-      <p className="mt-3 text-sm leading-6 text-[#728099]">{text}</p>
+      <h3 className="mt-4 text-[15px] font-semibold leading-tight tracking-[-0.03em] text-[#172033] sm:mt-6 sm:text-xl">{title}</h3>
+      <p className="mt-2 text-[11px] leading-[1.55] text-[#728099] sm:mt-3 sm:text-sm sm:leading-6">{text}</p>
     </motion.article>
   );
 }
@@ -299,14 +297,15 @@ function AppleAvatar({
 }) {
   return (
     <motion.div
-      animate={{ y: [0, -7, 0] }}
+      whileInView={{ y: [0, -7, 0] }}
+      viewport={{ amount: 0.1 }}
       transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut", delay }}
       className={`absolute z-30 ${className}`}
     >
-      <div className="relative grid h-[96px] w-[96px] place-items-center rounded-full border-[7px] border-white bg-[linear-gradient(145deg,#ffe8e6,#ffd3d8)] shadow-[0_18px_42px_rgba(60,102,155,.16)] sm:h-[108px] sm:w-[108px]">
-        <span className="absolute inset-[7px] rounded-full bg-white/34" />
+      <div className="relative grid h-[72px] w-[72px] place-items-center rounded-full border-[5px] border-white bg-[linear-gradient(145deg,#ffe8e6,#ffd3d8)] shadow-[0_18px_42px_rgba(60,102,155,.16)] sm:h-[108px] sm:w-[108px] sm:border-[7px]">
+        <span className="absolute inset-[5px] rounded-full bg-white/34 sm:inset-[7px]" />
         <span
-          className="relative select-none text-[58px] leading-none sm:text-[66px]"
+          className="relative select-none text-[42px] leading-none sm:text-[66px]"
           style={{
             fontFamily:
               '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif',
@@ -317,7 +316,7 @@ function AppleAvatar({
         </span>
       </div>
 
-      <div className="absolute left-1/2 top-[84%] -translate-x-1/2 whitespace-nowrap rounded-[12px] border border-[#e6edf6] bg-white px-4 py-2 text-[12px] font-medium text-[#51617a] shadow-[0_10px_26px_rgba(44,78,123,.11)] sm:top-[87%]">
+      <div className="absolute left-1/2 top-[84%] -translate-x-1/2 whitespace-nowrap rounded-[10px] border border-[#e6edf6] bg-white px-2.5 py-1.5 text-[9px] font-medium text-[#51617a] shadow-[0_10px_26px_rgba(44,78,123,.11)] sm:top-[87%] sm:rounded-[12px] sm:px-4 sm:py-2 sm:text-[12px]">
         {label}
       </div>
     </motion.div>
@@ -332,40 +331,44 @@ function TeamOrbit({
   quote: string;
 }) {
   return (
-    <div className="relative mx-auto mt-0 h-[500px] w-full max-w-[900px] sm:h-[555px]">
-      <div className="absolute left-1/2 top-1/2 h-[440px] w-[440px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,.98)_0%,rgba(244,249,255,.82)_47%,rgba(232,244,255,.34)_70%,transparent_74%)] sm:h-[500px] sm:w-[500px]" />
+    <div className="relative mx-auto mt-0 h-[470px] w-full max-w-[900px] sm:h-[555px]">
+      <div className="absolute left-1/2 top-1/2 h-[350px] w-[350px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,.98)_0%,rgba(244,249,255,.82)_47%,rgba(232,244,255,.34)_70%,transparent_74%)] sm:h-[500px] sm:w-[500px]" />
 
       <motion.div
-        animate={{ rotate: 360 }}
+        whileInView={{ rotate: 360 }}
+        viewport={{ amount: 0.1 }}
         transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-        className="absolute left-1/2 top-1/2 h-[430px] w-[430px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#a9d3ff] sm:h-[495px] sm:w-[495px]"
+        className="absolute left-1/2 top-1/2 h-[344px] w-[344px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#a9d3ff] sm:h-[495px] sm:w-[495px]"
       >
         <span className="absolute left-1/2 top-[-4px] h-2 w-2 -translate-x-1/2 rounded-full bg-[#2f7fff] shadow-[0_0_14px_rgba(47,127,255,.4)]" />
       </motion.div>
 
       <motion.div
-        animate={{ rotate: -360 }}
+        whileInView={{ rotate: -360 }}
+        viewport={{ amount: 0.1 }}
         transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
-        className="absolute left-1/2 top-1/2 h-[335px] w-[335px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#c2dfff] sm:h-[385px] sm:w-[385px]"
+        className="absolute left-1/2 top-1/2 h-[270px] w-[270px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#c2dfff] sm:h-[385px] sm:w-[385px]"
       />
 
       <motion.div
-        animate={{ rotate: 360 }}
+        whileInView={{ rotate: 360 }}
+        viewport={{ amount: 0.1 }}
         transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
-        className="absolute left-1/2 top-1/2 h-[245px] w-[245px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#d7eaff] sm:h-[285px] sm:w-[285px]"
+        className="absolute left-1/2 top-1/2 h-[195px] w-[195px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[#d7eaff] sm:h-[285px] sm:w-[285px]"
       />
 
       <motion.div
-        animate={{ y: [0, -4, 0], rotate: [-1.6, -0.8, -1.6] }}
+        whileInView={{ y: [0, -4, 0], rotate: [-1.6, -0.8, -1.6] }}
+        viewport={{ amount: 0.1 }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute left-1/2 top-[49%] z-10 w-[66%] -translate-x-1/2 -translate-y-1/2 rounded-[28px] bg-[linear-gradient(145deg,#63c0ff_0%,#3485ff_54%,#216ff0_100%)] px-6 py-7 text-white shadow-[0_26px_65px_rgba(47,127,255,.22)] sm:px-8 sm:py-8"
+        className="absolute left-1/2 top-[50%] z-10 w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-[22px] bg-[linear-gradient(145deg,#63c0ff_0%,#3485ff_54%,#216ff0_100%)] px-4 py-5 text-white shadow-[0_26px_65px_rgba(47,127,255,.22)] sm:top-[49%] sm:w-[66%] sm:rounded-[28px] sm:px-8 sm:py-8"
       >
         <div className="relative">
-          <p className="text-[13px] leading-6 text-white/98 sm:text-[15px] sm:leading-7">
+          <p className="text-[11px] leading-5 text-white/98 sm:text-[15px] sm:leading-7">
             {text}
           </p>
-          <div className="my-4 h-px bg-white/18" />
-          <p className="font-serif text-[17px] italic leading-7 text-white/90 sm:text-[20px] sm:leading-8">
+          <div className="my-3 h-px bg-white/18 sm:my-4" />
+          <p className="font-serif text-[15px] italic leading-6 text-white/90 sm:text-[20px] sm:leading-8">
             “{quote}”
           </p>
         </div>
@@ -374,19 +377,19 @@ function TeamOrbit({
       <AppleAvatar
         emoji="👨🏻"
         label="Engineering"
-        className="left-[6%] top-[24%] scale-[.88] sm:scale-100"
+        className="left-[1%] top-[15%] sm:left-[6%] sm:top-[24%]"
         delay={0.1}
       />
       <AppleAvatar
         emoji="👩🏻"
-        label="Product & Design"
-        className="right-[6%] top-[26%] scale-[.88] sm:scale-100"
+        label="Full Stack"
+        className="right-[1%] top-[16%] sm:right-[6%] sm:top-[26%]"
         delay={0.7}
       />
       <AppleAvatar
         emoji="🧔🏽‍♂️"
         label="AI & Data"
-        className="left-1/2 bottom-[3%] -translate-x-1/2 scale-[.88] sm:scale-100"
+        className="left-1/2 bottom-[1%] -translate-x-1/2 sm:bottom-[3%]"
         delay={1.25}
       />
 
@@ -411,7 +414,7 @@ export default function HomeExperience() {
   return (
     <div className="overflow-hidden bg-white text-[#172033]">
       <section className="bg-white px-4 pb-6 pt-[82px] sm:px-6 lg:px-8">
-        <div className="relative mx-auto h-[calc(100vh-98px)] min-h-[650px] max-h-[780px] max-w-[1440px] overflow-hidden rounded-[30px] bg-[radial-gradient(circle_at_50%_16%,rgba(255,255,255,.98)_0%,rgba(255,255,255,.54)_20%,transparent_42%),radial-gradient(circle_at_12%_18%,rgba(68,157,255,.30),transparent_34%),radial-gradient(circle_at_86%_20%,rgba(90,211,255,.28),transparent_32%),linear-gradient(180deg,#78c0ff_0%,#badfff_36%,#eaf5ff_72%,#ffffff_100%)] px-5 sm:px-8 lg:px-10">
+        <div className="relative mx-auto max-w-[1440px] overflow-hidden rounded-[30px] bg-[radial-gradient(circle_at_50%_16%,rgba(255,255,255,.98)_0%,rgba(255,255,255,.54)_20%,transparent_42%),radial-gradient(circle_at_12%_18%,rgba(68,157,255,.30),transparent_34%),radial-gradient(circle_at_86%_20%,rgba(90,211,255,.28),transparent_32%),linear-gradient(180deg,#78c0ff_0%,#badfff_36%,#eaf5ff_72%,#ffffff_100%)] px-5 pb-1 sm:px-8 lg:px-10">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 opacity-[0.20]"
@@ -425,18 +428,17 @@ export default function HomeExperience() {
           />
 
           <div className="pointer-events-none absolute left-1/2 top-[43%] h-[420px] w-[820px] max-w-[76vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/50 blur-[92px]" />
-          <div className="pointer-events-none absolute -left-[11%] top-[-23%] h-[500px] w-[500px] rounded-full border border-white/30" />
           <div className="pointer-events-none absolute -right-[14%] top-[-22%] h-[760px] w-[760px] rounded-full border border-white/24" />
 
-          <div className="relative z-30 mx-auto flex h-full max-w-5xl flex-col items-center pt-[15%] text-center sm:pt-[11%] lg:pt-[8.5%]">
+          <div className="relative z-30 mx-auto flex max-w-5xl flex-col items-center pt-12 text-center sm:pt-14 lg:pt-16 xl:pt-18">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/84 bg-white/66 px-4 py-2 shadow-[0_10px_30px_rgba(58,117,179,.08)] backdrop-blur-xl">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#2f7fff] shadow-[0_0_12px_rgba(47,127,255,.65)]" />
+              <ButterflyMark />
               <p className="text-[9px] font-semibold uppercase tracking-[0.19em] text-[#245f9c] sm:text-[10px]">
                 {t.overline}
               </p>
             </div>
 
-            <h1 className="mx-auto mt-5 max-w-5xl text-[40px] font-semibold leading-[.96] tracking-[-.065em] text-[#10233f] sm:text-[54px] lg:text-[64px]">
+            <h1 className={`mx-auto mt-5 max-w-5xl font-semibold text-[#10233f] ${language === "th" ? "text-[36px] leading-[1.18] tracking-[-.025em] sm:text-[48px] sm:leading-[1.16] lg:text-[58px]" : "text-[40px] leading-[.96] tracking-[-.065em] sm:text-[54px] lg:text-[64px]"}`}>
               {t.titleA}
               <span className="relative mx-auto mt-1 block w-fit max-w-full">
                 <span className="bg-[linear-gradient(90deg,#10233f_0%,#173a61_52%,#2f7fff_100%)] bg-clip-text text-transparent">
@@ -469,21 +471,19 @@ export default function HomeExperience() {
             </div>
           </div>
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[330px] overflow-hidden">
-            <div className="absolute left-1/2 bottom-[-70px] h-[230px] w-[520px] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse,rgba(89,147,255,.26)_0%,rgba(89,147,255,.08)_40%,transparent_72%)] blur-[18px]" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[420px] overflow-hidden">
+            <div className="absolute left-1/2 bottom-[-72px] h-[270px] w-[820px] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse,rgba(89,147,255,.24)_0%,rgba(89,147,255,.08)_42%,transparent_74%)] blur-[22px]" />
           </div>
 
-          <HeroProductPreview side="left" delay={0.12} />
-          <HeroProductPreview side="center" delay={0.02} />
-          <HeroProductPreview side="right" delay={0.20} />
+          <HeroProductDeck language={language} />
         </div>
       </section>
 
       <section className="border-y border-[#edf1f6] bg-[#fbfdff] px-5 py-20 sm:px-8 lg:px-10 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-medium text-[#2f7fff]">What we do</p>
-            <h2 className="mt-4 text-[34px] font-semibold leading-[1.08] tracking-[-.045em] sm:text-[48px]">
+            <p className="text-xs font-medium text-[#2f7fff]">{language === "th" ? "สิ่งที่เราช่วยได้" : "What we do"}</p>
+            <h2 className={`mt-4 font-semibold ${language === "th" ? "text-[30px] leading-[1.25] tracking-[-.02em] sm:text-[42px]" : "text-[34px] leading-[1.08] tracking-[-.045em] sm:text-[48px]"}`}>
               {t.servicesTitle}
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#7b879b] sm:text-base">
@@ -491,7 +491,7 @@ export default function HomeExperience() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-12 sm:gap-4 lg:grid-cols-4">
             {t.services.map(([title, text], index) => (
               <ServiceCard key={title} title={title} text={text} index={index} />
             ))}
@@ -508,7 +508,7 @@ export default function HomeExperience() {
             <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#2f7fff]">
               {t.teamOverline}
             </p>
-            <h2 className="mt-2 text-[34px] font-semibold tracking-[-.055em] text-[#2b3547] sm:text-[42px]">
+            <h2 className={`mt-2 font-semibold text-[#2b3547] ${language === "th" ? "text-[30px] leading-[1.2] tracking-[-.02em] sm:text-[40px]" : "text-[34px] tracking-[-.055em] sm:text-[42px]"}`}>
               {t.teamTitle}
             </h2>
             <p className="mx-auto mt-2.5 max-w-2xl text-[13px] leading-5 text-[#7c899d] sm:text-sm sm:leading-6">
@@ -523,14 +523,12 @@ export default function HomeExperience() {
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10 lg:py-20">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[.78fr_1.22fr] lg:gap-12">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#007aff]">
-              Our process
-            </p>
-            <h2 className="mt-2 text-[38px] font-semibold leading-[1.02] tracking-[-.05em] text-[#1c1c1e] sm:text-[50px]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#007aff]">{language === "th" ? "ขั้นตอนการทำงาน" : "Our process"}</p>
+            <h2 className={`mt-2 font-semibold text-[#1c1c1e] ${language === "th" ? "text-[32px] leading-[1.2] tracking-[-.02em] sm:text-[44px]" : "text-[38px] leading-[1.02] tracking-[-.05em] sm:text-[50px]"}`}>
               {t.processTitle}
             </h2>
             <p className="mt-4 max-w-md text-[14px] leading-6 text-[#636366]">
-              A clear flow from understanding the problem to shipping something people can actually use.
+              {language === "th" ? "กระบวนการที่ชัดเจน ตั้งแต่เข้าใจปัญหา ไปจนถึงส่งมอบสิ่งที่ผู้ใช้ใช้งานได้จริง" : "A clear flow from understanding the problem to shipping something people can actually use."}
             </p>
           </div>
 
@@ -586,37 +584,46 @@ export default function HomeExperience() {
 
               <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-[46%] items-center justify-center">
                 <motion.div
-                  animate={{ y: [0, -4, 0] }}
+                  whileInView={{ y: [0, -4, 0] }}
+                  viewport={{ amount: 0.1 }}
                   transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut" }}
                   className="relative z-10 -mr-3 grid h-[88px] w-[88px] place-items-center overflow-hidden rounded-full border-[6px] border-white bg-white shadow-[0_16px_36px_rgba(36,91,145,.18)]"
                 >
                   <img
                     src={ctaAvatars[0].src}
                     alt={ctaAvatars[0].alt}
+                    loading="lazy"
+                    decoding="async"
                     className="h-[86%] w-[86%] object-contain"
                   />
                 </motion.div>
 
                 <motion.div
-                  animate={{ y: [0, 4, 0], scale: [1, 1.018, 1] }}
+                  whileInView={{ y: [0, 4, 0], scale: [1, 1.018, 1] }}
+                  viewport={{ amount: 0.1 }}
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.25 }}
                   className="relative z-30 grid h-[112px] w-[112px] place-items-center overflow-hidden rounded-full border-[7px] border-white bg-white shadow-[0_20px_44px_rgba(36,91,145,.22)]"
                 >
                   <img
                     src={ctaAvatars[1].src}
                     alt={ctaAvatars[1].alt}
+                    loading="lazy"
+                    decoding="async"
                     className="h-[88%] w-[88%] object-contain"
                   />
                 </motion.div>
 
                 <motion.div
-                  animate={{ y: [0, -4, 0] }}
+                  whileInView={{ y: [0, -4, 0] }}
+                  viewport={{ amount: 0.1 }}
                   transition={{ duration: 5.7, repeat: Infinity, ease: "easeInOut", delay: 0.55 }}
                   className="relative z-20 -ml-3 grid h-[88px] w-[88px] place-items-center overflow-hidden rounded-full border-[6px] border-white bg-white shadow-[0_16px_36px_rgba(36,91,145,.18)]"
                 >
                   <img
                     src={ctaAvatars[2].src}
                     alt={ctaAvatars[2].alt}
+                    loading="lazy"
+                    decoding="async"
                     className="h-[86%] w-[86%] object-contain"
                   />
                 </motion.div>

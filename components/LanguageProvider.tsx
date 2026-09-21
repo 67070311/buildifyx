@@ -20,9 +20,13 @@ export default function LanguageProvider({
 
   useEffect(() => {
     const saved = window.localStorage.getItem("buildifyx-language");
-    if (saved === "th" || saved === "en") {
+    if (saved !== "th" && saved !== "en") return;
+
+    const timer = window.setTimeout(() => {
       setLanguageState(saved);
-    }
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {

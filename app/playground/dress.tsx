@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   ArrowLeft,
   Check,
@@ -11,7 +12,6 @@ import {
   Palette,
   RefreshCcw,
   Shirt,
-  Sparkles,
 } from "lucide-react";
 
 type Category = "hair" | "tops" | "bottoms" | "shoes" | "accessories";
@@ -573,6 +573,22 @@ function ItemSection({
 }
 
 export default function DressUpGame() {
+  const { language } = useLanguage();
+  const th = language === "th";
+  const categoryLabel = (id: Category, short = false) => {
+    if (!th) {
+      const item = categories.find((category) => category.id === id);
+      return short ? item?.shortLabel : item?.label;
+    }
+    const labels: Record<Category, string> = {
+      hair: "ผม",
+      tops: "เสื้อ",
+      bottoms: "กางเกง",
+      shoes: "รองเท้า",
+      accessories: "เครื่องประดับ",
+    };
+    return labels[id];
+  };
   const [activeTab, setActiveTab] = useState<Category>("tops");
   const [hair, setHair] = useState("red");
   const [top, setTop] = useState("purple");
@@ -624,12 +640,11 @@ export default function DressUpGame() {
             className="inline-flex items-center gap-2 rounded-2xl border-2 border-white/50 bg-white/70 px-3 py-2.5 text-xs font-black text-[#39734b] shadow-[0_5px_0_rgba(44,128,57,0.25)] transition hover:-translate-y-0.5 sm:px-4 sm:text-sm"
           >
             <ArrowLeft size={18} strokeWidth={3} />
-            Back to Playground
+            {th ? "กลับไป Playground" : "Back to Playground"}
           </Link>
 
           <div className="flex items-center gap-2 rounded-2xl border-2 border-white/50 bg-white/65 px-3 py-2.5 text-xs font-black text-[#39734b] shadow-[0_5px_0_rgba(44,128,57,0.22)] sm:px-4 sm:text-sm">
-            <Sparkles size={18} />
-            Cute Dress Up Studio
+            {th ? "สตูดิโอแต่งตัว" : "Cute Dress Up Studio"}
           </div>
         </div>
 
@@ -772,8 +787,8 @@ export default function DressUpGame() {
                           : "bg-[#78c84d] text-[#3f784b] hover:bg-[#8bd75b]"
                       }`}
                     >
-                      <span className="sm:hidden">{category.shortLabel}</span>
-                      <span className="hidden sm:inline">{category.label}</span>
+                      <span className="sm:hidden">{categoryLabel(category.id, true)}</span>
+                      <span className="hidden sm:inline">{categoryLabel(category.id)}</span>
                     </button>
                   );
                 })}
@@ -837,8 +852,7 @@ export default function DressUpGame() {
                 className="mt-7 flex h-14 w-full items-center justify-center gap-2 rounded-[18px] border-[3px] border-white bg-[#62cf46] text-sm font-black text-white shadow-[0_7px_0_#359c35] transition hover:-translate-y-1 active:translate-y-1 active:shadow-[0_3px_0_#359c35] sm:h-16 sm:gap-3 sm:rounded-[22px] sm:border-4 sm:text-base sm:shadow-[0_8px_0_#359c35]"
               >
                 <Dice5 size={24} strokeWidth={3} />
-                Random outfit
-                <Sparkles size={21} strokeWidth={3} />
+                {th ? "สุ่มชุด" : "Random outfit"}
               </button>
             </div>
           </section>

@@ -20,7 +20,7 @@ const labels = {
     home: "หน้าหลัก",
     why: "ทำไมต้องเรา",
     work: "ผลงาน",
-    play: "ทดลอง",
+    play: "สนามเด็กเล่น",
     contact: "ติดต่อ",
     cta: "เริ่มโปรเจกต์",
   },
@@ -48,7 +48,7 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-[#edf1f6] bg-white/94 backdrop-blur-xl">
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
         <Link href="/" className="flex items-center gap-2.5 text-[#172033]">
-          <span className="grid h-9 w-9 place-items-center rounded-[11px] bg-[#eef5ff]">
+          <span className="grid h-9 w-9 place-items-center">
             <Image
               src="/logo/logo.png"
               alt="Buildifyx logo"
@@ -65,7 +65,7 @@ export default function Navbar() {
           </div>
         </Link>
 
-        <nav className="hidden h-full items-center gap-7 lg:flex">
+        <nav className="hidden h-full items-center gap-7 xl:flex">
           {navItems.map((item) => {
             const isActive =
               item.href === "/"
@@ -91,7 +91,7 @@ export default function Navbar() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-3 xl:flex">
           <LanguageToggle compact />
           <Link
             href="/Contact"
@@ -101,7 +101,7 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <div className="md:hidden">
+        <div className="xl:hidden">
           <NavbarMobile navItems={navItems} ctaLabel={t.cta} />
         </div>
       </div>

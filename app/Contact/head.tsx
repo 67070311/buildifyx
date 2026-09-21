@@ -4,36 +4,42 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   AlertCircle,
+  ArrowRight,
   ArrowUpRight,
   CheckCircle2,
   CircleHelp,
   Mail,
   MapPin,
   Phone,
+  Send,
   X,
 } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const contactEmail = "buildifyX.th@gmail.com";
 const WEB3FORMS_ACCESS_KEY = "bdbffd4e-5318-4044-8280-277107ffe315";
 
 const contactItems = [
   {
-    title: "Email us",
+    title: "Email",
     value: contactEmail,
+    description: "Send us your project details anytime.",
     href: `mailto:${contactEmail}`,
-    icon: <Mail className="h-5 w-5" />,
+    icon: Mail,
   },
   {
-    title: "Call us",
+    title: "Phone",
     value: "0645809429, 0638760067",
+    description: "Talk directly with the Buildifyx team.",
     href: "tel:0645809429",
-    icon: <Phone className="h-5 w-5" />,
+    icon: Phone,
   },
   {
-    title: "Our location",
+    title: "Location",
     value: "Bangkok, Thailand",
+    description: "Available for remote and local projects.",
     href: "https://maps.google.com",
-    icon: <MapPin className="h-5 w-5" />,
+    icon: MapPin,
   },
 ];
 
@@ -44,8 +50,32 @@ type FormErrors = {
 };
 
 export default function Contact() {
+  const { language } = useLanguage();
+  const th = language === "th";
+  const t = {
+    badge: th ? "ติดต่อ Buildifyx" : "Contact Buildifyx",
+    titleA: th ? "มาสร้าง" : "Let's build",
+    titleB: th ? "สิ่งที่มีประโยชน์กัน" : "something useful.",
+    lead: th ? "เล่าให้เราฟังว่าคุณกำลังทำอะไร อยากแก้ปัญหาอะไร หรืออยากปรับปรุงอะไร แล้วเราจะตอบกลับพร้อมขั้นตอนต่อไปที่ชัดเจน" : "Tell us what you're working on, what problem you want to solve, or what you want to improve. We'll get back to you with a clear next step.",
+    inquiry: th ? "รายละเอียดโปรเจกต์" : "Project inquiry",
+    formTitle: th ? "เล่าไอเดียของคุณให้เราฟัง" : "Tell us about your idea.",
+    reply: th ? "โดยปกติตอบกลับภายใน 1–2 วันทำการ" : "Usually replies within 1–2 business days.",
+    name: th ? "ชื่อ" : "Name",
+    namePh: th ? "ชื่อของคุณ" : "Your name",
+    email: th ? "อีเมล" : "Email",
+    message: th ? "ข้อความ" : "Message",
+    messagePh: th ? "บอกเราว่าคุณอยากสร้าง ปรับปรุง หรือแก้ปัญหาอะไร..." : "Tell us what you want to build, improve, or solve...",
+    consent: th ? "เมื่อส่งฟอร์มนี้ คุณยินยอมให้เราติดต่อกลับเกี่ยวกับรายละเอียดที่ส่งมา" : "By sending this form, you agree that we may contact you about your inquiry.",
+    sending: th ? "กำลังส่ง" : "Sending",
+    send: th ? "ส่งข้อความ" : "Send message",
+    error: th ? "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้งหรือติดต่อเราทางอีเมลโดยตรง" : "Something went wrong. Please try again or email us directly.",
+  };
+  const localizedContactItems = th ? [
+    { ...contactItems[0], title: "อีเมล", description: "ส่งรายละเอียดโปรเจกต์หาเราได้ทุกเมื่อ" },
+    { ...contactItems[1], title: "โทรศัพท์", description: "คุยกับทีม Buildifyx ได้โดยตรง" },
+    { ...contactItems[2], title: "สถานที่", value: "กรุงเทพฯ ประเทศไทย", description: "รองรับทั้งงานออนไลน์และงานในพื้นที่" },
+  ] : contactItems;
   const formRef = useRef<HTMLFormElement | null>(null);
-
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errors, setErrors] = useState<FormErrors>({});
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -65,22 +95,17 @@ export default function Contact() {
     const name = String(formData.get("name") || "").trim();
     const email = String(formData.get("email") || "").trim();
     const message = String(formData.get("message") || "").trim();
-
     const nextErrors: FormErrors = {};
 
-    if (!name) {
-      nextErrors.name = "กรุณากรอกชื่อของคุณ";
-    }
+    if (!name) nextErrors.name = th ? "กรุณากรอกชื่อของคุณ" : "Please enter your name";
 
     if (!email) {
-      nextErrors.email = "กรุณากรอกอีเมล";
+      nextErrors.email = th ? "กรุณากรอกอีเมล" : "Please enter your email";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      nextErrors.email = "รูปแบบอีเมลไม่ถูกต้อง";
+      nextErrors.email = th ? "รูปแบบอีเมลไม่ถูกต้อง" : "Please enter a valid email";
     }
 
-    if (!message) {
-      nextErrors.message = "กรุณากรอกข้อความ";
-    }
+    if (!message) nextErrors.message = th ? "กรุณากรอกข้อความ" : "Please enter a message";
 
     return nextErrors;
   }
@@ -92,23 +117,17 @@ export default function Contact() {
     if (!firstErrorField || !formRef.current) return;
 
     const field = formRef.current.elements.namedItem(firstErrorField);
-
     if (field instanceof HTMLElement) {
       field.focus();
-      field.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
+      field.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }
 
   function clearFieldError(field: keyof FormErrors) {
     setErrors((prev) => {
       if (!prev[field]) return prev;
-
       const next = { ...prev };
       delete next[field];
-
       return next;
     });
   }
@@ -123,11 +142,7 @@ export default function Contact() {
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
       setStatus("idle");
-
-      window.requestAnimationFrame(() => {
-        focusFirstInvalidField(nextErrors);
-      });
-
+      window.requestAnimationFrame(() => focusFirstInvalidField(nextErrors));
       return;
     }
 
@@ -167,7 +182,7 @@ export default function Contact() {
   }
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#f7f5ed] px-4 py-16 text-[#172019] sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+    <section className="relative min-h-screen overflow-hidden bg-white px-4 pb-20 pt-[118px] text-[#151924] sm:px-6 lg:px-8">
       <style jsx global>{`
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
@@ -175,267 +190,202 @@ export default function Contact() {
         textarea:-webkit-autofill,
         textarea:-webkit-autofill:hover,
         textarea:-webkit-autofill:focus {
-          -webkit-text-fill-color: #0f172a;
-          box-shadow: 0 0 0px 1000px rgba(248, 250, 252, 0.98) inset;
+          -webkit-text-fill-color: #151924;
+          box-shadow: 0 0 0 1000px #ffffff inset;
           transition: background-color 9999s ease-in-out 0s;
         }
       `}</style>
 
-      {/* Background */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(111,143,122,0.14),transparent_34%),linear-gradient(to_bottom,#ffffff_0%,#f3f1e7_52%,#ffffff_100%)]" />
-        <div className="absolute left-1/2 top-0 h-[420px] w-[760px] -translate-x-1/2 rounded-full bg-[#dbe8df]/70 blur-[140px]" />
-        <div className="absolute right-[-180px] top-[30%] h-[430px] w-[430px] rounded-full bg-[#cfded2]/55 blur-[160px]" />
-        <div className="absolute bottom-0 left-[-170px] h-[380px] w-[380px] rounded-full bg-[#d8d3bf]/45 blur-[150px]" />
-        <CircuitLines />
-      </div>
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[940px] bg-[radial-gradient(circle_at_50%_10%,rgba(59,130,246,.13),transparent_58%)]" />
 
-      <div className="relative z-10 mx-auto max-w-7xl">
-        {/* Big background title */}
-        <motion.div
-          initial={{ opacity: 0, y: 26 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="pointer-events-none absolute left-1/2 top-4 hidden -translate-x-1/2 select-none text-[120px] font-black uppercase leading-none tracking-[-0.08em] text-[#172019]/[0.035] md:block lg:text-[180px]"
-        >
-          Contact
-        </motion.div>
+      <div className="relative mx-auto max-w-[1440px] overflow-hidden rounded-[38px] border border-[#dde8f5] bg-[radial-gradient(circle_at_18%_14%,rgba(96,165,250,.11),transparent_26%),radial-gradient(circle_at_85%_18%,rgba(129,140,248,.10),transparent_30%),linear-gradient(180deg,#fbfdff_0%,#f5f9ff_55%,#ffffff_100%)] shadow-[0_34px_100px_rgba(45,75,120,.09)]">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[.16]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, rgba(59,130,246,.25) 1px, transparent 1px)",
+            backgroundSize: "30px 30px",
+            maskImage: "linear-gradient(to bottom, black, transparent 82%)",
+          }}
+        />
 
-        <div className="relative grid items-end gap-10 pt-4 md:pt-24 lg:grid-cols-[0.95fr_1.05fr] lg:gap-8">
-          {/* Left */}
-          <motion.div
-            initial={{ opacity: 0, x: -36 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.75, ease: "easeOut" }}
-          >
-            <div className="inline-flex items-center gap-3 rounded-full border border-[#d7e2da] bg-white/82 px-4 py-2 text-sm font-normal text-[#26362b] shadow-[0_16px_45px_rgba(35,50,40,0.08)] backdrop-blur-xl">
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-[#eef3ef] text-[#52705f]">
-                <CircleHelp className="h-4 w-4" />
-              </span>
-              Contact
-            </div>
-
-            <h1 className="mt-7 text-4xl font-normal leading-tight tracking-[-0.045em] text-[#172019] sm:text-5xl lg:text-6xl">
-              Get in touch
-            </h1>
-
-            <p className="mt-5 max-w-md text-sm font-normal leading-7 text-[#657068] sm:text-base">
-              Have questions or ready to build your next website? Send us a
-              message and we’ll get back to you as soon as possible.
-            </p>
-
-            <div className="mt-9 space-y-3.5 sm:mt-10 sm:space-y-4">
-              {contactItems.map((item, index) => (
-                <motion.a
-                  key={item.title}
-                  href={item.href}
-                  target={item.href.startsWith("http") ? "_blank" : undefined}
-                  rel={
-                    item.href.startsWith("http")
-                      ? "noopener noreferrer"
-                      : undefined
-                  }
-                  initial={{ opacity: 0, y: 22 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    duration: 0.55,
-                    ease: "easeOut",
-                    delay: index * 0.08,
-                  }}
-                  className="group flex items-center gap-3 rounded-3xl border border-[#d7e2da] bg-white/82 p-3.5 shadow-[0_18px_55px_rgba(35,50,40,0.08)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[#9fb6a5] hover:bg-white sm:gap-4 sm:p-4"
-                >
-                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-[#d7e2da] bg-[#eef3ef] text-[#52705f] transition duration-300 group-hover:bg-[#52705f] group-hover:text-white sm:h-14 sm:w-14">
-                    {item.icon}
-                  </span>
-
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-medium text-[#172019]">
-                      {item.title}
-                    </span>
-                    <span className="mt-1 block truncate text-xs font-normal text-[#657068] sm:text-sm">
-                      {item.value}
-                    </span>
-                  </span>
-
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#eef3ef] text-[#52705f] transition duration-300 group-hover:bg-[#172019] group-hover:text-white sm:h-10 sm:w-10">
-                    <ArrowUpRight className="h-4 w-4" />
-                  </span>
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 36 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.75, ease: "easeOut" }}
-            className="relative"
-          >
-            <div className="absolute -inset-3 rounded-[2.35rem] bg-gradient-to-br from-[#c8d9cd]/70 via-[#e8eee9]/45 to-transparent blur-xl" />
-
-            <form
-              ref={formRef}
-              onSubmit={handleSubmit}
-              noValidate
-              className="relative overflow-hidden rounded-[2rem] border border-[#d7e2da] bg-white/88 p-3 shadow-[0_30px_90px_rgba(35,50,40,0.12)] backdrop-blur-2xl sm:rounded-[2.35rem] sm:p-4"
+        <div className="relative px-5 py-14 sm:px-10 sm:py-16 lg:px-14 lg:py-20">
+          <div className="relative z-10 grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10 xl:gap-14">
+            <motion.div
+              initial={{ opacity: 0, x: -28 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: .2 }}
+              transition={{ duration: .62, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:sticky lg:top-[130px]"
             >
-              <input type="checkbox" name="botcheck" className="hidden" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#287cff]/12 bg-white/82 px-3.5 py-2 text-[9px] font-semibold uppercase tracking-[.18em] text-[#287cff] shadow-sm backdrop-blur-xl">
+                <CircleHelp className="h-4 w-4" />
+                {t.badge}
+              </div>
 
-              <div className="pointer-events-none absolute left-0 top-0 h-44 w-44 rounded-full bg-[#dbe8df]/70 blur-3xl" />
-              <div className="pointer-events-none absolute right-0 bottom-0 h-44 w-44 rounded-full bg-[#cfded2]/55 blur-3xl" />
+              <h1
+                className={`mt-6 max-w-[620px] font-semibold text-[#151924] ${
+                  th
+                    ? "text-[42px] leading-[1.18] tracking-[-.02em] sm:text-[56px] sm:leading-[1.16] lg:text-[64px]"
+                    : "text-[48px] leading-[.92] tracking-[-.07em] sm:text-[64px] lg:text-[72px]"
+                }`}
+              >
+                <span className="block">{t.titleA}</span>
+                <span className={`block text-[#287cff] ${th ? "mt-2 sm:mt-3" : ""}`}>
+                  {t.titleB}
+                </span>
+              </h1>
 
-              <div className="relative space-y-3">
-                <FormInput
-                  label="Name"
-                  name="name"
-                  placeholder="Name"
-                  autoComplete="name"
-                  error={errors.name}
-                  onChange={() => clearFieldError("name")}
-                />
+              <p className={`max-w-[560px] text-sm leading-7 text-[#6f7a8c] sm:text-[16px] ${th ? "mt-7" : "mt-5"}`}>
+                {t.lead}
+              </p>
 
-                <FormInput
-                  label="Email"
-                  name="email"
-                  type="text"
-                  inputMode="email"
-                  placeholder="Email"
-                  autoComplete="email"
-                  error={errors.email}
-                  onChange={() => clearFieldError("email")}
-                />
+              <div className="mt-8 grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+                {localizedContactItems.map((item, index) => {
+                  const Icon = item.icon;
 
-                <div className="relative isolate">
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -left-20 top-12 z-0 hidden h-[205px] w-[135px] overflow-hidden rounded-[5rem] sm:block"
+                  return (
+                    <motion.a
+                      key={item.title}
+                      href={item.href}
+                      target={item.href.startsWith("http") ? "_blank" : undefined}
+                      rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: .05 + index * .06 }}
+                      className="group flex items-center gap-3 rounded-[18px] border border-[#dce7f4] bg-white/84 p-3.5 text-left shadow-[0_12px_30px_rgba(51,79,118,.05)] backdrop-blur-xl transition hover:-translate-y-1 hover:bg-white sm:block sm:p-4 lg:flex"
+                    >
+                      <div className="grid h-11 w-11 shrink-0 place-items-center rounded-[14px] bg-[#287cff]/10 text-[#287cff]">
+                        <Icon className="h-[19px] w-[19px]" />
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[13px] font-semibold text-[#151924]">
+                          {item.title}
+                        </p>
+                        <p className="mt-0.5 truncate text-[11px] font-medium text-[#536174]">
+                          {item.value}
+                        </p>
+                        <p className="mt-1 hidden text-[10px] leading-4 text-[#8b97a8] lg:block">
+                          {item.description}
+                        </p>
+                      </div>
+
+                      <ArrowUpRight className="h-4 w-4 shrink-0 text-[#a0aec0] transition group-hover:text-[#287cff] sm:hidden lg:block" />
+                    </motion.a>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 28, scale: .99 }}
+              whileInView={{ opacity: 1, x: 0, scale: 1 }}
+              viewport={{ once: true, amount: .15 }}
+              transition={{ duration: .68, ease: [0.22, 1, 0.36, 1] }}
+              className="relative"
+            >
+              <div className="pointer-events-none absolute left-1/2 top-[42%] h-[360px] w-[760px] max-w-[110%] -translate-x-1/2 -translate-y-1/2 rounded-[50%] bg-[#4f8cff]/12 blur-[105px]" />
+
+              <form
+                ref={formRef}
+                onSubmit={handleSubmit}
+                noValidate
+                className="relative overflow-hidden rounded-[26px] border border-[#dce7f4] bg-white/92 p-4 shadow-[0_28px_80px_rgba(51,79,118,.11)] backdrop-blur-2xl sm:p-6 lg:p-7 xl:p-8"
+              >
+                <input type="checkbox" name="botcheck" className="hidden" />
+
+                <div className="mb-6 border-b border-[#e8eef6] pb-6">
+                  <p className="text-[9px] font-semibold uppercase tracking-[.18em] text-[#8a96a8]">
+                    {t.inquiry}
+                  </p>
+                  <h2 className="mt-1 text-2xl font-semibold tracking-[-.04em] text-[#151924] sm:text-3xl">
+                    {t.formTitle}
+                  </h2>
+                  <p className="mt-2 text-xs leading-5 text-[#8a96a8]">
+                    {t.reply}
+                  </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FormInput
+                    label={t.name}
+                    name="name"
+                    placeholder={t.namePh}
+                    autoComplete="name"
+                    error={errors.name}
+                    onChange={() => clearFieldError("name")}
+                  />
+
+                  <FormInput
+                    label={t.email}
+                    name="email"
+                    type="text"
+                    inputMode="email"
+                    placeholder="you@email.com"
+                    autoComplete="email"
+                    error={errors.email}
+                    onChange={() => clearFieldError("email")}
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <label
+                    htmlFor="message"
+                    className="mb-2 block text-[11px] font-semibold text-[#4b5668]"
                   >
-                    <div
-                      className="absolute inset-0 bg-cover bg-[center_45%] opacity-90 saturate-[0.72]"
-                      style={{
-                        backgroundImage:
-                          "url('https://images.pexels.com/photos/17926227/pexels-photo-17926227.jpeg?auto=compress&cs=tinysrgb&w=700')",
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(247,245,237,0.08)_0%,rgba(247,245,237,0.18)_45%,rgba(247,245,237,0.98)_100%)]" />
-                    <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#f7f5ed] to-transparent" />
-                  </div>
-
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -bottom-16 -right-14 z-0 hidden h-[270px] w-[185px] overflow-hidden rounded-[5rem] sm:block"
-                  >
-                    <div
-                      className="absolute inset-0 scale-x-[-1] bg-cover bg-[center_52%] opacity-90 saturate-[0.72]"
-                      style={{
-                        backgroundImage:
-                          "url('https://images.pexels.com/photos/17926227/pexels-photo-17926227.jpeg?auto=compress&cs=tinysrgb&w=700')",
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(247,245,237,0.06)_0%,rgba(247,245,237,0.14)_46%,rgba(247,245,237,0.98)_100%)]" />
-                    <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#f7f5ed] to-transparent" />
-                  </div>
-
-                  <label htmlFor="message" className="sr-only">
-                    Message
+                    {t.message}
                   </label>
 
                   <textarea
                     id="message"
                     name="message"
-                    rows={10}
-                    placeholder="Message"
+                    rows={8}
+                    placeholder={t.messagePh}
                     onChange={() => clearFieldError("message")}
-                    className={`relative z-10 min-h-[240px] w-full resize-none rounded-[1.4rem] border px-5 py-5 text-sm font-normal text-[#172019] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_30px_rgba(35,50,40,0.06)] outline-none transition placeholder:text-[#8a958d] focus:bg-white focus:ring-4 sm:min-h-[300px] sm:rounded-[1.55rem] ${
-                      errors.message
-                        ? "border-[#FB7185]/55 bg-[#FB7185]/10 focus:border-[#FB7185] focus:ring-[#FB7185]/10"
-                        : "border-[#d7e2da] bg-white focus:border-[#6f8878]/55 focus:ring-[#6f8878]/10"
-                    }`}
+                    className={`min-h-[220px] w-full resize-none rounded-[18px] border px-4 py-4 text-sm text-[#151924] outline-none transition placeholder:text-[#a0a9b6] focus:bg-white focus:ring-4 sm:min-h-[260px] sm:px-5 sm:py-5 ${errors.message ? "border-[#fb7185]/60 bg-[#fff7f8] focus:border-[#fb7185] focus:ring-[#fb7185]/10" : "border-[#dce5ef] bg-[#fbfcfe] focus:border-[#287cff]/55 focus:ring-[#287cff]/10"}`}
                   />
 
-                  <div className="relative z-20">
-                    <AnimatePresence>
-                      {errors.message && <FieldError message={errors.message} />}
-                    </AnimatePresence>
-                  </div>
+                  <AnimatePresence>
+                    {errors.message && <FieldError message={errors.message} />}
+                  </AnimatePresence>
                 </div>
-                <motion.button
-                  type="submit"
-                  disabled={status === "loading"}
-                  whileTap={{ scale: 0.96 }}
-                  animate={
-                    status === "loading"
-                      ? {
-                          scale: [1, 1.018, 1],
-                          y: [0, -2, 0],
-                        }
-                      : {
-                          scale: 1,
-                          y: 0,
-                        }
-                  }
-                  transition={
-                    status === "loading"
-                      ? {
-                          duration: 0.55,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }
-                      : undefined
-                  }
-                  className="site-cta-dark site-cta-full relative overflow-hidden disabled:cursor-not-allowed disabled:opacity-90"
-                >
-                  {status === "loading" && (
-                    <>
-                      <motion.span
-                        className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(56,189,248,0.28),transparent)]"
-                        animate={{ x: ["-100%", "100%"] }}
-                        transition={{
-                          duration: 1,
-                          repeat: Infinity,
-                          ease: "linear",
-                        }}
-                      />
 
-                      <motion.span
-                        className="absolute h-20 w-20 rounded-full bg-sky-300/30 blur-xl"
-                        animate={{
-                          scale: [0.8, 1.35, 0.8],
-                          opacity: [0.35, 0.75, 0.35],
-                        }}
-                        transition={{
-                          duration: 0.9,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
-                      />
-                    </>
-                  )}
+                {status === "error" && (
+                  <p className="mt-4 rounded-[15px] border border-red-200 bg-red-50 px-4 py-3 text-xs leading-5 text-red-600">
+                    {t.error}
+                  </p>
+                )}
 
-                  <span className="relative z-10 inline-flex items-center gap-2">
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-[10px] leading-4 text-[#929dad]">
+                    {t.consent}
+                  </p>
+
+                  <motion.button
+                    type="submit"
+                    disabled={status === "loading"}
+                    whileTap={{ scale: .97 }}
+                    className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-[15px] bg-[#287cff] px-5 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(40,124,255,.23)] transition hover:-translate-y-0.5 hover:bg-[#3c89ff] disabled:cursor-not-allowed disabled:opacity-70"
+                  >
                     {status === "loading" ? (
                       <>
-                        Sending
+                        {t.sending}
                         <BouncyDots />
                       </>
                     ) : (
-                      "Submit"
+                      <>
+                        {t.send}
+                        <Send className="h-4 w-4" />
+                      </>
                     )}
-                  </span>
-                </motion.button>
-                {status === "error" && (
-                  <p className="rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-center text-xs leading-5 text-red-700">
-                    Something went wrong. Please try again or email us directly.
-                  </p>
-                )}
-              </div>
-            </form>
-          </motion.div>
+                  </motion.button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
         </div>
       </div>
 
@@ -444,6 +394,7 @@ export default function Contact() {
           <SuccessPopup
             submittedEmail={submittedEmail}
             onClose={closeSuccessPopup}
+            language={language}
           />
         )}
       </AnimatePresence>
@@ -480,7 +431,10 @@ function FormInput({
 }) {
   return (
     <div>
-      <label htmlFor={name} className="sr-only">
+      <label
+        htmlFor={name}
+        className="mb-2 block text-[11px] font-semibold text-[#4b5668]"
+      >
         {label}
       </label>
 
@@ -492,11 +446,7 @@ function FormInput({
         placeholder={placeholder}
         autoComplete={autoComplete}
         onChange={onChange}
-        className={`h-16 w-full rounded-[1.25rem] border px-5 text-sm font-normal text-[#172019] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_30px_rgba(35,50,40,0.06)] outline-none transition placeholder:text-[#8a958d] focus:bg-white focus:ring-4 sm:rounded-[1.45rem] ${
-          error
-            ? "border-[#FB7185]/55 bg-[#FB7185]/10 focus:border-[#FB7185] focus:ring-[#FB7185]/10"
-            : "border-[#d7e2da] bg-white/82 focus:border-[#6f8878]/55 focus:ring-[#6f8878]/10"
-        }`}
+        className={`h-14 w-full rounded-[16px] border px-4 text-sm text-[#151924] outline-none transition placeholder:text-[#a0a9b6] focus:bg-white focus:ring-4 sm:h-16 sm:px-5 ${error ? "border-[#fb7185]/60 bg-[#fff7f8] focus:border-[#fb7185] focus:ring-[#fb7185]/10" : "border-[#dce5ef] bg-[#fbfcfe] focus:border-[#287cff]/55 focus:ring-[#287cff]/10"}`}
       />
 
       <AnimatePresence>
@@ -509,11 +459,11 @@ function FormInput({
 function FieldError({ message }: { message: string }) {
   return (
     <motion.p
-      initial={{ opacity: 0, y: -4 }}
+      initial={{ opacity: 0, y: -3 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -4 }}
-      transition={{ duration: 0.2 }}
-      className="mt-2 flex items-center gap-2 px-2 text-xs font-normal text-red-500"
+      exit={{ opacity: 0, y: -3 }}
+      transition={{ duration: .18 }}
+      className="mt-2 flex items-center gap-1.5 text-[10px] font-medium text-[#ef5268]"
     >
       <AlertCircle className="h-3.5 w-3.5" />
       {message}
@@ -524,200 +474,68 @@ function FieldError({ message }: { message: string }) {
 function SuccessPopup({
   submittedEmail,
   onClose,
+  language,
 }: {
   submittedEmail: string;
   onClose: () => void;
+  language: "th" | "en";
 }) {
+  const th = language === "th";
   return (
     <motion.div
-      className="fixed inset-0 z-[99999] grid place-items-center bg-slate-900/35 px-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[99999] grid place-items-center bg-[#10182a]/35 px-4 backdrop-blur-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{
-        opacity: 0,
-        transition: {
-          duration: 0.8,
-          ease: "easeInOut",
-        },
-      }}
+      exit={{ opacity: 0 }}
     >
       <motion.div
-        initial={{ opacity: 0, y: 28, scale: 0.92 }}
-        animate={{
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          transition: {
-            type: "spring",
-            stiffness: 210,
-            damping: 18,
-          },
-        }}
-        exit={{
-          opacity: 0,
-          y: 16,
-          scale: 0.96,
-          transition: {
-            duration: 0.8,
-            ease: "easeInOut",
-          },
-        }}
-        className="relative w-full max-w-[390px] overflow-hidden rounded-[2rem] border border-slate-200 bg-white px-6 pb-6 pt-7 text-center shadow-[0_30px_90px_rgba(15,23,42,0.2)]"
+        initial={{ opacity: 0, y: 24, scale: .94 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 14, scale: .97 }}
+        transition={{ type: "spring", stiffness: 210, damping: 20 }}
+        className="relative w-full max-w-[390px] overflow-hidden rounded-[28px] border border-[#dce7f4] bg-white p-6 text-center shadow-[0_30px_90px_rgba(20,39,73,.22)]"
       >
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(56,189,248,0.18),transparent_52%),linear-gradient(to_bottom,#ffffff,#f8fafc)]" />
-        <div className="pointer-events-none absolute -left-14 top-20 h-32 w-32 rounded-full bg-sky-300/30 blur-3xl" />
-        <div className="pointer-events-none absolute -right-14 bottom-20 h-32 w-32 rounded-full bg-emerald-200/35 blur-3xl" />
-
         <button
           type="button"
           onClick={onClose}
           aria-label="Close popup"
-          className="absolute right-4 top-4 z-20 grid h-9 w-9 place-items-center rounded-full bg-sky-50 text-sky-700/80 transition hover:bg-slate-900 hover:text-white"
+          className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full bg-[#f2f6fb] text-[#6f7b8e] transition hover:bg-[#151924] hover:text-white"
         >
           <X className="h-4 w-4" />
         </button>
 
-        <div className="relative z-10">
-          <motion.div
-            initial={{ scale: 0.75, rotate: -8 }}
-            animate={{
-              scale: [0.75, 1.08, 1],
-              rotate: [-8, 4, 0],
-            }}
-            transition={{
-              duration: 0.7,
-              ease: "easeOut",
-            }}
-            className="mx-auto"
-          >
-            <CelebrationIllustration />
-          </motion.div>
-
-          <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 ring-1 ring-emerald-100">
-            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-            Message delivered
-          </div>
-
-          <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-slate-950">
-            Congratulations
-          </h2>
-
-          <p className="mx-auto mt-3 max-w-[290px] text-sm leading-6 text-slate-600">
-            Your message has been sent to BuildifyX successfully.
-          </p>
-
-          <p className="mx-auto mt-2 max-w-[290px] text-xs leading-5 text-slate-500">
-            We’ll get back to you soon
-            {submittedEmail ? (
-              <>
-                {" "}
-                at{" "}
-                <span className="font-medium text-sky-700">
-                  {submittedEmail}
-                </span>
-                .
-              </>
-            ) : (
-              "."
-            )}
-          </p>
-
-          <button
-            type="button"
-            onClick={onClose}
-            className="site-cta-dark site-cta-full mt-6"
-          >
-            Continue
-          </button>
+        <div className="mx-auto grid h-16 w-16 place-items-center rounded-[20px] bg-[#eaf3ff] text-[#287cff]">
+          <CheckCircle2 className="h-8 w-8" />
         </div>
+
+        <p className="mt-5 text-[9px] font-semibold uppercase tracking-[.18em] text-[#287cff]">
+          {th ? "ส่งข้อความแล้ว" : "Message delivered"}
+        </p>
+
+        <h2 className="mt-2 text-3xl font-semibold tracking-[-.04em] text-[#151924]">
+          {th ? "ขอบคุณ" : "Thank you."}
+        </h2>
+
+        <p className="mx-auto mt-3 max-w-[300px] text-sm leading-6 text-[#6f7a8c]">
+          {th ? "ส่งข้อความถึง Buildifyx เรียบร้อยแล้ว" : "Your message has been sent to Buildifyx successfully."}
+        </p>
+
+        {submittedEmail && (
+          <p className="mx-auto mt-2 max-w-[300px] text-xs leading-5 text-[#8c97a7]">
+            {th ? "เราจะตอบกลับไปที่" : "We'll reply to"} <span className="font-semibold text-[#287cff]">{submittedEmail}</span>.
+          </p>
+        )}
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-[15px] bg-[#151924] px-5 text-sm font-semibold text-white transition hover:bg-[#2a3140]"
+        >
+          {th ? "ดำเนินการต่อ" : "Continue"}
+          <ArrowRight className="h-4 w-4" />
+        </button>
       </motion.div>
     </motion.div>
-  );
-}
-
-function CelebrationIllustration() {
-  return (
-    <svg
-      viewBox="0 0 220 170"
-      className="mx-auto h-[138px] w-[178px]"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <defs>
-        <linearGradient id="partyBody" x1="55" y1="130" x2="135" y2="42">
-          <stop stopColor="#4F7CFF" />
-          <stop offset="0.48" stopColor="#8D63FF" />
-          <stop offset="1" stopColor="#F48CFF" />
-        </linearGradient>
-
-        <linearGradient id="partyMouth" x1="100" y1="54" x2="169" y2="100">
-          <stop stopColor="#5B247A" />
-          <stop offset="1" stopColor="#2B164C" />
-        </linearGradient>
-
-        <filter
-          id="glow"
-          x="0"
-          y="0"
-          width="220"
-          height="170"
-          filterUnits="userSpaceOnUse"
-        >
-          <feGaussianBlur stdDeviation="12" result="blur" />
-          <feColorMatrix
-            in="blur"
-            type="matrix"
-            values="0 0 0 0 0.55 0 0 0 0 0.38 0 0 0 0 1 0 0 0 0.55 0"
-          />
-          <feBlend in2="SourceGraphic" mode="screen" />
-        </filter>
-      </defs>
-
-      <g filter="url(#glow)">
-        <path
-          d="M37 133L94 45C99 37 111 39 114 48L151 129C155 139 145 149 135 145L43 142C36 142 33 137 37 133Z"
-          fill="url(#partyBody)"
-        />
-        <path
-          d="M105 48C122 35 151 61 168 87C185 113 184 139 166 145C148 151 127 129 113 104C98 77 91 59 105 48Z"
-          fill="url(#partyMouth)"
-          opacity="0.88"
-        />
-        <path d="M46 130L123 93L83 53L46 130Z" fill="white" opacity="0.12" />
-      </g>
-
-      <circle cx="63" cy="94" r="10" fill="#FACC15" />
-      <circle cx="42" cy="74" r="11" fill="#FDA4AF" />
-      <circle cx="172" cy="58" r="8" fill="#FB7185" />
-      <circle cx="183" cy="79" r="8" fill="#F59E0B" />
-      <circle cx="140" cy="130" r="9" fill="#C4B5FD" />
-      <circle cx="160" cy="31" r="10" fill="#F97316" />
-
-      <path
-        d="M42 18C27 18 29 53 43 52C54 51 57 29 45 30"
-        stroke="#D8B4FE"
-        strokeWidth="10"
-        strokeLinecap="round"
-      />
-      <path
-        d="M134 22C158 24 162 42 137 44C118 46 118 67 148 67"
-        stroke="#93C5FD"
-        strokeWidth="10"
-        strokeLinecap="round"
-      />
-      <path
-        d="M171 105C193 107 195 122 174 126C158 129 160 145 183 145"
-        stroke="#DDD6FE"
-        strokeWidth="10"
-        strokeLinecap="round"
-      />
-      <path
-        d="M139 80C158 67 181 63 203 68"
-        stroke="#FDBA74"
-        strokeWidth="10"
-        strokeLinecap="round"
-      />
-    </svg>
   );
 }
 
@@ -728,65 +546,18 @@ function BouncyDots() {
         <motion.span
           key={dot}
           animate={{
-            y: [0, -5, 0],
-            opacity: [0.45, 1, 0.45],
+            y: [0, -4, 0],
+            opacity: [.45, 1, .45],
           }}
           transition={{
-            duration: 0.55,
+            duration: .55,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: dot * 0.12,
+            delay: dot * .12,
           }}
           className="h-1.5 w-1.5 rounded-full bg-white"
         />
       ))}
     </span>
-  );
-}
-
-function CircuitLines() {
-  return (
-    <svg
-      className="absolute inset-0 hidden h-full w-full opacity-35 sm:block"
-      viewBox="0 0 1440 900"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M0 120 C80 170 72 270 155 302 L292 302"
-        stroke="url(#lightLine)"
-        strokeWidth="1.2"
-      />
-      <circle cx="292" cy="302" r="6" stroke="#0F172A" opacity="0.12" />
-
-      <path
-        d="M1440 255 C1355 255 1368 315 1295 315 L1178 315"
-        stroke="url(#lightLine)"
-        strokeWidth="1.2"
-      />
-      <circle cx="1178" cy="315" r="6" stroke="#0F172A" opacity="0.12" />
-
-      <path
-        d="M1440 370 C1378 310 1355 275 1292 275 L1140 275"
-        stroke="url(#lightLine)"
-        strokeWidth="1.2"
-      />
-      <circle cx="1140" cy="275" r="6" stroke="#0F172A" opacity="0.12" />
-
-      <defs>
-        <linearGradient
-          id="lightLine"
-          x1="0"
-          y1="0"
-          x2="1440"
-          y2="0"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="#0F172A" stopOpacity="0.03" />
-          <stop offset="0.5" stopColor="#38BDF8" stopOpacity="0.38" />
-          <stop offset="1" stopColor="#0F172A" stopOpacity="0.03" />
-        </linearGradient>
-      </defs>
-    </svg>
   );
 }

@@ -11,7 +11,6 @@ import {
   Plane,
   RefreshCw,
   RotateCw,
-  Sparkles,
   UserRound,
   X,
 } from "lucide-react";
@@ -23,6 +22,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 type Place = {
   name: string;
@@ -422,6 +422,8 @@ function createSegmentPath(
 }
 
 export default function TravelSpinnerGame() {
+  const { language } = useLanguage();
+  const th = language === "th";
   const resultTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const playfulTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -798,7 +800,7 @@ export default function TravelSpinnerGame() {
             <section className="mx-auto w-full min-w-0 max-w-2xl rounded-[22px] border border-white/10 bg-[#15162d]/95 p-4 text-white shadow-[0_28px_90px_rgba(0,0,0,0.3)] backdrop-blur-2xl min-[380px]:p-5 sm:rounded-[32px] sm:p-7 md:p-8 xl:max-w-none">
               <div className="mb-6 sm:mb-8">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06] sm:h-12 sm:w-12 sm:rounded-2xl">
-                  <Sparkles size={22} />
+                  <Compass size={22} />
                 </div>
 
                 <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/45 sm:mt-5 sm:text-xs">
@@ -905,7 +907,7 @@ export default function TravelSpinnerGame() {
                   />
 
                   {isSpinning
-                    ? "Finding your destination..."
+                    ? (th ? "กำลังหาจุดหมายของคุณ..." : "Finding your destination...")
                     : isPreviewSpinning
                       ? "Wheel is spinning..."
                       : "Spin the wheel"}
@@ -960,7 +962,6 @@ export default function TravelSpinnerGame() {
 
               <div className="absolute inset-x-0 bottom-0 p-5 text-white sm:p-8">
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/20 px-3 py-1.5 text-[8px] font-bold uppercase tracking-[0.16em] backdrop-blur-xl sm:text-[10px] sm:tracking-[0.18em]">
-                  <Sparkles size={12} />
                   Your perfect destination
                 </div>
 
@@ -1111,7 +1112,7 @@ export default function TravelSpinnerGame() {
               {/* Tip */}
               <section className="mt-4 flex gap-3 rounded-[18px] border border-yellow-200 bg-[#fff9df] p-4 sm:mt-5 sm:rounded-[20px]">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#ffc94f] text-white">
-                  <Sparkles size={17} />
+                  <Compass size={17} />
                 </span>
 
                 <div>

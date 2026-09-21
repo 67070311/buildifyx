@@ -3,39 +3,57 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Code2, Bot, Database, Palette } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const roles = [
   {
     title: "Full-stack",
+    titleTh: "Full-stack",
     label: "Web Application Development",
+    labelTh: "พัฒนาเว็บแอปพลิเคชัน",
     description:
       "We build scalable websites and full-stack applications using modern frontend and backend technologies.",
+    descriptionTh:
+      "เราพัฒนาเว็บไซต์และแอปพลิเคชันแบบ Full-stack ที่ขยายต่อได้ ด้วยเทคโนโลยี frontend และ backend ที่ทันสมัย.",
     icon: <Code2 size={22} />,
   },
   {
     title: "AI Engineer",
+    titleTh: "AI Engineer",
     label: "AI Systems & Automation",
+    labelTh: "ระบบ AI และ Automation",
     description:
       "We create intelligent systems, AI workflows, and automation tools that help businesses work faster and smarter.",
+    descriptionTh:
+      "เราสร้างระบบอัจฉริยะ AI workflow และเครื่องมือ automation เพื่อช่วยให้ธุรกิจทำงานได้เร็วและมีประสิทธิภาพขึ้น.",
     icon: <Bot size={22} />,
   },
   {
     title: "Data Engineer",
+    titleTh: "Data Engineer",
     label: "Data Pipeline & Analytics",
+    labelTh: "Data Pipeline และ Analytics",
     description:
       "We design data pipelines, dashboards, and reliable data systems that turn raw information into useful insights.",
+    descriptionTh:
+      "เราออกแบบ data pipeline, dashboard และระบบข้อมูลที่เชื่อถือได้ เพื่อเปลี่ยนข้อมูลดิบให้เป็น insight ที่ใช้งานจริง.",
     icon: <Database size={22} />,
   },
   {
     title: "UXUI Designer",
+    titleTh: "UX/UI Designer",
     label: "User Experience & Interface",
+    labelTh: "ประสบการณ์และหน้าตาการใช้งาน",
     description:
       "We design clean, usable, and modern interfaces that make digital products easier and more enjoyable to use.",
+    descriptionTh:
+      "เราออกแบบ interface ที่สะอาด ใช้งานง่าย และทันสมัย เพื่อให้ digital product เข้าใจง่ายและใช้งานได้อย่างเป็นธรรมชาติ.",
     icon: <Palette size={22} />,
   },
 ];
 
 export default function Hero() {
+  const { language } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -68,7 +86,7 @@ export default function Hero() {
           viewport={{ once: true }}
           className="mb-6 rounded-full border border-[#8D8BFF]/25 bg-[#8D8BFF]/10 px-5 py-2 text-xs font-medium uppercase tracking-[0.3em] text-[#A7A5F8] shadow-[0_0_40px_rgba(85,82,217,0.25)]"
         >
-          About Us
+          {language === "th" ? "เกี่ยวกับเรา" : "About Us"}
         </motion.div>
 
         {/* Title */}
@@ -79,7 +97,9 @@ export default function Hero() {
           viewport={{ once: true }}
           className="max-w-4xl text-3xl font-medium leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl"
         >
-          The Skilled Team Building Digital Products At BuildifyX
+          {language === "th"
+            ? "ทีมที่รวมทักษะเพื่อสร้าง Digital Product ที่ใช้งานได้จริง"
+            : "The Skilled Team Building Digital Products At BuildifyX"}
         </motion.h1>
 
         {/* Subtitle */}
@@ -90,9 +110,9 @@ export default function Hero() {
           viewport={{ once: true }}
           className="mt-6 max-w-2xl text-sm font-normal leading-7 text-white/50 sm:text-base md:text-lg md:leading-8"
         >
-          We are a software studio founded by young builders from KMITL,
-          combining engineering, design, AI, and data to create real products
-          for real businesses.
+          {language === "th"
+            ? "เราเป็น Software Studio ที่ก่อตั้งโดยทีมรุ่นใหม่จาก KMITL ผสาน Engineering, Design, AI และ Data เพื่อสร้างผลิตภัณฑ์ที่ใช้ได้จริงสำหรับธุรกิจจริง"
+            : "We are a software studio founded by young builders from KMITL, combining engineering, design, AI, and data to create real products for real businesses."}
         </motion.p>
 
         {/* Role Pills */}
@@ -128,7 +148,7 @@ export default function Hero() {
                   {role.icon}
                 </span>
 
-                {role.title}
+                {language === "th" ? role.titleTh : role.title}
               </button>
             );
           })}
@@ -151,15 +171,15 @@ export default function Hero() {
             </div>
 
             <p className="mb-3 text-xs font-medium uppercase tracking-[0.28em] text-[#A7A5F8] sm:text-sm">
-              {activeRole.label}
+              {language === "th" ? activeRole.labelTh : activeRole.label}
             </p>
 
             <h2 className="text-2xl font-medium text-white sm:text-3xl md:text-4xl">
-              {activeRole.title}
+              {language === "th" ? activeRole.titleTh : activeRole.title}
             </h2>
 
             <p className="mx-auto mt-5 max-w-2xl text-sm font-normal leading-7 text-white/50 sm:text-base md:text-lg md:leading-8">
-              {activeRole.description}
+              {language === "th" ? activeRole.descriptionTh : activeRole.description}
             </p>
 
             {/* Progress dots */}
@@ -174,7 +194,7 @@ export default function Hero() {
                       ? "w-8 bg-[#A7A5F8]"
                       : "w-2 bg-white/20 hover:bg-white/40"
                   }`}
-                  aria-label={`Show ${role.title}`}
+                  aria-label={`${language === "th" ? "แสดง" : "Show"} ${language === "th" ? role.titleTh : role.title}`}
                 />
               ))}
             </div>

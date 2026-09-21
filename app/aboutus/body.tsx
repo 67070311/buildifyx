@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export default function Body() {
+  const { language } = useLanguage();
+
   return (
     <section className="relative -mt-[1px] w-full overflow-hidden bg-[#050507] px-6 pb-20 pt-0 text-white md:pb-28">
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center pt-20 text-center md:pt-28">
@@ -15,17 +18,17 @@ export default function Body() {
           className="mx-auto max-w-4xl"
         >
           <p className="mb-5 text-xs font-medium uppercase tracking-[0.45em] text-[#A7A5F8] sm:text-sm">
-            About Us
+            {language === "th" ? "เกี่ยวกับเรา" : "About Us"}
           </p>
 
           <h2 className="text-4xl font-medium tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
-            What we do
+            {language === "th" ? "เราทำอะไร" : "What we do"}
           </h2>
 
           <p className="mx-auto mt-7 max-w-3xl text-sm font-normal leading-7 text-white/45 sm:text-base md:text-lg md:leading-8">
-            At Buildifyx, we create modern digital experiences through branding,
-            web development, UI/UX design, and creative strategy for businesses
-            and startups.
+            {language === "th"
+              ? "ที่ Buildifyx เราสร้างประสบการณ์ดิจิทัลสมัยใหม่ ตั้งแต่ Branding, Web Development, UI/UX Design ไปจนถึง Creative Strategy สำหรับธุรกิจและสตาร์ทอัพ"
+              : "At Buildifyx, we create modern digital experiences through branding, web development, UI/UX design, and creative strategy for businesses and startups."}
           </p>
         </motion.div>
 
@@ -38,9 +41,12 @@ export default function Body() {
         >
           <Image
             src="/aboutus_pic/Cooking.gif"
-            alt="What we do"
+            alt={language === "th" ? "สิ่งที่เราทำ" : "What we do"}
             fill
-            priority
+            loading="lazy"
+            fetchPriority="low"
+            decoding="async"
+            unoptimized
             className="object-contain"
           />
         </motion.div>

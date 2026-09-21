@@ -3,55 +3,73 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const testimonials = [
   {
     comment:
       "Working with the team was one of the best decisions we made for our product. Everything from communication to execution felt smooth and professional.",
+    commentTh:
+      "การทำงานกับทีมเป็นหนึ่งในการตัดสินใจที่ดีที่สุดของโปรเจกต์ ตั้งแต่การสื่อสารจนถึงการลงมือทำ ทุกอย่างราบรื่นและเป็นมืออาชีพ",
     rating: 4,
     avatar:
       "https://cdn.imgbin.com/3/12/17/imgbin-computer-icons-avatar-user-login-avatar-man-wearing-blue-shirt-illustration-mJrXLG07YnZUc2bH5pGfFKUhX.jpg",
     name: "Client 1",
     role: "Buildifyx partner",
+    roleTh: "พาร์ตเนอร์ Buildifyx",
   },
   {
     comment:
       "They understood our vision quickly and turned it into a polished product. The process was clear, fast, and very easy to follow.",
+    commentTh:
+      "ทีมเข้าใจภาพที่เราต้องการได้เร็ว และเปลี่ยนให้กลายเป็นผลิตภัณฑ์ที่ดูดี กระบวนการชัดเจน รวดเร็ว และติดตามง่าย",
     rating: 5,
     avatar:
       "https://media.invisioncic.com/i328763/monthly_2019_03/persona-database_admin.png.18543d18b113f683d1f9af84ec897e00.png",
     name: "Client 2",
     role: "Buildifyx partner",
+    roleTh: "พาร์ตเนอร์ Buildifyx",
   },
   {
     comment:
       "Amazing experience from start to finish. The team delivered clean design, solid development, and helpful suggestions along the way.",
+    commentTh:
+      "ประสบการณ์ดีตั้งแต่ต้นจนจบ ทั้งดีไซน์สะอาด การพัฒนาที่แข็งแรง และคำแนะนำที่ช่วยให้งานดีขึ้นระหว่างทาง",
     rating: 5,
     avatar:
       "https://www.socialdiscoverycorp.com/hs-fs/hubfs/Archive/SDC__Casey-circle.png?height=1386&name=SDC__Casey-circle.png&width=1386",
     name: "Client 3",
     role: "Buildifyx partner",
+    roleTh: "พาร์ตเนอร์ Buildifyx",
   },
   {
     comment:
       "Their communication was excellent. We always knew what was happening, and the final result looked even better than expected.",
+    commentTh:
+      "การสื่อสารดีมาก เรารู้ตลอดว่างานอยู่ขั้นไหน และผลลัพธ์สุดท้ายออกมาดีกว่าที่คาดไว้",
     rating: 4,
     avatar:
       "https://cdn1.iconfinder.com/data/icons/woman-profile-001/2200/MSI23.00043-512.png",
     name: "Client 4",
     role: "Buildifyx partner",
+    roleTh: "พาร์ตเนอร์ Buildifyx",
   },
   {
     comment:
       "A reliable team that really cares about details. They helped us launch with confidence and made the whole project feel simple.",
+    commentTh:
+      "เป็นทีมที่ไว้ใจได้และใส่ใจรายละเอียด ช่วยให้เราเปิดตัวได้อย่างมั่นใจ และทำให้ทั้งโปรเจกต์รู้สึกง่ายขึ้น",
     rating: 5,
     avatar: "https://icon2.cleanpng.com/ci4/psh/ihi/a4zzebpm3.webp",
     name: "Client 5",
     role: "Buildifyx partner",
+    roleTh: "พาร์ตเนอร์ Buildifyx",
   },
 ];
 
 export default function Comment() {
+  const { language } = useLanguage();
+  const th = language === "th";
   const [activeIndex, setActiveIndex] = useState(0);
   const active = testimonials[activeIndex];
 
@@ -69,14 +87,14 @@ export default function Comment() {
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6 }} className="grid gap-8 lg:grid-cols-[.72fr_1.28fr] lg:items-end">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#007aff]">
-              Client stories
+              {th ? "เรื่องจากลูกค้า" : "Client stories"}
             </p>
-            <h2 className="mt-3 max-w-xl text-[38px] font-semibold leading-[1.02] tracking-[-0.05em] sm:text-[50px]">
-              What it feels like
-              <span className="block text-[#007aff]">to build with us.</span>
+            <h2 className={`mt-3 max-w-xl font-semibold ${th ? "text-[32px] leading-[1.22] tracking-[-.02em] sm:text-[44px]" : "text-[38px] leading-[1.02] tracking-[-0.05em] sm:text-[50px]"}`}>
+              {th ? "ประสบการณ์จาก" : "What it feels like"}
+              <span className="block text-[#007aff]">{th ? "การทำงานร่วมกับเรา" : "to build with us."}</span>
             </h2>
             <p className="mt-4 max-w-lg text-[14px] leading-6 text-[#636366]">
-              Clear communication, thoughtful execution, and a process that keeps people close to the product from idea to launch.
+              {th ? "สื่อสารชัดเจน ลงมือทำอย่างใส่ใจ และมีกระบวนการที่ทำให้ทุกคนเห็นภาพผลิตภัณฑ์ตั้งแต่ไอเดียจนเปิดตัว" : "Clear communication, thoughtful execution, and a process that keeps people close to the product from idea to launch."}
             </p>
 
             <div className="mt-6 flex items-center gap-2">
@@ -119,12 +137,12 @@ export default function Comment() {
                       src={active.avatar}
                       alt={active.name}
                       className="h-16 w-16 rounded-full object-cover ring-4 ring-white"
-                      loading="eager"
+                      loading="lazy"
                       decoding="async"
                     />
                     <div>
                       <p className="text-[17px] font-semibold tracking-[-0.02em]">{active.name}</p>
-                      <p className="mt-1 text-[12px] text-[#8e8e93]">{active.role}</p>
+                      <p className="mt-1 text-[12px] text-[#8e8e93]">{th ? active.roleTh : active.role}</p>
                     </div>
                   </div>
 
@@ -145,7 +163,7 @@ export default function Comment() {
                 </div>
 
                 <p className="mt-5 max-w-3xl text-[18px] leading-8 tracking-[-0.015em] text-[#2c2c2e] sm:text-[20px]">
-                  “{active.comment}”
+                  “{th ? active.commentTh : active.comment}”
                 </p>
 
                 <div className="mt-6 grid gap-2 sm:grid-cols-3">

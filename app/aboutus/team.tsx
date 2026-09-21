@@ -54,7 +54,7 @@ export default function Team() {
                   </h3>
 
                   <p className="mt-3 text-base leading-[1.8] text-black md:text-lg pb-10">
-                    King Mongkut's Institute of Technology Ladkrabang
+                    King Mongkut&apos;s Institute of Technology Ladkrabang
                     <br />
                     Faculty of Information Technology
                   </p>
@@ -123,7 +123,7 @@ export default function Team() {
                   </h3>
 
                   <p className="mt-3 text-base leading-[1.8] text-black md:text-lg pb-10">
-                    King Mongkut's Institute of Technology Ladkrabang
+                    King Mongkut&apos;s Institute of Technology Ladkrabang
                     <br />
                     Faculty of Science Computer Science
                   </p>

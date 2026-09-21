@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const particles = [
   "left-[18%] top-[46%]", "left-[23%] top-[58%]", "left-[28%] top-[67%]",
@@ -21,6 +24,9 @@ function ButterflyIcon() {
 }
 
 export default function Hero() {
+  const { language } = useLanguage();
+  const th = language === "th";
+
   return (
     <section className="whyus-night-hero relative min-h-[100svh] overflow-hidden bg-white text-white">
       <div
@@ -65,21 +71,21 @@ export default function Hero() {
             Buildifyx Studio
           </div>
 
-          <h1 className="whyus-rise-in-delayed mt-8 text-balance text-[46px] font-light leading-[0.96] tracking-[-0.055em] text-[#10233f] sm:text-[68px] md:text-[82px] lg:text-[96px]">
-            Built for ideas that
+          <h1 className={`whyus-rise-in-delayed mt-8 text-balance font-light text-[#10233f] ${th ? "text-[40px] leading-[1.16] tracking-[-.02em] sm:text-[56px] md:text-[66px] lg:text-[74px]" : "text-[46px] leading-[0.96] tracking-[-0.055em] sm:text-[68px] md:text-[82px] lg:text-[96px]"}`}>
+            {th ? "เราเปลี่ยนไอเดีย" : "Built for ideas that"}
           </h1>
           <div className="whyus-night-word mt-2 inline-flex items-center justify-center px-2 py-1">
-            <span className="font-serif text-[62px] font-medium italic leading-none tracking-[-0.05em] text-[#2f7fff] [text-shadow:0_10px_30px_rgba(47,127,255,0.16)] sm:text-[80px] md:text-[94px]">
-              matter.
+            <span className={th ? "text-[42px] font-semibold leading-[1.2] tracking-[-.02em] text-[#2f7fff] [text-shadow:0_10px_30px_rgba(47,127,255,0.16)] sm:text-[58px] md:text-[68px] lg:text-[76px]" : "font-serif text-[62px] font-medium italic leading-none tracking-[-0.05em] text-[#2f7fff] [text-shadow:0_10px_30px_rgba(47,127,255,0.16)] sm:text-[80px] md:text-[94px]"}>
+              {th ? "ให้กลายเป็นสิ่งที่มีความหมาย" : "matter."}
             </span>
           </div>
 
           <p className="whyus-rise-in-delayed mt-7 max-w-2xl text-sm leading-7 text-[#53677f] sm:text-base">
-            We turn ideas into digital products through strategy, expressive design, and reliable engineering — built to create real impact.
+            {th ? "เราเปลี่ยนไอเดียให้กลายเป็น Digital Product ผ่านกลยุทธ์ การออกแบบ และวิศวกรรมที่เชื่อถือได้ เพื่อสร้างผลลัพธ์ที่ใช้งานได้จริง" : "We turn ideas into digital products through strategy, expressive design, and reliable engineering — built to create real impact."}
           </p>
 
           <Link href="/Contact" className="whyus-night-cta group mt-7 inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[#2f7fff] px-8 text-sm font-semibold !text-white shadow-[0_14px_34px_rgba(47,127,255,.28)] ring-1 ring-[#2f7fff]/20 transition hover:-translate-y-0.5 hover:bg-[#216fe8]">
-            <span className="relative z-10 text-white">Start a project</span>
+            <span className="relative z-10 text-white">{th ? "เริ่มโปรเจกต์" : "Start a project"}</span>
             <ArrowUpRight className="relative z-10 h-4 w-4 text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
 
@@ -99,8 +105,8 @@ export default function Hero() {
         </div>
 
         <div className="relative mt-auto flex items-end justify-between gap-4 border-t border-[#6f8cab]/18 pt-5 text-[9px] uppercase tracking-[0.22em] text-[#6f8298]/70 sm:text-[10px]">
-          <span>Think · Design · Build</span>
-          <span className="hidden sm:inline">Ideas with purpose. Products with impact.</span>
+          <span>{th ? "คิด · ออกแบบ · สร้าง" : "Think · Design · Build"}</span>
+          <span className="hidden sm:inline">{th ? "ไอเดียที่มีเป้าหมาย ผลิตภัณฑ์ที่สร้างผลลัพธ์" : "Ideas with purpose. Products with impact."}</span>
           <span>Buildifyx</span>
         </div>
       </div>

@@ -3,11 +3,12 @@ import { siteConfig } from "./seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
-    { path: "", changeFrequency: "monthly", priority: 1 },
-    { path: "/aboutus", changeFrequency: "yearly", priority: 0.8 },
-    { path: "/whyus", changeFrequency: "yearly", priority: 0.8 },
-    { path: "/mywork", changeFrequency: "monthly", priority: 0.9 },
-    { path: "/Contact", changeFrequency: "yearly", priority: 0.7 },
+    { path: "", changeFrequency: "weekly", priority: 1 },
+    { path: "/aboutus", changeFrequency: "monthly", priority: 0.8 },
+    { path: "/whyus", changeFrequency: "monthly", priority: 0.8 },
+    { path: "/mywork", changeFrequency: "weekly", priority: 0.9 },
+    { path: "/playground", changeFrequency: "monthly", priority: 0.5 },
+    { path: "/Contact", changeFrequency: "monthly", priority: 0.8 },
   ] as const;
 
   return routes.map(({ path, changeFrequency, priority }) => ({

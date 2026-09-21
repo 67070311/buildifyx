@@ -24,7 +24,10 @@ export default function NavbarMobile({
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setMounted(true), 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
@@ -41,7 +44,10 @@ export default function NavbarMobile({
     };
   }, [open]);
 
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setOpen(false), 0);
+    return () => window.clearTimeout(timer);
+  }, [pathname]);
 
   const mobileMenu = (
     <div
@@ -60,13 +66,13 @@ export default function NavbarMobile({
 
       <aside
         id="mobile-navigation"
-        className={`absolute right-0 top-0 z-10 flex h-dvh w-[90vw] max-w-[410px] flex-col border-l border-[#e7edf5] bg-white px-5 pb-6 pt-5 text-[#172033] shadow-[-25px_0_80px_rgba(45,73,115,.12)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] ${
+        className={`absolute right-0 top-0 z-10 flex h-dvh w-[90vw] max-w-[410px] flex-col overflow-y-auto overscroll-contain border-l border-[#e7edf5] bg-white px-5 pb-6 pt-5 text-[#172033] shadow-[-25px_0_80px_rgba(45,73,115,.12)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between border-b border-[#edf1f6] pb-5">
           <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-[10px] bg-[#eef5ff]">
+            <span className="grid h-8 w-8 place-items-center">
               <Image src="/logo/logo.png" alt="Buildifyx logo" width={18} height={18} />
             </span>
             <p className="text-sm font-semibold">Buildifyx</p>

@@ -3,8 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export default function Seeourwork() {
+  const { language } = useLanguage();
+
   return (
     <section className="relative -mt-[1px] overflow-hidden bg-[#050507] px-4 py-16 text-white sm:px-6 md:py-24">
       {/* Background */}
@@ -31,7 +34,7 @@ export default function Seeourwork() {
             viewport={{ once: true }}
             className="mb-4 text-[11px] font-normal uppercase tracking-[0.42em] text-[#A7A5F8] sm:text-xs"
           >
-            Selected Projects
+            {language === "th" ? "โปรเจกต์ที่คัดมา" : "Selected Projects"}
           </motion.p>
 
           <motion.h1
@@ -41,7 +44,7 @@ export default function Seeourwork() {
             viewport={{ once: true }}
             className="text-3xl font-normal tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl"
           >
-            Explore our work
+            {language === "th" ? "ดูผลงานของเรา" : "Explore our work"}
           </motion.h1>
 
           <motion.p
@@ -51,8 +54,9 @@ export default function Seeourwork() {
             viewport={{ once: true }}
             className="mx-auto mt-5 max-w-2xl text-sm font-normal leading-7 text-white/45 sm:text-base md:leading-8"
           >
-            Discover selected projects we’ve designed and built for real
-            businesses, startups, and digital products.
+            {language === "th"
+              ? "ดูตัวอย่างโปรเจกต์ที่เราออกแบบและพัฒนาสำหรับธุรกิจ สตาร์ทอัพ และ Digital Product ที่ใช้งานจริง"
+              : "Discover selected projects we’ve designed and built for real businesses, startups, and digital products."}
           </motion.p>
         </div>
 
@@ -70,9 +74,13 @@ export default function Seeourwork() {
 
             <Image
               src="/aboutus_pic/about_us2.gif"
-              alt="Project planning illustration"
+              alt={language === "th" ? "ภาพประกอบการวางแผนโปรเจกต์" : "Project planning illustration"}
               width={420}
               height={320}
+              loading="lazy"
+              fetchPriority="low"
+              decoding="async"
+              unoptimized
               className="relative z-10 h-auto w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[400px]"
             />
           </motion.div>
@@ -90,19 +98,20 @@ export default function Seeourwork() {
             </div>
 
             <h2 className="max-w-xs text-xl font-normal leading-tight text-white sm:text-2xl md:text-3xl">
-              See how ideas become real products
+              {language === "th" ? "ดูว่าไอเดียกลายเป็นโปรดักต์จริงได้อย่างไร" : "See how ideas become real products"}
             </h2>
 
             <p className="mt-4 max-w-xs text-sm font-normal leading-7 text-white/45">
-              From design concepts to production-ready websites, apps, and AI
-              tools.
+              {language === "th"
+                ? "ตั้งแต่แนวคิดด้านดีไซน์ ไปจนถึงเว็บไซต์ แอป และเครื่องมือ AI ที่พร้อมใช้งานจริง"
+                : "From design concepts to production-ready websites, apps, and AI tools."}
             </p>
 
             <Link
               href="/mywork"
               className="site-cta-dark group mt-7"
             >
-              <span>See more Projects</span>
+              <span>{language === "th" ? "ดูโปรเจกต์เพิ่มเติม" : "See more Projects"}</span>
 
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#5552D9] transition duration-300 group-hover:translate-x-1">
                 →
@@ -122,9 +131,13 @@ export default function Seeourwork() {
 
             <Image
               src="/aboutus_pic/about_us.gif"
-              alt="Team working illustration"
+              alt={language === "th" ? "ภาพประกอบทีมกำลังทำงาน" : "Team working illustration"}
               width={420}
               height={320}
+              loading="lazy"
+              fetchPriority="low"
+              decoding="async"
+              unoptimized
               className="relative z-10 h-auto w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[400px]"
             />
           </motion.div>
