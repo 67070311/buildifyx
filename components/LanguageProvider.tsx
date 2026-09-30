@@ -16,21 +16,10 @@ export default function LanguageProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [language, setLanguageState] = useState<SiteLanguage>("th");
+  const [language, setLanguageState] = useState<SiteLanguage>("en");
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("buildifyx-language");
-    if (saved !== "th" && saved !== "en") return;
-
-    const timer = window.setTimeout(() => {
-      setLanguageState(saved);
-    }, 0);
-
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.lang = language === "th" ? "th" : "en";
+    document.documentElement.lang = language;
   }, [language]);
 
   const value = useMemo(
@@ -38,7 +27,6 @@ export default function LanguageProvider({
       language,
       setLanguage: (nextLanguage: SiteLanguage) => {
         setLanguageState(nextLanguage);
-        window.localStorage.setItem("buildifyx-language", nextLanguage);
       },
     }),
     [language],

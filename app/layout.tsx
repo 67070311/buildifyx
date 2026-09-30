@@ -217,7 +217,7 @@ export default function RootLayout({
 
   return (
     <html
-      lang="th"
+      lang="en"
       suppressHydrationWarning
       className={`${geist.variable} ${notoSansThai.variable}`}
     >
