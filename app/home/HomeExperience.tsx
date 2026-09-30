@@ -6,12 +6,8 @@ import { motion } from "framer-motion";
 import {
   ArrowRight,
   ArrowUpRight,
-  Bot,
-  Code2,
   Check,
   ChevronRight,
-  Layers3,
-  Workflow,
 } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
 import FloatingToolBackground from "./FloatingToolBackground";
@@ -26,14 +22,13 @@ const copy = {
     primary: "เริ่มโปรเจกต์",
     secondary: "ดูผลงาน",
     trusted: "Software · AI · Data · Product Design",
-    servicesTitle: "เราเข้าไปช่วยตรงไหนได้บ้าง",
+    servicesTitle: "ผลิตภัณฑ์ของเรา",
     servicesLead:
-      "ทีมเล็กที่ทำงานครบตั้งแต่คิดระบบ ออกแบบประสบการณ์ ไปจนถึงพัฒนาและนำขึ้นใช้งานจริง",
+      "สามผลิตภัณฑ์ที่ Buildifyx พัฒนาขึ้นเพื่อแก้ปัญหาการทำงานจริง ทั้ง AI, ระบบหน้าร้าน และแพลตฟอร์มแลกเปลี่ยน",
     services: [
-      ["Software", "Web app, SaaS, internal tools และระบบหลังบ้าน"],
-      ["AI & Data", "AI workflow, machine learning, dashboard และ data pipeline"],
-      ["Product Design", "UX/UI, product flow และ prototype ที่พร้อมพัฒนาต่อ"],
-      ["Automation", "API, integration และ workflow ลดงาน manual"],
+      ["bdxa", "AI workspace agent สำหรับอ่านโปรเจกต์ ค้นหาโค้ด และแก้ไขงานจากแชต"],
+      ["Simple POS", "ระบบ POS สำหรับจัดการเมนู ออร์เดอร์ โต๊ะ และร้านใน flow เดียว"],
+      ["Bigger", "แพลตฟอร์ม trade-up ที่รวม offer, chat และ progress ไว้ด้วยกัน"],
     ],
     teamOverline: "ทีมหลักของเรา",
     teamSubtitle: "สามคน สามความถนัด แต่คิดและสร้างโปรดักต์ไปในทิศทางเดียวกัน",
@@ -62,14 +57,13 @@ const copy = {
     primary: "Start a project",
     secondary: "See our work",
     trusted: "Software · AI · Data · Product Design",
-    servicesTitle: "Where we can help",
+    servicesTitle: "Our products",
     servicesLead:
-      "A small product team that works across strategy, experience, engineering, and launch.",
+      "Three products built by Buildifyx for real-world work across AI, retail operations, and trade-up communities.",
     services: [
-      ["Software", "Web apps, SaaS, internal tools, and back-office systems"],
-      ["AI & Data", "AI workflows, machine learning, dashboards, and data pipelines"],
-      ["Product Design", "UX/UI, product flows, and prototypes ready to build"],
-      ["Automation", "APIs, integrations, and workflows that remove repetitive work"],
+      ["bdxa", "An AI workspace agent for reading projects, finding code, and making changes from chat."],
+      ["Simple POS", "A POS system for menus, orders, tables, and store management in one flow."],
+      ["Bigger", "A trade-up exchange platform built around offers, chat, and visible progress."],
     ],
     teamOverline: "Meet the core team",
     teamSubtitle: "Three people, three strengths, one shared way of building products.",
@@ -106,7 +100,6 @@ const ctaAvatars = [
   },
 ];
 
-const serviceIcons = [Code2, Bot, Layers3, Workflow];
 
 function ButterflyMark() {
   return (
@@ -255,35 +248,57 @@ function HeroProductDeck({
   );
 }
 
-function ServiceCard({
-  title,
-  text,
+function ProductCard({
+  product,
+  language,
   index,
 }: {
-  title: string;
-  text: string;
+  product: (typeof productShowcase)[number];
+  language: "th" | "en";
   index: number;
 }) {
-  const Icon = serviceIcons[index];
+  const isExternal = product.href.startsWith("http");
 
   return (
-    <motion.article
+    <motion.a
+      href={product.href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noreferrer" : undefined}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ delay: index * 0.07, duration: 0.5 }}
+      transition={{ delay: index * 0.08, duration: 0.5 }}
       whileHover={{ y: -6 }}
-      className="rounded-[20px] border border-[#e8eef7] bg-white p-4 shadow-[0_18px_50px_rgba(33,73,128,.06)] sm:rounded-[24px] sm:p-6"
+      className="group overflow-hidden rounded-[26px] border border-[#e4edf8] bg-white shadow-[0_20px_55px_rgba(43,89,146,.08)] transition-shadow hover:shadow-[0_26px_70px_rgba(43,89,146,.14)]"
     >
-      <div className="grid h-10 w-10 place-items-center rounded-[13px] bg-[#edf5ff] text-[#2f7fff] sm:h-11 sm:w-11 sm:rounded-[14px]">
-        <Icon className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
+      <div className="relative h-[210px] overflow-hidden bg-[#eef6ff] sm:h-[250px] lg:h-[280px]">
+        <Image
+          src={product.image}
+          alt={`${product.name} preview`}
+          fill
+          sizes="(max-width: 767px) 100vw, 33vw"
+          className="object-cover object-top transition duration-500 group-hover:scale-[1.025]"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_62%,rgba(10,31,58,.10)_100%)]" />
       </div>
-      <h3 className="mt-4 text-[15px] font-semibold leading-tight tracking-[-0.03em] text-[#172033] sm:mt-6 sm:text-xl">{title}</h3>
-      <p className="mt-2 text-[11px] leading-[1.55] text-[#728099] sm:mt-3 sm:text-sm sm:leading-6">{text}</p>
-    </motion.article>
+
+      <div className="p-5 sm:p-6">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <span className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-[14px]" style={{ backgroundColor: product.soft }}>
+              <Image src={product.logo} alt={`${product.name} logo`} width={28} height={28} className="h-7 w-7 object-contain" />
+            </span>
+            <h3 className="truncate text-[20px] font-semibold tracking-[-0.04em] text-[#17243a] sm:text-[22px]">{product.name}</h3>
+          </div>
+          <ArrowUpRight className="h-5 w-5 shrink-0 text-[#2f7fff] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </div>
+        <p className="mt-4 min-h-[48px] text-[13px] leading-6 text-[#718098] sm:text-sm">
+          {product.description[language]}
+        </p>
+      </div>
+    </motion.a>
   );
 }
-
 function AppleAvatar({
   emoji,
   label,
@@ -482,7 +497,7 @@ export default function HomeExperience() {
       <section className="border-y border-[#edf1f6] bg-[#fbfdff] px-5 py-20 sm:px-8 lg:px-10 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-medium text-[#2f7fff]">{language === "th" ? "สิ่งที่เราช่วยได้" : "What we do"}</p>
+            <p className="text-xs font-medium text-[#2f7fff]">{language === "th" ? "ผลิตภัณฑ์ของเรา" : "Our products"}</p>
             <h2 className={`mt-4 font-semibold ${language === "th" ? "text-[30px] leading-[1.25] tracking-[-.02em] sm:text-[42px]" : "text-[34px] leading-[1.08] tracking-[-.045em] sm:text-[48px]"}`}>
               {t.servicesTitle}
             </h2>
@@ -491,10 +506,19 @@ export default function HomeExperience() {
             </p>
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-12 sm:gap-4 lg:grid-cols-4">
-            {t.services.map(([title, text], index) => (
-              <ServiceCard key={title} title={title} text={text} index={index} />
+          <div className="mt-10 grid gap-5 md:grid-cols-3 sm:mt-12 sm:gap-6">
+            {productShowcase.map((product, index) => (
+              <ProductCard key={product.name} product={product} language={language} index={index} />
             ))}
+          </div>
+          <div className="mt-8 flex justify-center sm:mt-10">
+            <Link
+              href="/mywork"
+              className="group inline-flex min-h-12 items-center justify-center gap-2.5 rounded-[14px] border border-[#cfe0f5] bg-white px-6 text-sm font-semibold text-[#1f5d9f] shadow-[0_10px_28px_rgba(56,111,174,.08)] transition hover:-translate-y-0.5 hover:border-[#9fc8f5] hover:bg-[#f8fbff] hover:shadow-[0_14px_34px_rgba(56,111,174,.13)]"
+            >
+              {language === "th" ? "ดูผลิตภัณฑ์ทั้งหมด" : "View all products"}
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
           </div>
         </div>
       </section>

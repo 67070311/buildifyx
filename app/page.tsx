@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import HomeExperience from "./home/HomeExperience";
+import DarkOrbitHero from "./home/DarkOrbitHero";
 import PageJsonLd from "@/components/PageJsonLd";
 import { createPageMetadata } from "./seo";
 
@@ -26,7 +27,10 @@ export default function HomePage() {
         description="Buildifyx builds websites, web applications, AI systems, data platforms, dashboards, SaaS, and digital products in Bangkok, Thailand."
         path="/"
       />
-      <HomeExperience />
+      <DarkOrbitHero />
+      <div className="home-experience-below-hero">
+        <HomeExperience />
+      </div>
     </>
   );
 }

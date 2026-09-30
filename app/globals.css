@@ -375,3 +375,8 @@ body {
     animation: none !important;
   }
 }
+
+/* Home keeps the existing sections, but the legacy hero is replaced by DarkOrbitHero. */
+.home-experience-below-hero > div > section:first-child {
+  display: none !important;
+}
